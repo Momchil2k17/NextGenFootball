@@ -4,12 +4,20 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using NextGenFootball.Data.Models;
+    using System.Reflection;
 
     public class NextGenFootballDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
         public NextGenFootballDbContext(DbContextOptions<NextGenFootballDbContext> options)
             : base(options)
         {
+
+        }
+        public virtual DbSet<Stadium> Stadiums { get; set; } = null!;
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
     }
