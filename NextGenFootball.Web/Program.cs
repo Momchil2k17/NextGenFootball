@@ -5,6 +5,8 @@ namespace NextGenFootball.Web
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using NextGenFootball.Data.Models;
+    using NextGenFootball.Services.Core;
+    using NextGenFootball.Services.Core.Interfaces;
 
     public class Program
     {
@@ -37,6 +39,8 @@ namespace NextGenFootball.Web
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IStadiumService, StadiumService>();
 
             WebApplication? app = builder.Build();
             
