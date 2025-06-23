@@ -28,7 +28,7 @@ namespace NextGenFootball.Services.Core
             bool res = false;
             ApplicationUser? user = await userManager.FindByIdAsync(userId);
             bool isValidSurface = Enum.IsDefined(typeof(SurfaceType), model.Surface);
-            if (isValidSurface && user!=null) 
+            if (isValidSurface && user != null)
             {
                 Stadium stadium = new Stadium
                 {
@@ -45,6 +45,31 @@ namespace NextGenFootball.Services.Core
             }
             return res;
 
+        }
+
+        public async Task<bool> EditStadiumAsync(StadiumEditViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            bool isValidSurface = Enum.IsDefined(typeof(SurfaceType), model.Surface);
+            if (isValidSurface && user != null) 
+            {
+                Stadium? stadium = await dbContext.Stadiums
+                    .SingleOrDefaultAsync(s => s.Id == model.Id);
+                if (stadium != null)
+                {
+                    stadium.Name = model.Name;
+                    stadium.Description = model.Description;
+                    stadium.Address = model.Address;
+                    stadium.Capacity = model.Capacity;
+                    stadium.Surface = model.Surface;
+                    stadium.ImageUrl = model.ImageUrl;
+
+                    await dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
         }
 
         public async Task<IEnumerable<StadiumIndexViewModel>> GetAllStadiumsAsync()
@@ -83,6 +108,30 @@ namespace NextGenFootball.Services.Core
                         Address = stRef.Address,
                         Capacity = stRef.Capacity,
                         Surface = stRef.Surface.ToString(),
+                        ImageUrl = stRef.ImageUrl
+                    };
+                }
+            }
+            return stadium;
+        }
+        public async Task<StadiumEditViewModel?> GetStadiumForEditAsync(int? id, string userId)
+        {
+            StadiumEditViewModel? stadium = null;
+            if (id.HasValue)
+            {
+                Stadium? stRef = await dbContext.Stadiums
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (stRef != null)
+                {
+                    stadium = new StadiumEditViewModel
+                    {
+                        Id = stRef.Id,
+                        Name = stRef.Name,
+                        Description = stRef.Description,
+                        Address = stRef.Address,
+                        Capacity = stRef.Capacity,
+                        Surface = stRef.Surface,
                         ImageUrl = stRef.ImageUrl
                     };
                 }

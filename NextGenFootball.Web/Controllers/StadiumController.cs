@@ -68,5 +68,49 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                StadiumEditViewModel? stadium = await this.stadiumService.GetStadiumForEditAsync(id, userId);
+                if (stadium == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(stadium);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(StadiumEditViewModel stadium)
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    return View(stadium);
+                }
+                string userId = this.GetUserId()!;
+                bool isEdited = await this.stadiumService.EditStadiumAsync(stadium, userId);
+                if (!isEdited) 
+                {
+                    this.ModelState.AddModelError(string.Empty, "An error occurred while editing the stadium. Please try again.");
+                    return View(stadium);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
