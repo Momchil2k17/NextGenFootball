@@ -33,7 +33,7 @@ namespace NextGenFootball.Web.Controllers
                 }
                 string userId = this.GetUserId()!;
                 bool isCreated = await this.stadiumService.CreateStadiumAsync(inputModel, userId);
-                if(isCreated==false)
+                if (isCreated == false)
                 {
                     //TODO: add validation messages class
                     ModelState.AddModelError(string.Empty, "An error occurred while creating the stadium. Please try again.");
@@ -56,7 +56,7 @@ namespace NextGenFootball.Web.Controllers
             try
             {
                 StadiumDetailsViewModel? stadium = await this.stadiumService.GetStadiumDetailsAsync(id);
-                if(stadium == null)
+                if (stadium == null)
                 {
                     return RedirectToAction(nameof(Index));
                 }
@@ -99,9 +99,52 @@ namespace NextGenFootball.Web.Controllers
                 }
                 string userId = this.GetUserId()!;
                 bool isEdited = await this.stadiumService.EditStadiumAsync(stadium, userId);
-                if (!isEdited) 
+                if (!isEdited)
                 {
                     this.ModelState.AddModelError(string.Empty, "An error occurred while editing the stadium. Please try again.");
+                    return View(stadium);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                StadiumDeleteViewModel? stadium = await this.stadiumService.GetStadiumForDeleteAsync(id, userId);
+                if (stadium == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(stadium);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(StadiumDeleteViewModel stadium)
+        {
+            try
+            {
+                if (!this.ModelState.IsValid)
+                {
+                    return View(stadium);
+                }
+                string userId = this.GetUserId()!;
+                bool isDeleted = await this.stadiumService.DeleteStadiumAsync(stadium, userId);
+                if (!isDeleted)
+                {
+                    this.ModelState.AddModelError(string.Empty, "An error occurred while deleting the stadium. Please try again.");
                     return View(stadium);
                 }
                 return RedirectToAction(nameof(Index));

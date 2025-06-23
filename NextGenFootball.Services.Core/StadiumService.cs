@@ -47,6 +47,24 @@ namespace NextGenFootball.Services.Core
 
         }
 
+        public async Task<bool> DeleteStadiumAsync(StadiumDeleteViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Stadium? stadium = await dbContext.Stadiums
+                    .SingleOrDefaultAsync(s => s.Id == model.Id);
+                if (stadium != null)
+                {
+                    stadium.IsDeleted = true; // Soft delete
+                    await dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
+
         public async Task<bool> EditStadiumAsync(StadiumEditViewModel model, string userId)
         {
             bool res = false;
@@ -114,6 +132,29 @@ namespace NextGenFootball.Services.Core
             }
             return stadium;
         }
+
+        public async Task<StadiumDeleteViewModel?> GetStadiumForDeleteAsync(int? id, string userId)
+        {
+            StadiumDeleteViewModel? stadium = null;
+            if (id.HasValue)
+            {
+                Stadium? stRef = await this.dbContext.Stadiums
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (stRef != null)
+                {
+                    stadium = new StadiumDeleteViewModel
+                    {
+                        Id = stRef.Id,
+                        Name = stRef.Name,
+                        Capacity = stRef.Capacity,
+                        ImageUrl = stRef.ImageUrl
+                    };
+                }
+            }
+            return stadium;
+        }
+
         public async Task<StadiumEditViewModel?> GetStadiumForEditAsync(int? id, string userId)
         {
             StadiumEditViewModel? stadium = null;
