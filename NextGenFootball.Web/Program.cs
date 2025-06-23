@@ -4,6 +4,7 @@ namespace NextGenFootball.Web
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using NextGenFootball.Data.Models;
 
     public class Program
     {
@@ -14,17 +15,27 @@ namespace NextGenFootball.Web
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             
             builder.Services
-                .AddDbContext<ApplicationDbContext>(options =>
+                .AddDbContext<NextGenFootballDbContext>(options =>
                 {
                     options.UseSqlServer(connectionString);
                 });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<ApplicationUser>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+
+                    options.Password.RequiredLength = 3;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredUniqueChars = 0;
                 })
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<NextGenFootballDbContext>();
             builder.Services.AddControllersWithViews();
 
             WebApplication? app = builder.Build();
