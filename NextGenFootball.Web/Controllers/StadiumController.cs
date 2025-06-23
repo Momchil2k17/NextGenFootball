@@ -50,5 +50,23 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            try
+            {
+                StadiumDetailsViewModel? stadium = await this.stadiumService.GetStadiumDetailsAsync(id);
+                if(stadium == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(stadium);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

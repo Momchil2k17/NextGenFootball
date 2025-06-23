@@ -64,5 +64,30 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return stadiums;
         }
+
+        public async Task<StadiumDetailsViewModel?> GetStadiumDetailsAsync(int? id)
+        {
+            StadiumDetailsViewModel? stadium = null;
+            if (id.HasValue)
+            {
+                Stadium? stRef = await dbContext.Stadiums
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (stRef != null)
+                {
+                    stadium = new StadiumDetailsViewModel
+                    {
+                        Id = stRef.Id,
+                        Name = stRef.Name,
+                        Description = stRef.Description,
+                        Address = stRef.Address,
+                        Capacity = stRef.Capacity,
+                        Surface = stRef.Surface.ToString(),
+                        ImageUrl = stRef.ImageUrl
+                    };
+                }
+            }
+            return stadium;
+        }
     }
 }

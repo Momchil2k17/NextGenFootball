@@ -1,0 +1,31 @@
+﻿@using NextGenFootball.Web.ViewModels.Stadium
+@model StadiumDetailsViewModel
+
+@{
+    ViewData["Title"] = "Stadium Details";
+}
+
+<h1>Stadium Details</h1>
+
+<div class="card mb-4" style="max-width: 600px;">
+    <div class="row g-0">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="col-md-4">
+                <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="@Model.Name" style="max-width: 100%; max-height: 250px;" />
+            </div>
+        }
+        <div class="col-md-8">
+            <div class="card-body">
+                <h4 class="card-title">@Model.Name</h4>
+                <p class="card-text"><strong>Description:</strong> @Model.Description</p>
+                <p class="card-text"><strong>Address:</strong> @Model.Address</p>
+                <p class="card-text"><strong>Capacity:</strong> @Model.Capacity</p>
+                <p class="card-text"><strong>Surface:</strong> @Model.Surface</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>
