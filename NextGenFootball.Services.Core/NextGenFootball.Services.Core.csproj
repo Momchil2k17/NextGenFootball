@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NextGenFootball.Data.Models\NextGenFootball.Data.Models.csproj" />
+    <ProjectReference Include="..\NextGenFootball.Data\NextGenFootball.Data.csproj" />
+    <ProjectReference Include="..\NextGenFootball.GCommon\NextGenFootball.GCommon.csproj" />
+    <ProjectReference Include="..\NextGenFootball.Services.AutoMapping\NextGenFootball.Services.AutoMapping.csproj" />
+    <ProjectReference Include="..\NextGenFootball.Services.Common\NextGenFootball.Services.Common.csproj" />
+    <ProjectReference Include="..\NextGenFootball.Web.ViewModels\NextGenFootball.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
