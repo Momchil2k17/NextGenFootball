@@ -45,6 +45,25 @@ namespace NextGenFootball.Services.Core
             return res;
         }
 
+        public async Task<bool> DeleteSeasonAsync(SeasonDeleteViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Season? season = await this.dbContext.Seasons
+                    .SingleOrDefaultAsync(s => s.Id == model.Id);
+                if (season != null)
+                {
+                    season.IsDeleted = true; // Soft delete
+
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
+
         public async Task<bool> EditSeasonAsync(SeasonEditViewModel model, string userId)
         {
             bool res = false;
@@ -103,6 +122,31 @@ namespace NextGenFootball.Services.Core
             }
             return Task.FromResult(season);
         }
+
+        public async Task<SeasonDeleteViewModel?> GetSeasonForDeleteAsync(int? id, string userId)
+        {
+            SeasonDeleteViewModel? season = null;
+            if (id.HasValue)
+            {
+                ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    season = this.dbContext.Seasons
+                        .AsNoTracking()
+                        .Where(s => s.Id == id.Value)
+                        .Select(s => new SeasonDeleteViewModel
+                        {
+                            Id = s.Id,
+                            Name = s.Name,
+                            StartDate = s.StartDate,
+                            EndDate = s.EndDate,
+                        })
+                        .FirstOrDefault();
+                }
+            }
+            return season;
+        }
+
 
         public async Task<SeasonEditViewModel?> GetSeasonForEditAsync(int? id, string userId)
         {

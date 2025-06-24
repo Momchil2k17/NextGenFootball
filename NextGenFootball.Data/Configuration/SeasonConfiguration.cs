@@ -25,6 +25,9 @@ namespace NextGenFootball.Data.Configuration
             entity
                 .Property(s=>s.IsDeleted)
                 .HasDefaultValue(false);
+
+            entity
+                .HasQueryFilter(s => s.IsDeleted==false);
         }
     }
 }

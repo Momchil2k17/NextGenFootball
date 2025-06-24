@@ -106,5 +106,48 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                SeasonDeleteViewModel? season = await this.seasonService.GetSeasonForDeleteAsync(id, userId);
+                if (season == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(season);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(SeasonDeleteViewModel inputModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(inputModel);
+                }
+                string userId = this.GetUserId()!;
+                bool isDeleted = await this.seasonService.DeleteSeasonAsync(inputModel, userId);
+                if (isDeleted == false)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while deleting the season. Please try again.");
+                    return RedirectToAction(nameof(Delete), new { id = inputModel.Id });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
