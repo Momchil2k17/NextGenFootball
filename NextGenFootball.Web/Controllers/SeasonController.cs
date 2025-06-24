@@ -16,5 +16,34 @@ namespace NextGenFootball.Web.Controllers
             IEnumerable<SeasonIndexViewModel> seasons = await this.seasonService.GetAllSeasonsAsync();
             return View(seasons);
         }
-    }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return this.View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(SeasonCreateViewModel inputModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(inputModel);
+                }
+                string userId = this.GetUserId()!;
+                bool isCreated = await this.seasonService.CreateSeasonAsync(inputModel, userId);
+                if (isCreated == false)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while creating the season. Please try again.");
+                    return RedirectToAction(nameof(Create));
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        }
 }
