@@ -11,5 +11,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     {
         public Task<IEnumerable<SeasonIndexViewModel>> GetAllSeasonsAsync();
         public Task<bool> CreateSeasonAsync(SeasonCreateViewModel model, string userId);
+        public Task<SeasonDetailsViewModel?> GetSeasonDetailsAsync(int? id);
     }
 }

@@ -45,5 +45,23 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            try
+            {
+                SeasonDetailsViewModel? season = await this.seasonService.GetSeasonDetailsAsync(id);
+                if (season == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(season);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
         }
+    }
 }

@@ -60,5 +60,26 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return seasons;
         }
+
+        public Task<SeasonDetailsViewModel?> GetSeasonDetailsAsync(int? id)
+        {
+            SeasonDetailsViewModel? season = null;
+            if (id.HasValue)
+            {
+                season = this.dbContext.Seasons
+                    .AsNoTracking()
+                    .Where(s => s.Id == id.Value)
+                    .Select(s => new SeasonDetailsViewModel
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        StartDate = s.StartDate,
+                        EndDate = s.EndDate,
+                        IsCurrent = s.IsCurrent
+                    })
+                    .FirstOrDefault();
+            }
+            return Task.FromResult(season);
+        }
     }
 }
