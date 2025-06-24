@@ -63,5 +63,48 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                SeasonEditViewModel? season = await this.seasonService.GetSeasonForEditAsync(id, userId);
+                if (season == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(season);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(SeasonEditViewModel inputModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(inputModel);
+                }
+                string userId = this.GetUserId()!;
+                bool isEdited = await this.seasonService.EditSeasonAsync(inputModel, userId);
+                if (isEdited == false)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while editing the season. Please try again.");
+                    return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

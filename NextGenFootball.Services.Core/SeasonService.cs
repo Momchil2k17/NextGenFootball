@@ -45,6 +45,28 @@ namespace NextGenFootball.Services.Core
             return res;
         }
 
+        public async Task<bool> EditSeasonAsync(SeasonEditViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user =await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Season? season = this.dbContext.Seasons
+                    .SingleOrDefault(s => s.Id == model.Id);
+                if (season != null && model.StartDate<model.EndDate)
+                {
+                    season.Name = model.Name;
+                    season.StartDate = model.StartDate;
+                    season.EndDate = model.EndDate;
+                    season.IsCurrent = (DateTime.UtcNow >= model.StartDate && DateTime.UtcNow <= model.EndDate);
+
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
+
         public async Task<IEnumerable<SeasonIndexViewModel>> GetAllSeasonsAsync()
         {
             IEnumerable<SeasonIndexViewModel> seasons = await this.dbContext.Seasons
@@ -80,6 +102,32 @@ namespace NextGenFootball.Services.Core
                     .FirstOrDefault();
             }
             return Task.FromResult(season);
+        }
+
+        public async Task<SeasonEditViewModel?> GetSeasonForEditAsync(int? id, string userId)
+        {
+            SeasonEditViewModel? season = null;
+            if (id.HasValue)
+            {
+                ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+                if (user != null)
+                {
+                    season = this.dbContext.Seasons
+                        .AsNoTracking()
+                        .Where(s => s.Id == id.Value)
+                        .Select(s => new SeasonEditViewModel
+                        {
+                            Id = s.Id,
+                            Name = s.Name,
+                            StartDate = s.StartDate,
+                            EndDate = s.EndDate,
+                            IsCurrent = s.IsCurrent
+                        })
+                        .FirstOrDefault();
+                }
+            }
+            return season;
+
         }
     }
 }
