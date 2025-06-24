@@ -22,6 +22,9 @@ namespace NextGenFootball.Data.Configuration
                 .IsRequired()
                 .HasMaxLength(NameMaxLength);
 
+            entity
+                .Property(s=>s.IsDeleted)
+                .HasDefaultValue(false);
         }
     }
 }

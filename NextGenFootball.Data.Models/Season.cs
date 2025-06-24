@@ -20,5 +20,6 @@ namespace NextGenFootball.Data.Models
         public DateTime EndDate { get; set; }
         [Comment("Indicates whether the season is the current one.")]
         public bool IsCurrent { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
