@@ -21,5 +21,7 @@ namespace NextGenFootball.Data.Models
         [Comment("Indicates whether the season is the current one.")]
         public bool IsCurrent { get; set; }
         public bool IsDeleted { get; set; }
+
+        public virtual ICollection<League> Leagues { get; set; } = new HashSet<League>();
     }
 }
