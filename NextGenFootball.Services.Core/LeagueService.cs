@@ -72,5 +72,32 @@ namespace NextGenFootball.Services.Core
             var attribute = Attribute.GetCustomAttribute(field, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
         }
+
+        public async Task<LeagueDetailsViewModel?> GetLeagueDetailsAsync(int? id)
+        {
+            LeagueDetailsViewModel? details = null;
+            if(id.HasValue)
+            {
+                League? league = await this.dbContext.Leagues
+                    .AsNoTracking()
+                    .Include(l => l.Season)
+                    .SingleOrDefaultAsync(l => l.Id == id.Value );
+                if (league != null)
+                {
+                    details = new LeagueDetailsViewModel
+                    {
+                        Id = league.Id,
+                        Name = league.Name,
+                        Region = GetDisplayName(league.Region),
+                        AgeGroup = league.AgeGroup,
+                        SeasonName = league.Season.Name,
+                        ImageUrl = league.ImageUrl,
+                        Description = league.Description
+                    };
+                }
+            }
+            return details;
+
+        }
     }
 }

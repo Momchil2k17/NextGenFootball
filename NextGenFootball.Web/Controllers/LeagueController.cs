@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.League;
+using NextGenFootball.Web.ViewModels.Season;
 
 namespace NextGenFootball.Web.Controllers
 {
@@ -33,7 +34,7 @@ namespace NextGenFootball.Web.Controllers
         {
             try
             {
-                if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
                     model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
                     return View(model);
@@ -48,6 +49,24 @@ namespace NextGenFootball.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
 
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            try
+            {
+                LeagueDetailsViewModel? league = await this.leagueService.GetLeagueDetailsAsync(id);
+                if (league == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(league);
             }
             catch (Exception e)
             {
