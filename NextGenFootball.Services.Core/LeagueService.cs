@@ -99,5 +99,57 @@ namespace NextGenFootball.Services.Core
             return details;
 
         }
+
+        public async Task<LeagueEditViewModel?> GetLeagueForEditAsync(int? id, string userId)
+        {
+            LeagueEditViewModel? league = null;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (id.HasValue && user != null)
+            {
+                League? leagueEntity = await this.dbContext.Leagues
+                    .SingleOrDefaultAsync(l => l.Id == id.Value);
+                if (leagueEntity != null)
+                {
+                    league = new LeagueEditViewModel
+                    {
+                        Id = leagueEntity.Id,
+                        Name = leagueEntity.Name,
+                        Region = leagueEntity.Region,
+                        AgeGroup = leagueEntity.AgeGroup,
+                        Description = leagueEntity.Description,
+                        ImageUrl = leagueEntity.ImageUrl,
+                        SeasonId = leagueEntity.SeasonId,
+                    };
+                }
+            }
+            return league;
+        }
+
+        public async Task<bool> EditLeagueAsync(LeagueEditViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
+            Season? season = await this.dbContext.Seasons
+                .SingleOrDefaultAsync(s => s.Id == model.SeasonId);
+            if ((user != null) && (isValidRegion) && (season != null))
+            {
+                League? league = await this.dbContext.Leagues
+                    .SingleOrDefaultAsync(l => l.Id == model.Id);
+                if (league != null)
+                {
+                    league.Name = model.Name;
+                    league.Region = model.Region;
+                    league.AgeGroup = model.AgeGroup;
+                    league.Description = model.Description;
+                    league.ImageUrl = model.ImageUrl;
+                    league.SeasonId = season.Id;
+                    
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
     }
 }

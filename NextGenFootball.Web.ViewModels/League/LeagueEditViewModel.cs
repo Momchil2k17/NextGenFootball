@@ -10,8 +10,9 @@ using static NextGenFootball.Data.Common.EntityConstants.LeagueValidationConstan
 
 namespace NextGenFootball.Web.ViewModels.League
 {
-    public class LeagueCreateViewModel
+    public class LeagueEditViewModel
     {
+        public int Id { get; set; }
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "League name must be between 3 and 100 characters.")]
         public string Name { get; set; } = null!;
@@ -21,11 +22,11 @@ namespace NextGenFootball.Web.ViewModels.League
         public string AgeGroup { get; set; } = null!;
 
         [Required]
-        public Region Region { get; set; } 
+        public Region Region { get; set; }
 
         [Required]
         public int SeasonId { get; set; }
-        
+
         public virtual IEnumerable<SeasonDropdownViewModel>? Seasons { get; set; }
 
         [StringLength(ImageUrlMaxLength, ErrorMessage = "Image URL must not exceed 2048 characters.")]

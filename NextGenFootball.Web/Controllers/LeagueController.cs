@@ -74,5 +74,51 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                LeagueEditViewModel? league = await this.leagueService.GetLeagueForEditAsync(id, userId);
+                if (league == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                league.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                return View(league);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(LeagueEditViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                    return View(model);
+                }
+                string userId = this.GetUserId()!;
+                bool isEdited = await this.leagueService.EditLeagueAsync(model, userId);
+                if (!isEdited)
+                {
+                    ModelState.AddModelError(string.Empty, "League edit failed. Please try again.");
+                    model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                    return View(model);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
