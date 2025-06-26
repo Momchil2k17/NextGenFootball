@@ -42,6 +42,7 @@ namespace NextGenFootball.Web
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();
+            builder.Services.AddScoped<ILeagueService, LeagueService>();
 
             WebApplication? app = builder.Build();
             
