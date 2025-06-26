@@ -120,5 +120,44 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                LeagueDetailsViewModel? league = await this.leagueService.GetLeagueForDeleteAsync(id, userId);
+                if (league == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(league);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(LeagueDetailsViewModel model)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                bool isDeleted = await this.leagueService.DeleteLeagueAsync(model, userId);
+                if (!isDeleted)
+                {
+                    ModelState.AddModelError(string.Empty, "League deletion failed. Please try again.");
+                    return View(model);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

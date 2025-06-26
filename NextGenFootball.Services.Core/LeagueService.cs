@@ -53,6 +53,8 @@ namespace NextGenFootball.Services.Core
         public async Task<IEnumerable<LeagueIndexViewModel>> GetAllLeaguesAsync()
         {
             IEnumerable<LeagueIndexViewModel> leagues = await this.dbContext.Leagues
+                .Include(l => l.Season)
+                .AsNoTracking()
                 .Where(l => !l.IsDeleted)
                 .Select(l => new LeagueIndexViewModel
                 {
@@ -79,8 +81,8 @@ namespace NextGenFootball.Services.Core
             if(id.HasValue)
             {
                 League? league = await this.dbContext.Leagues
-                    .AsNoTracking()
                     .Include(l => l.Season)
+                    .AsNoTracking()
                     .SingleOrDefaultAsync(l => l.Id == id.Value );
                 if (league != null)
                 {
@@ -107,6 +109,7 @@ namespace NextGenFootball.Services.Core
             if (id.HasValue && user != null)
             {
                 League? leagueEntity = await this.dbContext.Leagues
+                    .Include(l => l.Season)
                     .SingleOrDefaultAsync(l => l.Id == id.Value);
                 if (leagueEntity != null)
                 {
@@ -135,6 +138,7 @@ namespace NextGenFootball.Services.Core
             if ((user != null) && (isValidRegion) && (season != null))
             {
                 League? league = await this.dbContext.Leagues
+                    .Include(l => l.Season)
                     .SingleOrDefaultAsync(l => l.Id == model.Id);
                 if (league != null)
                 {
@@ -145,6 +149,51 @@ namespace NextGenFootball.Services.Core
                     league.ImageUrl = model.ImageUrl;
                     league.SeasonId = season.Id;
                     
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
+
+        public async Task<LeagueDetailsViewModel?> GetLeagueForDeleteAsync(int? id, string userId)
+        {
+            LeagueDetailsViewModel? league = null;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (id.HasValue && user != null)
+            {
+                League? leagueEntity = await this.dbContext.Leagues
+                    .Include(l => l.Season)
+                    .SingleOrDefaultAsync(l => l.Id == id.Value);
+                if (leagueEntity != null)
+                {
+                    league = new LeagueDetailsViewModel
+                    {
+                        Id = leagueEntity.Id,
+                        Name = leagueEntity.Name,
+                        Region = GetDisplayName(leagueEntity.Region),
+                        AgeGroup = leagueEntity.AgeGroup,
+                        SeasonName = leagueEntity.Season.Name,
+                        ImageUrl = leagueEntity.ImageUrl,
+                        Description = leagueEntity.Description
+                    };
+                }
+            }
+            return league;
+        }
+
+        public async Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                League? league = await this.dbContext.Leagues
+                    .SingleOrDefaultAsync(l => l.Id == model.Id);
+                if (league != null)
+                {
+                    league.IsDeleted = true; 
+
                     await this.dbContext.SaveChangesAsync();
                     res = true;
                 }
