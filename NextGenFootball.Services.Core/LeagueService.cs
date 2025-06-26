@@ -58,13 +58,19 @@ namespace NextGenFootball.Services.Core
                 {
                     Id = l.Id,
                     Name = l.Name,
-                    Region = l.Region,
+                    Region = GetDisplayName(l.Region),
                     AgeGroup = l.AgeGroup,
                     SeasonName = l.Season.Name,
                     ImageUrl = l.ImageUrl
                 })
                 .ToListAsync();
             return leagues;
+        }
+        public static string GetDisplayName(Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
+            return attribute?.Name ?? value.ToString();
         }
     }
 }

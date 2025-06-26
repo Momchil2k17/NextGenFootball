@@ -11,7 +11,7 @@ namespace NextGenFootball.Web.ViewModels.League
     {
         public int Id { get; set; }
         public string Name { get; set; }=null!;
-        public Region Region { get; set; } 
+        public string Region { get; set; } = null!;
         public string AgeGroup { get; set; } = null!;
         public string SeasonName { get; set; } = null!;
         public string? ImageUrl { get; set; }
