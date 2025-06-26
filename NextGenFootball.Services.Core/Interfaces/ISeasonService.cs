@@ -16,6 +16,7 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<bool> EditSeasonAsync(SeasonEditViewModel model, string userId);
         public Task<SeasonDeleteViewModel?> GetSeasonForDeleteAsync(int? id, string userId);
         public Task<bool> DeleteSeasonAsync(SeasonDeleteViewModel model, string userId);
+        public Task<IEnumerable<SeasonDropdownViewModel>?> GetSeasonsForDropdownAsync();
 
     }
 }

@@ -1,9 +1,19 @@
 ﻿@using NextGenFootball.Web.ViewModels.League;
+@using System.ComponentModel.DataAnnotations
 @model IEnumerable<LeagueIndexViewModel>
 
 @{
     ViewData["Title"] = "All Leagues";
 }
+@functions {
+    public static string GetDisplayName(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = Attribute.GetCustomAttribute(field, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
+        return attribute?.Name ?? value.ToString();
+    }
+}
+
 
 <h1>All Leagues</h1>
 
@@ -33,7 +43,7 @@
                     }
                 </td>
                 <td>@league.Name</td>
-                <td>@league.Region</td>
+                <td>@GetDisplayName(league.Region)</td>
                 <td>@league.AgeGroup</td>
                 <td>@league.SeasonName</td>
                 <td>

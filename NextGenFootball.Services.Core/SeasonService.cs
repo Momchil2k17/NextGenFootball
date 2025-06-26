@@ -173,5 +173,20 @@ namespace NextGenFootball.Services.Core
             return season;
 
         }
+
+        public async Task<IEnumerable<SeasonDropdownViewModel>?> GetSeasonsForDropdownAsync()
+        {
+            IEnumerable<SeasonDropdownViewModel>? seasons=null;
+            seasons = await this.dbContext.Seasons
+                .AsNoTracking()
+                .Where(s => !s.IsDeleted)
+                .Select(s => new SeasonDropdownViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name
+                })
+                .ToListAsync();
+            return seasons;
+        }
     }
 }

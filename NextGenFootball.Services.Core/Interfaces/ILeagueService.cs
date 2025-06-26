@@ -10,5 +10,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface ILeagueService
     {
         public Task<IEnumerable<LeagueIndexViewModel>> GetAllLeaguesAsync();
+        public Task<bool> CreateLeagueAsync(LeagueCreateViewModel model, string userId);
     }
 }

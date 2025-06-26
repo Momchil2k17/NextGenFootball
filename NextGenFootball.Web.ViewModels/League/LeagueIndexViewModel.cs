@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextGenFootball.Data.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace NextGenFootball.Web.ViewModels.League
     {
         public int Id { get; set; }
         public string Name { get; set; }=null!;
-        public string Region { get; set; } = null!;
+        public Region Region { get; set; } 
         public string AgeGroup { get; set; } = null!;
         public string SeasonName { get; set; } = null!;
         public string? ImageUrl { get; set; }
