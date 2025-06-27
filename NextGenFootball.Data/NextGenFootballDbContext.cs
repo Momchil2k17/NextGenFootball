@@ -16,6 +16,7 @@
         public virtual DbSet<Stadium> Stadiums { get; set; } = null!;
         public virtual DbSet<Season> Seasons { get; set; } = null!;
         public virtual DbSet<League> Leagues { get; set; } = null!;
+        public virtual DbSet<Team> Teams { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

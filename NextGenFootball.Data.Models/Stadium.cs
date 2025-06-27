@@ -34,5 +34,8 @@ namespace NextGenFootball.Data.Models
 
         [Comment("Shows if the stadium is active or not(soft delete)")]
         public bool IsDeleted { get; set; }
+
+        [Comment("Collection of teams that play in this stadium.")]
+        public virtual ICollection<Team> Teams { get; set; } = new HashSet<Team>();
     }
 }

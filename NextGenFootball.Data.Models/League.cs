@@ -30,5 +30,8 @@ namespace NextGenFootball.Data.Models
         public virtual Season Season { get; set; }=null!;
         [Comment("Soft delete")]
         public bool IsDeleted { get; set; }
+
+        [Comment("Collection of teams that participate in this league.")]
+        public virtual ICollection<Team> Teams { get; set; } = new HashSet<Team>();
     }
 }
