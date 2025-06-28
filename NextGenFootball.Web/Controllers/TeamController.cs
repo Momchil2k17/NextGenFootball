@@ -125,5 +125,48 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                TeamDeleteViewModel? teamDeleteViewModel = await this.teamService.GetTeamForDeleteAsync(id, userId);
+                if (teamDeleteViewModel == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(teamDeleteViewModel);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(TeamDeleteViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                string userId = this.GetUserId()!;
+                bool isDeleted = await this.teamService.DeleteTeamAsync(model, userId);
+                if (!isDeleted)
+                {
+                    ModelState.AddModelError(string.Empty, "Team deletion failed. Please try again.");
+                    return View(model);
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

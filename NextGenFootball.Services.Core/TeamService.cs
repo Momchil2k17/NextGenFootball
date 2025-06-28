@@ -158,5 +158,47 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
+        
+        public async Task<TeamDeleteViewModel?> GetTeamForDeleteAsync(int? id, string userId)
+        {
+            TeamDeleteViewModel? model = null;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (id.HasValue && user != null)
+            {
+                Team? team = await this.dbContext.Teams
+                    .Include(t => t.League)
+                    .SingleOrDefaultAsync(t => t.Id == id.Value);
+                if (team != null)
+                {
+                    model = new TeamDeleteViewModel
+                    {
+                        Id = team.Id,
+                        Name = team.Name,
+                        AgeGroup = team.AgeGroup,
+                        LeagueName = team.League.Name,
+                    };
+                }
+            }
+            return model;
+        }
+
+        public async Task<bool> DeleteTeamAsync(TeamDeleteViewModel model, string userId)
+        {
+
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Team? team = await this.dbContext.Teams
+                    .SingleOrDefaultAsync(t => t.Id == model.Id);
+                if (team != null)
+                {
+                    team.IsDeleted = true;
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
     }
 }
