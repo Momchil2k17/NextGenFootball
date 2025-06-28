@@ -23,5 +23,6 @@ namespace NextGenFootball.Data.Models
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<League> Leagues { get; set; } = new HashSet<League>();
+        public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
     }
 }

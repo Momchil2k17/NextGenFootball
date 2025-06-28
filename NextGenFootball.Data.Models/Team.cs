@@ -35,5 +35,8 @@ namespace NextGenFootball.Data.Models
         [Comment("Soft delete flag indicating if the team is deleted.")]
 
         public bool IsDeleted { get; set; }
+
+        [Comment("Collection of players in the team.")]
+        public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
     }
 }
