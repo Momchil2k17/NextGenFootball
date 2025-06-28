@@ -1,0 +1,50 @@
+﻿@using NextGenFootball.Web.ViewModels.Team
+@model TeamDetailsViewModel
+
+@{
+    ViewData["Title"] = "Team Details";
+}
+
+<div class="row">
+    <!-- Left Side: Team Info -->
+    <div class="col-md-7">
+        <h2>@Model.Name</h2>
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid mb-3" style="max-width:300px;" />
+        }
+        <dl class="row">
+            <dt class="col-sm-4">Region</dt>
+            <dd class="col-sm-8">@Model.Region</dd>
+            <dt class="col-sm-4">Stadium</dt>
+            <dd class="col-sm-8">@Model.Stadium</dd>
+            <dt class="col-sm-4">League</dt>
+            <dd class="col-sm-8">@Model.League</dd>
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
+            {
+                <dt class="col-sm-4">Description</dt>
+                <dd class="col-sm-8">@Model.Description</dd>
+            }
+        </dl>
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+
+    <!-- Right Side: Players (commented for now) -->
+    <div class="col-md-5">
+        @{
+            /*
+            <h4>Players</h4>
+            <ul class="list-group">
+            @foreach (var player in Model.Players)
+            {
+            <li class="list-group-item">
+            @player.Name (@player.Position)
+            </li>
+            }
+            </ul>
+            */
+        }
+    </div>
+</div>

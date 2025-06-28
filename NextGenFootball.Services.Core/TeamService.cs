@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
+using NextGenFootball.Data.Models;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Team;
 using System;
@@ -39,6 +40,32 @@ namespace NextGenFootball.Services.Core
             var field = value.GetType().GetField(value.ToString());
             var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
+        }
+
+        public async Task<TeamDetailsViewModel?> GetTeamDetailsAsync(int? id)
+        {
+            TeamDetailsViewModel? details= null;
+            if (id.HasValue)
+            {
+                Team? team= await this.dbContext.Teams
+                    .Include(t => t.Stadium)
+                    .Include(t => t.League)
+                    .FirstOrDefaultAsync(t => t.Id == id.Value);
+                if (team != null)
+                {
+                    details = new TeamDetailsViewModel
+                    {
+                        Id = team.Id,
+                        Name = team.Name,
+                        Region = GetDisplayName(team.Region),
+                        Stadium = team.Stadium.Name,
+                        League = team.League.Name,
+                        ImageUrl = team.ImageUrl,
+                        Description = team.Description
+                    };
+                }
+            }
+            return details;
         }
     }
 }

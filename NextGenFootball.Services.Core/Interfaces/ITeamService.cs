@@ -10,5 +10,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface ITeamService
     {
         public Task<IEnumerable<TeamIndexViewModel>> GetAllTeamsAsync();
+        public Task<TeamDetailsViewModel?> GetTeamDetailsAsync(int? id);
     }
 }

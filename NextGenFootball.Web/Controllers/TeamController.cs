@@ -16,5 +16,23 @@ namespace NextGenFootball.Web.Controllers
             IEnumerable<TeamIndexViewModel> teams = await this.teamService.GetAllTeamsAsync();
             return View(teams);
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            try
+            {
+                TeamDetailsViewModel? team = await this.teamService.GetTeamDetailsAsync(id);
+                if (team == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(team);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
