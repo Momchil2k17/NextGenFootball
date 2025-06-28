@@ -1,0 +1,58 @@
+﻿@using NextGenFootball.Web.ViewModels.Team
+@model TeamCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Team";
+}
+
+<h1>Create Team</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Region" class="form-label"></label>
+        <select asp-for="Region" class="form-select" asp-items="Html.GetEnumSelectList<NextGenFootball.Data.Common.Enums.Region>()">
+            <option value="">-- Select Region --</option>
+        </select>
+        <span asp-validation-for="Region" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="AgeGroup" class="form-label"></label>
+        <input asp-for="AgeGroup" class="form-control" placeholder="e.g. U15" />
+        <span asp-validation-for="AgeGroup" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="LeagueId" class="form-label">Select League</label>
+        <select asp-for="LeagueId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Leagues, "Id", "Name"))">
+            <option value="">-- Select League --</option>
+        </select>
+        <span asp-validation-for="LeagueId" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="StadiumId" class="form-label">Select Stadium</label>
+        <select asp-for="StadiumId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Stadiums, "Id", "Name"))">
+            <option value="">-- Select Stadium --</option>
+        </select>
+        <span asp-validation-for="StadiumId" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="ImageUrl" class="form-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

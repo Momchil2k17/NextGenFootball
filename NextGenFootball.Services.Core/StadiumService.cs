@@ -179,5 +179,19 @@ namespace NextGenFootball.Services.Core
             }
             return stadium;
         }
+
+        public async Task<IEnumerable<StadiumDropdownViewModel>?> GetStadiumsForDropdownAsync()
+        {
+            IEnumerable<StadiumDropdownViewModel>? stadiums = null;
+            stadiums= await this.dbContext.Stadiums
+                .AsNoTracking()
+                .Select(s => new StadiumDropdownViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name
+                })
+                .ToListAsync();
+            return stadiums;
+        }
     }
 }

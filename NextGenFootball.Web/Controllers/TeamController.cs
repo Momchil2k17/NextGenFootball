@@ -7,9 +7,13 @@ namespace NextGenFootball.Web.Controllers
     public class TeamController : BaseController
     {
         private readonly ITeamService teamService;
-        public TeamController(ITeamService teamService)
+        private readonly ILeagueService leagueService;
+        private readonly IStadiumService stadiumService;
+        public TeamController(ITeamService teamService, ILeagueService leagueService, IStadiumService stadiumService)
         {
             this.teamService = teamService;
+            this.leagueService = leagueService;
+            this.stadiumService = stadiumService;
         }
         public async Task<IActionResult> Index()
         {
@@ -27,6 +31,44 @@ namespace NextGenFootball.Web.Controllers
                     return RedirectToAction(nameof(Index));
                 }
                 return View(team);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            TeamCreateViewModel teamCreateViewModel = new TeamCreateViewModel
+            {
+                Leagues = await this.leagueService.GetLeaguesForDropdownAsync(),
+                Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync()
+            };
+            return View(teamCreateViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(TeamCreateViewModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                    return View(model);
+                }
+                string userId = this.GetUserId()!;
+                bool isCreated = await this.teamService.CreateTeamAsync(model, userId);
+                if (!isCreated)
+                {
+                    ModelState.AddModelError(string.Empty, "Team creation failed. Please try again.");
+                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                    return View(model);
+                }
+                return RedirectToAction(nameof(Index));
             }
             catch (Exception e)
             {

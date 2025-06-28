@@ -200,5 +200,19 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
+
+        public async Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync()
+        {
+            IEnumerable<LeagueDropdownViewModel>? leagues = null;
+            leagues = await this.dbContext.Leagues
+                .AsNoTracking()
+                .Select(l => new LeagueDropdownViewModel
+                {
+                    Id = l.Id,
+                    Name = l.Name
+                })
+                .ToListAsync();
+            return leagues;
+        }
     }
 }

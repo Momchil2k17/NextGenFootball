@@ -16,6 +16,7 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<bool> EditStadiumAsync(StadiumEditViewModel model, string userId);
         public Task<StadiumDeleteViewModel?> GetStadiumForDeleteAsync(int? id, string userId);
         public Task<bool> DeleteStadiumAsync(StadiumDeleteViewModel model, string userId);
+        public Task<IEnumerable<StadiumDropdownViewModel>?> GetStadiumsForDropdownAsync();
 
     }
 }

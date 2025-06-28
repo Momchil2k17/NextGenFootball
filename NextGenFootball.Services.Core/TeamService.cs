@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
+using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Team;
@@ -14,9 +16,11 @@ namespace NextGenFootball.Services.Core
     public class TeamService : ITeamService
     {
         private readonly NextGenFootballDbContext dbContext;
-        public TeamService(NextGenFootballDbContext dbContext)
+        private readonly UserManager<ApplicationUser> userManager;
+        public TeamService(NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
         public async Task<IEnumerable<TeamIndexViewModel>> GetAllTeamsAsync()
         {
@@ -66,6 +70,34 @@ namespace NextGenFootball.Services.Core
                 }
             }
             return details;
+        }
+
+        public async Task<bool> CreateTeamAsync(TeamCreateViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user= await userManager.FindByIdAsync(userId);
+            bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
+            Stadium? stadium = await this.dbContext.Stadiums
+                .SingleOrDefaultAsync(s => s.Id == model.StadiumId);
+            League? league = await this.dbContext.Leagues
+                .SingleOrDefaultAsync(l => l.Id == model.LeagueId);
+            if(user!= null && isValidRegion && stadium != null && league != null)
+            {
+                Team team = new Team
+                {
+                    Name = model.Name,
+                    Region = model.Region,
+                    AgeGroup = model.AgeGroup,
+                    ImageUrl = model.ImageUrl,
+                    Description = model.Description,
+                    StadiumId = stadium.Id,
+                    LeagueId = league.Id
+                };
+                await dbContext.Teams.AddAsync(team);
+                await dbContext.SaveChangesAsync();
+                res = true;
+            }
+            return res;
         }
     }
 }

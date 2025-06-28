@@ -11,5 +11,7 @@ namespace NextGenFootball.Services.Core.Interfaces
     {
         public Task<IEnumerable<TeamIndexViewModel>> GetAllTeamsAsync();
         public Task<TeamDetailsViewModel?> GetTeamDetailsAsync(int? id);
+        public Task<bool> CreateTeamAsync(TeamCreateViewModel model, string userId);
+
     }
 }

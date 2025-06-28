@@ -16,5 +16,6 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<bool> EditLeagueAsync(LeagueEditViewModel model, string userId);
         public Task<LeagueDetailsViewModel?> GetLeagueForDeleteAsync(int? id, string userId);
         public Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model, string userId);
+        public Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync();
     }
 }
