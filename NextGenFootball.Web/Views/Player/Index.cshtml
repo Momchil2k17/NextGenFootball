@@ -1,0 +1,59 @@
+﻿@using NextGenFootball.Web.ViewModels.Player;
+@model IEnumerable<PlayerIndexViewModel>
+
+@{
+    ViewData["Title"] = "Players";
+}
+
+<h1>Players</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Team</th>
+            <th>Season</th>
+            <th>Preferred Foot</th>
+            <th>Position</th>
+            <th>Date of Birth</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var player in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(player.ImageUrl))
+                    {
+                        <img src="@player.ImageUrl" alt="Player image" style="height:50px; width:50px; object-fit:cover; border-radius:50%;" />
+                    }
+                </td>
+                <td>@player.FirstName</td>
+                <td>@player.LastName</td>
+                <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        @if (!string.IsNullOrEmpty(player.TeamImageUrl))
+                        {
+                            <img src="@player.TeamImageUrl" alt="Team logo" style="height:40px;width:40px;object-fit:cover;border-radius:8px;" />
+                        }
+                        <span>@player.TeamName</span>
+                    </div>
+                </td>
+                <td>@player.SeasonName</td>
+                <td>@player.PreferredFoot</td>
+                <td>@player.Position</td>
+                <td>@player.DateOfBirth.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@player.Id" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@player.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@player.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Add Player</a>

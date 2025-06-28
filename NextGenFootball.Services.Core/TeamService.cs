@@ -4,6 +4,7 @@ using NextGenFootball.Data;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Services.Core.Interfaces;
+using NextGenFootball.Web.ViewModels.Player;
 using NextGenFootball.Web.ViewModels.Team;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,16 @@ namespace NextGenFootball.Services.Core
                         Stadium = team.Stadium.Name,
                         League = team.League.Name,
                         ImageUrl = team.ImageUrl,
-                        Description = team.Description
+                        Description = team.Description,
+                        Players= await this.dbContext.Players
+                            .Where(p => p.TeamId == team.Id && !p.IsDeleted)
+                            .Select(p => new PlayerForTeamDetailsViewModel
+                            {
+                                Name=p.FirstName+" "+p.LastName,
+                                Position = p.Position,
+                                ImageUrl = p.ImageUrl,
+                            })
+                            .ToListAsync()
                     };
                 }
             }
