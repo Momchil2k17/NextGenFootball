@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextGenFootball.Web.ViewModels.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,6 @@ namespace NextGenFootball.Web.ViewModels.Team
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
 
-        // Uncomment and implement PlayerViewModel when ready
-        // public IEnumerable<PlayerViewModel> Players { get; set; }
+         public IEnumerable<PlayerForTeamDetailsViewModel>? Players { get; set; }
     }
 }
