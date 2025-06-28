@@ -1,0 +1,53 @@
+﻿@using NextGenFootball.Web.ViewModels.Player;
+@model PlayerDetailsViewModel
+
+@{
+    ViewData["Title"] = "Player Details";
+}
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="@($"{Model.FirstName} {Model.LastName}")" class="img-thumbnail mb-3" style="width:200px;height:200px;object-fit:cover;" />
+        }
+        <h3>@Model.FirstName @Model.LastName</h3>
+        <p><strong>Preferred Foot:</strong> @Model.PreferredFoot</p>
+        <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToShortDateString()</p>
+    </div>
+    <div class="col-md-8">
+        <h4>Team</h4>
+        <div class="d-flex align-items-center mb-4">
+            @if (!string.IsNullOrEmpty(Model.TeamImageUrl))
+            {
+                <img src="@Model.TeamImageUrl" alt="@Model.TeamName" style="height:50px;width:50px;object-fit:cover;border-radius:8px;margin-right:12px;" />
+            }
+            <span style="font-size:1.3em;">@Model.TeamName</span>
+        </div>
+        <h4>Statistics</h4>
+        <table class="table table-sm table-bordered w-75">
+            <tr>
+                <th>Goals</th>
+                <td>@Model.Goals</td>
+            </tr>
+            <tr>
+                <th>Assists</th>
+                <td>@Model.Assists</td>
+            </tr>
+            <tr>
+                <th>Minutes Played</th>
+                <td>@Model.MinutesPlayed</td>
+            </tr>
+            <tr>
+                <th>Yellow Cards</th>
+                <td>@Model.YellowCards</td>
+            </tr>
+            <tr>
+                <th>Red Cards</th>
+                <td>@Model.RedCards</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Back to All Players</a>

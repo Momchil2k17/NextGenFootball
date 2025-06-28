@@ -10,5 +10,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface IPlayerService
     {
         public Task<IEnumerable<PlayerIndexViewModel>> GetAllPlayersAsync();
+        public Task<PlayerDetailsViewModel?> GetPlayerDetailsAsync(Guid? id);
     }
 }

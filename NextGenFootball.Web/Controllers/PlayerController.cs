@@ -16,5 +16,22 @@ namespace NextGenFootball.Web.Controllers
             IEnumerable<PlayerIndexViewModel> players = await this.playerService.GetAllPlayersAsync();
             return View(players);
         }
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            try
+            {
+                PlayerDetailsViewModel? player = await this.playerService.GetPlayerDetailsAsync(id);
+                if (player == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(player);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }
