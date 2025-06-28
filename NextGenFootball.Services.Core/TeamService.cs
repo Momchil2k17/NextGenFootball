@@ -99,5 +99,64 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
+
+        public async Task<TeamEditViewModel?> GetTeamForEditAsync(int? id, string userId)
+        {
+            TeamEditViewModel? model = null;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (id.HasValue && user!=null )
+            {
+                Team? team = await this.dbContext.Teams
+                    .Include(t => t.Stadium)
+                    .Include(t => t.League)
+                    .SingleOrDefaultAsync(t => t.Id == id.Value);
+                if (team != null)
+                {
+                    model = new TeamEditViewModel
+                    {
+                        Id = team.Id,
+                        Name = team.Name,
+                        Region = team.Region,
+                        AgeGroup = team.AgeGroup,
+                        ImageUrl = team.ImageUrl,
+                        Description = team.Description,
+                        StadiumId = team.StadiumId,
+                        LeagueId = team.LeagueId
+                    };
+                }
+            }
+            return model;
+        }
+
+        public async Task<bool> EditTeamAsync(TeamEditViewModel model, string userId)
+        {
+
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
+            Stadium? stadium = await this.dbContext.Stadiums
+                .SingleOrDefaultAsync(s => s.Id == model.StadiumId);
+            League? league = await this.dbContext.Leagues
+                .SingleOrDefaultAsync(l => l.Id == model.LeagueId);
+            if (user != null && isValidRegion && stadium != null && league != null)
+            {
+                Team? team = await this.dbContext.Teams
+                    .SingleOrDefaultAsync(t => t.Id == model.Id);
+                if (team != null)
+                {
+                    team.Name = model.Name;
+                    team.Region = model.Region;
+                    team.AgeGroup = model.AgeGroup;
+                    team.ImageUrl = model.ImageUrl;
+                    team.Description = model.Description;
+                    team.StadiumId = stadium.Id;
+                    team.LeagueId = league.Id;
+
+                    await dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
     }
 }
