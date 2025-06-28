@@ -3,6 +3,7 @@ namespace NextGenFootball.Web
     using Data;
 
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.EntityFrameworkCore;
     using NextGenFootball.Data.Models;
     using NextGenFootball.Services.Core;
@@ -43,6 +44,7 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();
             builder.Services.AddScoped<ILeagueService, LeagueService>();
+            builder.Services.AddScoped<ITeamService, TeamService>();
 
             WebApplication? app = builder.Build();
             

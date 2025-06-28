@@ -1,0 +1,45 @@
+﻿@using NextGenFootball.Web.ViewModels.Team
+@model IEnumerable<TeamIndexViewModel>
+
+@{
+    ViewData["Title"] = "Teams";
+}
+
+<h2>Teams</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Region</th>
+            <th>Stadium</th>
+            <th>League</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var team in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrWhiteSpace(team.ImageUrl))
+                    {
+                        <img src="@team.ImageUrl" alt="@team.Name" style="max-width: 60px; max-height: 40px;" class="img-thumbnail" />
+                    }
+                </td>
+                <td>@team.Name</td>
+                <td>@team.Region</td>
+                <td>@team.Stadium</td>
+                <td>@team.League</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@team.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@team.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@team.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Create" class="btn btn-primary">Create New Team</a>
