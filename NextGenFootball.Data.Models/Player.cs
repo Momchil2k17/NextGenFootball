@@ -14,8 +14,8 @@ namespace NextGenFootball.Data.Models
         public Guid Id { get; set; }
 
 
-        public Guid ApplicationUserId { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; } = null!;
+        public Guid? ApplicationUserId { get; set; }
+        public virtual ApplicationUser? ApplicationUser { get; set; }
 
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;

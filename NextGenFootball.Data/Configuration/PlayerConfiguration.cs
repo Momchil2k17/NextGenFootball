@@ -26,6 +26,7 @@ namespace NextGenFootball.Data.Configuration
                 .HasOne(p => p.ApplicationUser)
                 .WithMany(u => u.Players)
                 .HasForeignKey(p => p.ApplicationUserId)
+                .IsRequired(false) // ApplicationUserId can be null if the player is not associated with a user
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity
