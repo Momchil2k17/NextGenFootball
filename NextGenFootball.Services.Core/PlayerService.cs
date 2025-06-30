@@ -52,6 +52,25 @@ namespace NextGenFootball.Services.Core
             return res;
         }
 
+        public async Task<bool> DeletePlayerAsync(PlayerDeleteViewModel model, string userId)
+        {
+
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Player? player = await this.dbContext.Players
+                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                if (player != null)
+                {
+                    player.IsDeleted = true;
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+        }
+
         public async Task<IEnumerable<PlayerIndexViewModel>> GetAllPlayersAsync()
         {
             IEnumerable<PlayerIndexViewModel> players = await this.dbContext.Players
@@ -107,6 +126,32 @@ namespace NextGenFootball.Services.Core
                 }
             }
             return details;
+        }
+
+        public async Task<PlayerDeleteViewModel?> GetPlayerForDeleteAsync(Guid? id, string userId)
+        {
+
+            PlayerDeleteViewModel? deleteModel = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (isValidGuid && user != null)
+            {
+                Player? player = await this.dbContext.Players
+                    .Include(p => p.Team)
+                    .Include(p => p.Season)
+                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                if (player != null)
+                {
+                    deleteModel = new PlayerDeleteViewModel()
+                    {
+                        Id = player.Id,
+                        FirstName = player.FirstName,
+                        LastName = player.LastName,
+                        TeamName = player.Team.Name,
+                    };
+                }
+            }
+            return deleteModel;
         }
 
         public async Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id, string userId)
