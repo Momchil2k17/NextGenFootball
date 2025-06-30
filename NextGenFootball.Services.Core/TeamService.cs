@@ -210,5 +210,18 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
+
+        public async Task<IEnumerable<TeamDropdownViewModel>?> GetTeamDropdownViewModelsAsync()
+        {
+            IEnumerable<TeamDropdownViewModel>? teams = await this.dbContext.Teams
+                .Where(t => !t.IsDeleted)
+                .Select(t => new TeamDropdownViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name
+                })
+                .ToListAsync();
+            return teams;
+        }
     }
 }

@@ -1,0 +1,65 @@
+﻿@using NextGenFootball.Web.ViewModels.Player
+@model PlayerCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Player";
+}
+
+<h2>Create Player</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="FirstName" class="form-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="LastName" class="form-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="DateOfBirth" class="form-label"></label>
+        <input asp-for="DateOfBirth" class="form-control" type="date" />
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Position" class="form-label"></label>
+        <input asp-for="Position" class="form-control" />
+        <span asp-validation-for="Position" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="PreferredFoot" class="form-label">Preferred Foot</label>
+        <select asp-for="PreferredFoot" class="form-control" aria-required="true" asp-items="@(Html.GetEnumSelectList<NextGenFootball.Data.Common.Enums.PreferredFoot>())">
+            <option value="">-- Select Preferred Foot --</option>
+        </select>
+        <span asp-validation-for="PreferredFoot" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="TeamId" class="form-label">Select Team</label>
+        <select asp-for="TeamId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Teams, "Id", "Name"))">
+            <option value="">-- Select Team --</option>
+        </select>
+        <span asp-validation-for="TeamId" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="SeasonId" class="form-label">Select Season</label>
+        <select asp-for="SeasonId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Seasons, "Id", "Name"))">
+            <option value="">-- Select Season --</option>
+        </select>
+        <span asp-validation-for="SeasonId" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="ImageUrl" class="form-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
