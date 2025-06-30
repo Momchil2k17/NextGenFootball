@@ -142,6 +142,32 @@ namespace NextGenFootball.Services.Core
 
         }
 
+        public async Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id, string userId)
+        {
+            PlayerStatsEditViewModel? statsEditModel = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (isValidGuid && user != null)
+            {
+                Player? player = await this.dbContext.Players
+                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                if (player != null)
+                {
+                    statsEditModel = new PlayerStatsEditViewModel()
+                    {
+                        Id = player.Id,
+                        FirstName = player.FirstName,
+                        LastName = player.LastName,
+                        Goals = player.Goals,
+                        MinutesPlayed = player.MinutesPlayed,
+                        RedCards = player.RedCards,
+                        YellowCards = player.YellowCards,
+                        Assists = player.Assists
+                    };
+                } 
+            }
+            return statsEditModel;
+        }
         public async Task<bool> UpdatePlayerAsync(PlayerEditViewModel model, string userId)
         {
             bool res = false;
@@ -175,6 +201,30 @@ namespace NextGenFootball.Services.Core
                 }
             }
             return res;
+        }
+
+        public async Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                Player? player = await this.dbContext.Players
+                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                if (player != null)
+                {
+                    player.Goals = model.Goals;
+                    player.MinutesPlayed = model.MinutesPlayed;
+                    player.RedCards = model.RedCards;
+                    player.YellowCards = model.YellowCards;
+                    player.Assists = model.Assists;
+
+                    await this.dbContext.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+
         }
     }
 }

@@ -14,5 +14,7 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<bool> CreatePlayerAsync(PlayerCreateViewModel model, string userId);
         public Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id, string userId);
         public Task<bool> UpdatePlayerAsync(PlayerEditViewModel model, string userId);
+        public Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id, string userId);
+        public Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model, string userId);
     }
 }

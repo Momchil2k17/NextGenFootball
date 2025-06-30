@@ -125,5 +125,48 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> EditStats(Guid? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                PlayerStatsEditViewModel? model = await this.playerService.GetPlayerStatsForEditAsync(id, userId);
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditStats(PlayerStatsEditViewModel inputModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(inputModel);
+                }
+                string userId = this.GetUserId()!;
+                bool isUpdated = await this.playerService.UpdatePlayerStatsAsync(inputModel, userId);
+                if (isUpdated == false)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while updating the player stats. Please try again.");
+                    return RedirectToAction(nameof(EditStats), new { id = inputModel.Id });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

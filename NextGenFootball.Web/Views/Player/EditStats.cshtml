@@ -1,0 +1,44 @@
+﻿@model NextGenFootball.Web.ViewModels.Player.PlayerStatsEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Player Stats";
+}
+
+<h2>Edit Stats for @Model.FirstName @Model.LastName</h2>
+
+<form asp-action="EditStats" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group mb-3">
+        <label asp-for="Goals" class="form-label"></label>
+        <input asp-for="Goals" class="form-control" />
+        <span asp-validation-for="Goals" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Assists" class="form-label"></label>
+        <input asp-for="Assists" class="form-control" />
+        <span asp-validation-for="Assists" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="MinutesPlayed" class="form-label"></label>
+        <input asp-for="MinutesPlayed" class="form-control" />
+        <span asp-validation-for="MinutesPlayed" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="YellowCards" class="form-label"></label>
+        <input asp-for="YellowCards" class="form-control" />
+        <span asp-validation-for="YellowCards" class="text-danger"></span>
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="RedCards" class="form-label"></label>
+        <input asp-for="RedCards" class="form-control" />
+        <span asp-validation-for="RedCards" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Stats</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
