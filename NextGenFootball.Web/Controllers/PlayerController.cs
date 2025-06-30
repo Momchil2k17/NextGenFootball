@@ -78,5 +78,52 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            try
+            {
+                string userId = this.GetUserId()!;
+                PlayerEditViewModel? model = await this.playerService.GetPlayerForEditAsync(id, userId);
+                if (model == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(PlayerEditViewModel inputModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    inputModel.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                    inputModel.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                    return View(inputModel);
+                }
+                string userId = this.GetUserId()!;
+                bool isUpdated = await this.playerService.UpdatePlayerAsync(inputModel, userId);
+                if (isUpdated == false)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while updating the player. Please try again.");
+                    return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

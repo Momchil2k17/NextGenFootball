@@ -11,8 +11,10 @@ using static NextGenFootball.Data.Common.EntityConstants.PlayerValidationConstan
 
 namespace NextGenFootball.Web.ViewModels.Player
 {
-    public class PlayerCreateViewModel
+    public class PlayerEditViewModel
     {
+        public Guid Id { get; set; }
+
         [Required]
         [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength)]
         public string FirstName { get; set; } = null!;
@@ -29,18 +31,25 @@ namespace NextGenFootball.Web.ViewModels.Player
         public string Position { get; set; } = null!;
 
         [Required]
+        [Display(Name = "Preferred Foot")]
         public PreferredFoot PreferredFoot { get; set; }
 
         [Required]
+        [Display(Name = "Team")]
         public int TeamId { get; set; }
-        public IEnumerable<TeamDropdownViewModel>? Teams { get; set; }
 
         [Required]
+        [Display(Name = "Season")]
         public int SeasonId { get; set; }
 
-        public IEnumerable<SeasonDropdownViewModel>? Seasons { get; set; } 
+        [StringLength(ImageUrlMaxLength)]
+        [Display(Name = "Player Image URL")]
         public string? ImageUrl { get; set; }
 
+        public Guid? ApplicationUserId { get; set; }
+
+        public IEnumerable<TeamDropdownViewModel>? Teams { get; set; } 
+        public IEnumerable<SeasonDropdownViewModel>? Seasons { get; set; } 
     }
 
 }

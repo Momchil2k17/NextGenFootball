@@ -108,5 +108,73 @@ namespace NextGenFootball.Services.Core
             }
             return details;
         }
+
+        public async Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id, string userId)
+        {
+            PlayerEditViewModel? editModel = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            if (isValidGuid && user!=null) 
+            {
+                
+                Player? player = await this.dbContext.Players
+                    .Include(p => p.Team)
+                    .Include(p => p.Season)
+                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                if (player != null)
+                {
+                    editModel = new PlayerEditViewModel()
+                    {
+                        ApplicationUserId = player.ApplicationUserId,
+                        Id = player.Id,
+                        FirstName = player.FirstName,
+                        LastName = player.LastName,
+                        TeamId = player.TeamId,
+                        SeasonId = player.SeasonId,
+                        DateOfBirth = player.DateOfBirth,
+                        Position = player.Position,
+                        PreferredFoot = player.PreferredFoot,
+                        ImageUrl = player.ImageUrl
+                    };
+                }
+            }
+            return editModel;
+
+        }
+
+        public async Task<bool> UpdatePlayerAsync(PlayerEditViewModel model, string userId)
+        {
+            bool res = false;
+            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
+            Team? team = await this.dbContext.Teams
+                .FirstOrDefaultAsync(t => t.Id == model.TeamId);
+            Season? season = await this.dbContext.Seasons
+                .FirstOrDefaultAsync(s => s.Id == model.SeasonId);
+            bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
+            bool isApplicationUserInDb=this.dbContext.Users.Any(u => u.Id == model.ApplicationUserId);
+            if(user != null && team != null && season != null && isPreferredFootValid)
+            {
+                Player? player = await this.dbContext.Players
+                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                if (player != null)
+                {
+                    player.FirstName = model.FirstName;
+                    player.LastName = model.LastName;
+                    player.DateOfBirth = model.DateOfBirth;
+                    player.Position = model.Position;
+                    player.PreferredFoot = model.PreferredFoot;
+                    player.TeamId = team.Id;
+                    player.SeasonId = season.Id;
+                    player.ImageUrl = model.ImageUrl;
+                    if (isApplicationUserInDb)
+                    {
+                        player.ApplicationUserId = model.ApplicationUserId;
+                    }
+                    await this.dbContext.SaveChangesAsync();
+                    res=true;
+                }
+            }
+            return res;
+        }
     }
 }
