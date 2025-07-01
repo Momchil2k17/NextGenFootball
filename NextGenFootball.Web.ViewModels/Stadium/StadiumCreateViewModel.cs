@@ -6,31 +6,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.StadiumValidationConstants;
+using static NextGenFootball.Data.Common.EntityConstants.StadiumValidationMessages;
 
 namespace NextGenFootball.Web.ViewModels.Stadium
 {
     public class StadiumCreateViewModel
     {
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "The Name must be between {2} and {1} characters.")]
+        [Required(ErrorMessage = NameRequired)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = NameLength)]
         public string Name { get; set; } = null!;
 
-        [StringLength(DescriptionMaxLength, ErrorMessage = "The Description must be less than {1} characters.")]
+        [StringLength(DescriptionMaxLength, ErrorMessage = DescriptionLength)]
         public string? Description { get; set; }
 
-        [Required]
-        [StringLength(AddressMaxLength, MinimumLength = AddressMinLength, ErrorMessage = "The Address must be between {2} and {1} characters.")]
+        [Required(ErrorMessage = AddressRequired)]
+        [StringLength(AddressMaxLength, MinimumLength = AddressMinLength, ErrorMessage = AddressLength)]
         public string Address { get; set; } = null!;
 
-        [Required]
-        [Range(CapacityMin, CapacityMax, ErrorMessage = "Capacity must be between {1} and {2}.")]
+        [Required(ErrorMessage = CapacityRequired)]
+        [Range(CapacityMin, CapacityMax, ErrorMessage = CapacityRange)]
         public int Capacity { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = SurfaceRequired)]
         public SurfaceType Surface { get; set; }
 
-        [StringLength(ImageUrlMaxLength, ErrorMessage = "The Image URL must be less than {1} characters.")]
-        [Url(ErrorMessage = "The ImageUrl must be a valid URL.")]
+        [StringLength(ImageUrlMaxLength, ErrorMessage = ImageUrlLength)]
+        [Url(ErrorMessage = ImageUrlInvalid)]
         public string? ImageUrl { get; set; }
     }
 }

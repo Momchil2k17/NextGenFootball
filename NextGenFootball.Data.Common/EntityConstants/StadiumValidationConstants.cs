@@ -21,4 +21,22 @@ namespace NextGenFootball.Data.Common.EntityConstants
 
         public const int ImageUrlMaxLength = 2048;
     }
+    public static class StadiumValidationMessages
+    {
+        public const string NameRequired = "Name is required.";
+        public const string NameLength = "The Name must be between {2} and {1} characters.";
+
+        public const string DescriptionLength = "The Description must be less than {1} characters.";
+
+        public const string AddressRequired = "Address is required.";
+        public const string AddressLength = "The Address must be between {2} and {1} characters.";
+
+        public const string CapacityRequired = "Capacity is required.";
+        public const string CapacityRange = "Capacity must be between {1} and {2}.";
+
+        public const string SurfaceRequired = "Surface is required.";
+
+        public const string ImageUrlLength = "The Image URL must be less than {1} characters.";
+        public const string ImageUrlInvalid = "The ImageUrl must be a valid URL.";
+    }
 }
