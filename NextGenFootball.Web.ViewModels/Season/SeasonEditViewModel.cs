@@ -9,18 +9,8 @@ using static NextGenFootball.Data.Common.EntityConstants.SeasonValidationConstan
 
 namespace NextGenFootball.Web.ViewModels.Season
 {
-    public class SeasonEditViewModel
+    public class SeasonEditViewModel:SeasonCreateViewModel
     {
         public int Id { get; set; }
-
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Season name must be between {2} and {1} characters.")]
-        public string Name { get; set; }=null!;
-
-        public DateTime StartDate { get; set; }
-
-        public DateTime EndDate { get; set; }
-
-        public bool IsCurrent { get; set; }
     }
 }
