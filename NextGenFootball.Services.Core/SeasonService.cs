@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Season;
 using System;
@@ -14,81 +15,34 @@ namespace NextGenFootball.Services.Core
 {
     public class SeasonService : ISeasonService
     {
-        private readonly NextGenFootballDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
-        public SeasonService(NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
+        private readonly ISeasonRepository seasonRepository;
+        public SeasonService(ISeasonRepository seasonRepository)
         {
-            this.dbContext = dbContext;
-            this.userManager = userManager;
+            this.seasonRepository = seasonRepository;
         }
 
-        public async Task<bool> CreateSeasonAsync(SeasonCreateViewModel model, string userId)
+        public async Task<bool> CreateSeasonAsync(SeasonCreateViewModel model)
         {
             bool res = false;
-            ApplicationUser? user = await userManager.FindByIdAsync(userId);
-            if (user != null)
+            if (model.StartDate < model.EndDate)
             {
-                if(model.StartDate < model.EndDate)
+                Season season = new Season
                 {
-                    Season season = new Season
-                    {
-                        Name = model.Name,
-                        StartDate = model.StartDate,
-                        EndDate = model.EndDate,
-                        IsCurrent=(DateTime.UtcNow >= model.StartDate && DateTime.UtcNow <= model.EndDate)
-                    };
-                    await dbContext.Seasons.AddAsync(season);
-                    await dbContext.SaveChangesAsync();
-                    res = true;
-                }
-            }
-            return res;
-        }
-
-        public async Task<bool> DeleteSeasonAsync(SeasonDeleteViewModel model, string userId)
-        {
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                Season? season = await this.dbContext.Seasons
-                    .SingleOrDefaultAsync(s => s.Id == model.Id);
-                if (season != null)
-                {
-                    season.IsDeleted = true; // Soft delete
-
-                    await this.dbContext.SaveChangesAsync();
-                    res = true;
-                }
-            }
-            return res;
-        }
-
-        public async Task<bool> EditSeasonAsync(SeasonEditViewModel model, string userId)
-        {
-            bool res = false;
-            ApplicationUser? user =await this.userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                Season? season = this.dbContext.Seasons
-                    .SingleOrDefault(s => s.Id == model.Id);
-                if (season != null && model.StartDate<model.EndDate)
-                {
-                    season.Name = model.Name;
-                    season.StartDate = model.StartDate;
-                    season.EndDate = model.EndDate;
-                    season.IsCurrent = (DateTime.UtcNow >= model.StartDate && DateTime.UtcNow <= model.EndDate);
-
-                    await this.dbContext.SaveChangesAsync();
-                    res = true;
-                }
+                    Name = model.Name,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate,
+                    IsCurrent = (DateTime.UtcNow >= model.StartDate && DateTime.UtcNow <= model.EndDate)
+                };
+                await this.seasonRepository.AddAsync(season);
+                res = true;
             }
             return res;
         }
 
         public async Task<IEnumerable<SeasonIndexViewModel>> GetAllSeasonsAsync()
         {
-            IEnumerable<SeasonIndexViewModel> seasons = await this.dbContext.Seasons
+            IEnumerable<SeasonIndexViewModel> seasons = await this.seasonRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Select(s => new SeasonIndexViewModel
                 {
@@ -96,88 +50,37 @@ namespace NextGenFootball.Services.Core
                     Name = s.Name,
                     StartDate = s.StartDate,
                     EndDate = s.EndDate,
-                    IsCurrent = s.IsCurrent
+                    IsCurrent = (DateTime.UtcNow >= s.StartDate && DateTime.UtcNow <= s.EndDate)
                 })
                 .ToListAsync();
             return seasons;
         }
-
-        public Task<SeasonDetailsViewModel?> GetSeasonDetailsAsync(int? id)
+        public async Task<SeasonDetailsViewModel?> GetSeasonDetailsAsync(int? id)
         {
             SeasonDetailsViewModel? season = null;
             if (id.HasValue)
             {
-                season = this.dbContext.Seasons
-                    .AsNoTracking()
-                    .Where(s => s.Id == id.Value)
-                    .Select(s => new SeasonDetailsViewModel
+                Season? seasonEntity = await this.seasonRepository
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (seasonEntity != null)
+                {
+                    season=new SeasonDetailsViewModel
                     {
-                        Id = s.Id,
-                        Name = s.Name,
-                        StartDate = s.StartDate,
-                        EndDate = s.EndDate,
-                        IsCurrent = s.IsCurrent
-                    })
-                    .FirstOrDefault();
-            }
-            return Task.FromResult(season);
-        }
-
-        public async Task<SeasonDeleteViewModel?> GetSeasonForDeleteAsync(int? id, string userId)
-        {
-            SeasonDeleteViewModel? season = null;
-            if (id.HasValue)
-            {
-                ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-                if (user != null)
-                {
-                    season = this.dbContext.Seasons
-                        .AsNoTracking()
-                        .Where(s => s.Id == id.Value)
-                        .Select(s => new SeasonDeleteViewModel
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            StartDate = s.StartDate,
-                            EndDate = s.EndDate,
-                        })
-                        .FirstOrDefault();
+                        Id = seasonEntity.Id,
+                        Name = seasonEntity.Name,
+                        StartDate = seasonEntity.StartDate,
+                        EndDate = seasonEntity.EndDate,
+                        IsCurrent = seasonEntity.IsCurrent
+                    };
                 }
             }
             return season;
         }
-
-
-        public async Task<SeasonEditViewModel?> GetSeasonForEditAsync(int? id, string userId)
-        {
-            SeasonEditViewModel? season = null;
-            if (id.HasValue)
-            {
-                ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-                if (user != null)
-                {
-                    season = this.dbContext.Seasons
-                        .AsNoTracking()
-                        .Where(s => s.Id == id.Value)
-                        .Select(s => new SeasonEditViewModel
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            StartDate = s.StartDate,
-                            EndDate = s.EndDate,
-                            IsCurrent = s.IsCurrent
-                        })
-                        .FirstOrDefault();
-                }
-            }
-            return season;
-
-        }
-
         public async Task<IEnumerable<SeasonDropdownViewModel>?> GetSeasonsForDropdownAsync()
         {
             IEnumerable<SeasonDropdownViewModel>? seasons=null;
-            seasons = await this.dbContext.Seasons
+            seasons = await this.seasonRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Where(s => !s.IsDeleted)
                 .Select(s => new SeasonDropdownViewModel
@@ -188,5 +91,78 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return seasons;
         }
+
+        public async Task<SeasonEditViewModel?> GetSeasonForEditAsync(int? id)
+        {
+            SeasonEditViewModel? season = null;
+            if (id.HasValue)
+            {
+                Season? searchSeason = await this.seasonRepository
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (searchSeason != null)
+                {
+                    season= new SeasonEditViewModel
+                    {
+                        Id = searchSeason.Id,
+                        Name = searchSeason.Name,
+                        StartDate = searchSeason.StartDate,
+                        EndDate = searchSeason.EndDate
+                    };
+                }
+            }
+            return season;
+
+        }
+        public async Task<bool> EditSeasonAsync(SeasonEditViewModel model)
+        {
+            bool res = false;
+            Season? season = await this.seasonRepository
+                .GetByIdAsync(model.Id);
+            if (season != null && model.StartDate < model.EndDate)
+            {
+                season.Name = model.Name;
+                season.StartDate = model.StartDate;
+                season.EndDate = model.EndDate;
+                season.IsCurrent = (DateTime.UtcNow >= model.StartDate && DateTime.UtcNow <= model.EndDate);
+
+                await this.seasonRepository.UpdateAsync(season);
+                res = true;
+            }
+
+            return res;
+        }
+
+        public async Task<SeasonDeleteViewModel?> GetSeasonForDeleteAsync(int? id)
+        {
+            SeasonDeleteViewModel? season = null;
+            if (id.HasValue)
+            {
+                Season? searchSeason = await this.seasonRepository
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (searchSeason != null)
+                {
+                    season= new SeasonDeleteViewModel
+                    {
+                        Id = searchSeason.Id,
+                        Name = searchSeason.Name,
+                        StartDate = searchSeason.StartDate,
+                        EndDate = searchSeason.EndDate
+                    };
+                }
+            }
+            return season;
+        }
+        public async Task<bool> DeleteSeasonAsync(SeasonDeleteViewModel model)
+        {
+            Season? season = await this.seasonRepository.GetByIdAsync(model.Id);
+            if (season == null)
+            {
+                return false;
+            }
+            await this.seasonRepository.DeleteAsync(season);
+            return true;
+        }
+
+
     }
 }

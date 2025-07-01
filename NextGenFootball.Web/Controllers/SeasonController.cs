@@ -26,130 +26,77 @@ namespace NextGenFootball.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SeasonCreateViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isCreated = await this.seasonService.CreateSeasonAsync(inputModel, userId);
-                if (isCreated == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while creating the season. Please try again.");
-                    return RedirectToAction(nameof(Create));
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inputModel);
             }
-            catch (Exception e)
+            bool isCreated = await this.seasonService.CreateSeasonAsync(inputModel);
+            if (isCreated == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while creating the season. Please try again.");
+                return RedirectToAction(nameof(Create));
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            try
+            SeasonDetailsViewModel? season = await this.seasonService.GetSeasonDetailsAsync(id);
+            if (season == null)
             {
-                SeasonDetailsViewModel? season = await this.seasonService.GetSeasonDetailsAsync(id);
-                if (season == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(season);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(season);
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            try
+            SeasonEditViewModel? season = await this.seasonService.GetSeasonForEditAsync(id);
+            if (season == null)
             {
-                string userId = this.GetUserId()!;
-                SeasonEditViewModel? season = await this.seasonService.GetSeasonForEditAsync(id, userId);
-                if (season == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(season);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(season);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(SeasonEditViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isEdited = await this.seasonService.EditSeasonAsync(inputModel, userId);
-                if (isEdited == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while editing the season. Please try again.");
-                    return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inputModel);
             }
-            catch (Exception e)
+            bool isEdited = await this.seasonService.EditSeasonAsync(inputModel);
+            if (isEdited == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while editing the season. Please try again.");
+                return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            try
+            SeasonDeleteViewModel? season = await this.seasonService.GetSeasonForDeleteAsync(id);
+            if (season == null)
             {
-                string userId = this.GetUserId()!;
-                SeasonDeleteViewModel? season = await this.seasonService.GetSeasonForDeleteAsync(id, userId);
-                if (season == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(season);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(season);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(SeasonDeleteViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isDeleted = await this.seasonService.DeleteSeasonAsync(inputModel, userId);
-                if (isDeleted == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while deleting the season. Please try again.");
-                    return RedirectToAction(nameof(Delete), new { id = inputModel.Id });
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inputModel);
             }
-            catch (Exception e)
+            bool isDeleted = await this.seasonService.DeleteSeasonAsync(inputModel);
+            if (isDeleted == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the season. Please try again.");
+                return RedirectToAction(nameof(Delete), new { id = inputModel.Id });
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
