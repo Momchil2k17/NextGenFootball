@@ -6,6 +6,8 @@ namespace NextGenFootball.Web
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.EntityFrameworkCore;
     using NextGenFootball.Data.Models;
+    using NextGenFootball.Data.Repository;
+    using NextGenFootball.Data.Repository.Interfaces;
     using NextGenFootball.Services.Core;
     using NextGenFootball.Services.Core.Interfaces;
 
@@ -40,6 +42,8 @@ namespace NextGenFootball.Web
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();

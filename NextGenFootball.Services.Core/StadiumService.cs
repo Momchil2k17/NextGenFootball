@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Stadium;
 using System;
@@ -15,20 +16,18 @@ namespace NextGenFootball.Services.Core
 {
     public class StadiumService : IStadiumService
     {
-        private readonly NextGenFootballDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
-        public StadiumService(NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
+        private readonly IStadiumRepository stadiumRepository;
+        public StadiumService(IStadiumRepository stadiumRepository)
         {
-            this.dbContext = dbContext;
-            this.userManager = userManager;
+            this.stadiumRepository = stadiumRepository;
+            
         }
 
-        public async Task<bool> CreateStadiumAsync(StadiumCreateViewModel model, string userId)
+        public async Task<bool> CreateStadiumAsync(StadiumCreateViewModel model)
         {
             bool res = false;
-            ApplicationUser? user = await userManager.FindByIdAsync(userId);
             bool isValidSurface = Enum.IsDefined(typeof(SurfaceType), model.Surface);
-            if (isValidSurface && user != null)
+            if (isValidSurface)
             {
                 Stadium stadium = new Stadium
                 {
@@ -39,60 +38,17 @@ namespace NextGenFootball.Services.Core
                     Surface = model.Surface,
                     ImageUrl = model.ImageUrl,
                 };
-                await dbContext.Stadiums.AddAsync(stadium);
-                await dbContext.SaveChangesAsync();
+                await this.stadiumRepository.AddAsync(stadium);
                 res = true;
             }
             return res;
 
         }
 
-        public async Task<bool> DeleteStadiumAsync(StadiumDeleteViewModel model, string userId)
-        {
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                Stadium? stadium = await dbContext.Stadiums
-                    .SingleOrDefaultAsync(s => s.Id == model.Id);
-                if (stadium != null)
-                {
-                    stadium.IsDeleted = true; // Soft delete
-                    await dbContext.SaveChangesAsync();
-                    res = true;
-                }
-            }
-            return res;
-        }
-
-        public async Task<bool> EditStadiumAsync(StadiumEditViewModel model, string userId)
-        {
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            bool isValidSurface = Enum.IsDefined(typeof(SurfaceType), model.Surface);
-            if (isValidSurface && user != null) 
-            {
-                Stadium? stadium = await dbContext.Stadiums
-                    .SingleOrDefaultAsync(s => s.Id == model.Id);
-                if (stadium != null)
-                {
-                    stadium.Name = model.Name;
-                    stadium.Description = model.Description;
-                    stadium.Address = model.Address;
-                    stadium.Capacity = model.Capacity;
-                    stadium.Surface = model.Surface;
-                    stadium.ImageUrl = model.ImageUrl;
-
-                    await dbContext.SaveChangesAsync();
-                    res = true;
-                }
-            }
-            return res;
-        }
-
         public async Task<IEnumerable<StadiumIndexViewModel>> GetAllStadiumsAsync()
         {
-            IEnumerable<StadiumIndexViewModel> stadiums = await dbContext.Stadiums
+            IEnumerable<StadiumIndexViewModel> stadiums = await this.stadiumRepository
+                .GetAllAttached()
                 .AsNoTracking()
                 .Select(s => new StadiumIndexViewModel
                 {
@@ -107,14 +63,12 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return stadiums;
         }
-
         public async Task<StadiumDetailsViewModel?> GetStadiumDetailsAsync(int? id)
         {
             StadiumDetailsViewModel? stadium = null;
             if (id.HasValue)
             {
-                Stadium? stRef = await dbContext.Stadiums
-                    .AsNoTracking()
+                Stadium? stRef = await this.stadiumRepository
                     .SingleOrDefaultAsync(s => s.Id == id.Value);
                 if (stRef != null)
                 {
@@ -132,37 +86,14 @@ namespace NextGenFootball.Services.Core
             }
             return stadium;
         }
-
-        public async Task<StadiumDeleteViewModel?> GetStadiumForDeleteAsync(int? id, string userId)
-        {
-            StadiumDeleteViewModel? stadium = null;
-            if (id.HasValue)
-            {
-                Stadium? stRef = await this.dbContext.Stadiums
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(s => s.Id == id.Value);
-                if (stRef != null)
-                {
-                    stadium = new StadiumDeleteViewModel
-                    {
-                        Id = stRef.Id,
-                        Name = stRef.Name,
-                        Capacity = stRef.Capacity,
-                        ImageUrl = stRef.ImageUrl
-                    };
-                }
-            }
-            return stadium;
-        }
-
-        public async Task<StadiumEditViewModel?> GetStadiumForEditAsync(int? id, string userId)
+        public async Task<StadiumEditViewModel?> GetStadiumForEditAsync(int? id)
         {
             StadiumEditViewModel? stadium = null;
             if (id.HasValue)
             {
-                Stadium? stRef = await dbContext.Stadiums
-                    .AsNoTracking()
+                Stadium? stRef = await this.stadiumRepository
                     .SingleOrDefaultAsync(s => s.Id == id.Value);
+
                 if (stRef != null)
                 {
                     stadium = new StadiumEditViewModel
@@ -179,11 +110,64 @@ namespace NextGenFootball.Services.Core
             }
             return stadium;
         }
+        public async Task<bool> EditStadiumAsync(StadiumEditViewModel model)
+        {
+            bool res = false;
+            bool isValidSurface = Enum.IsDefined(typeof(SurfaceType), model.Surface);
+            if (isValidSurface) 
+            {
+                Stadium? stadium = await this.stadiumRepository
+                    .GetByIdAsync(model.Id);
+                if (stadium != null)
+                {
+                    stadium.Name = model.Name;
+                    stadium.Description = model.Description;
+                    stadium.Address = model.Address;
+                    stadium.Capacity = model.Capacity;
+                    stadium.Surface = model.Surface;
+                    stadium.ImageUrl = model.ImageUrl;
 
+                    await this.stadiumRepository.UpdateAsync(stadium);
+                    res = true;
+                }
+            }
+            return res;
+        }
+        public async Task<StadiumDeleteViewModel?> GetStadiumForDeleteAsync(int? id)
+        {
+            StadiumDeleteViewModel? stadium = null;
+            if (id.HasValue)
+            {
+                Stadium? stRef = await this.stadiumRepository
+                    .SingleOrDefaultAsync(s => s.Id == id.Value);
+                if (stRef != null)
+                {
+                    stadium = new StadiumDeleteViewModel
+                    {
+                        Id = stRef.Id,
+                        Name = stRef.Name,
+                        Capacity = stRef.Capacity,
+                        ImageUrl = stRef.ImageUrl
+                    };
+                }
+            }
+            return stadium;
+        }
+        public async Task<bool> DeleteStadiumAsync(StadiumDeleteViewModel model)
+        {
+            Stadium? stadium = await this.stadiumRepository
+                .GetByIdAsync(model.Id);
+            if (stadium == null)
+            {
+                return false;
+            }
+            await this.stadiumRepository.DeleteAsync(stadium);
+            return true;
+        }
         public async Task<IEnumerable<StadiumDropdownViewModel>?> GetStadiumsForDropdownAsync()
         {
             IEnumerable<StadiumDropdownViewModel>? stadiums = null;
-            stadiums= await this.dbContext.Stadiums
+            stadiums= await this.stadiumRepository.GetAllAttached()
                 .AsNoTracking()
                 .Select(s => new StadiumDropdownViewModel
                 {
