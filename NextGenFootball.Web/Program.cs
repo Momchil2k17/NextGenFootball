@@ -49,12 +49,14 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<ITeamRepository, TeamRepository>();
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
+            builder.Services.AddScoped<ICoachRepository, CoachRepository>();
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();
             builder.Services.AddScoped<ILeagueService, LeagueService>();
             builder.Services.AddScoped<ITeamService, TeamService>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();
+            builder.Services.AddScoped<ICoachService, CoachService>();
 
             WebApplication? app = builder.Build();
             

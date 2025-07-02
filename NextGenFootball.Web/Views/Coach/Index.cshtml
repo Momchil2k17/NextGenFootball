@@ -1,0 +1,54 @@
+﻿@using NextGenFootball.Web.ViewModels.Coach;
+@model IEnumerable<CoachIndexViewModel>
+
+@{
+    ViewData["Title"] = "Coach List";
+}
+
+<h2>Coaches</h2>
+
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Team</th>
+            <th scope="col">Role</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var coach in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(coach.ImageUrl))
+                    {
+                        <img src="@coach.ImageUrl" alt="Coach Image" style="width:60px; height:60px; object-fit:cover; border-radius:50%;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">No image</span>
+                    }
+                </td>
+                <td>@coach.FirstName</td>
+                <td>@coach.LastName</td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        @if (!string.IsNullOrEmpty(coach.TeamImageUrl))
+                        {
+                            <img src="@coach.TeamImageUrl" alt="Team Photo" style="width:28px; height:28px; object-fit:cover; border-radius:50%;" />
+                        }
+                        <span>@coach.TeamName</span>
+                    </div>
+                </td>
+                <td>@coach.Role</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@coach.Id" class="btn btn-info btn-sm">Details</a>
+                    <a asp-action="Edit" asp-route-id="@coach.Id" class="btn btn-warning btn-sm">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
