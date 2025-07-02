@@ -28,8 +28,6 @@ namespace NextGenFootball.Services.Core
             this.teamRepository = teamRepository;
             this.seasonRepository = seasonRepository;
             this.applicationUserRepository = applicationUserRepository;
-            this.dbContext = dbContext;
-            this.userManager = userManager;
         }
 
         public async Task<bool> CreatePlayerAsync(PlayerCreateViewModel model)
