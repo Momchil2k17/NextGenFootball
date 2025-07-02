@@ -45,6 +45,7 @@ namespace NextGenFootball.Web
 
             builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
             builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
+            builder.Services.AddScoped<ILeagueRepository, LeagueRepository>();
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();

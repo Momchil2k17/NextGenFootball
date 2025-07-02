@@ -10,12 +10,12 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface ILeagueService
     {
         public Task<IEnumerable<LeagueIndexViewModel>> GetAllLeaguesAsync();
-        public Task<bool> CreateLeagueAsync(LeagueCreateViewModel model, string userId);
+        public Task<bool> CreateLeagueAsync(LeagueCreateViewModel model);
         public Task<LeagueDetailsViewModel?> GetLeagueDetailsAsync(int? id);
-        public Task<LeagueEditViewModel?> GetLeagueForEditAsync(int? id, string userId);
-        public Task<bool> EditLeagueAsync(LeagueEditViewModel model, string userId);
-        public Task<LeagueDetailsViewModel?> GetLeagueForDeleteAsync(int? id, string userId);
-        public Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model, string userId);
+        public Task<LeagueEditViewModel?> GetLeagueForEditAsync(int? id);
+        public Task<bool> EditLeagueAsync(LeagueEditViewModel model);
+        public Task<LeagueDetailsViewModel?> GetLeagueForDeleteAsync(int? id);
+        public Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model);
         public Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync();
     }
 }
