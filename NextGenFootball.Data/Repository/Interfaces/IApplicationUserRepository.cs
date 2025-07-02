@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace NextGenFootball.Data.Repository.Interfaces
 {
-    public interface IPlayerRepository : IRepository<Player, Guid>, IAsyncRepository<Player, Guid>
+    public interface IApplicationUserRepository : IRepository<ApplicationUser, Guid>, IAsyncRepository<ApplicationUser, Guid>
     {
+        bool ExistsById(Guid? userId);
+        Task<bool> ExistsByIdAsync(Guid? userId);
     }
 }

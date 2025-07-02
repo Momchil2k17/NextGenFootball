@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
 using System;
@@ -15,24 +16,31 @@ namespace NextGenFootball.Services.Core
 {
     public class PlayerService : IPlayerService
     {
-        private readonly NextGenFootballDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
-        public PlayerService(NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
+        
+        private readonly IPlayerRepository playerRepository;
+        private readonly ITeamRepository teamRepository;
+        private readonly ISeasonRepository seasonRepository;
+        private readonly IApplicationUserRepository applicationUserRepository;
+        public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository
+            , ISeasonRepository seasonRepository, IApplicationUserRepository applicationUserRepository)
         {
+            this.playerRepository = playerRepository;
+            this.teamRepository = teamRepository;
+            this.seasonRepository = seasonRepository;
+            this.applicationUserRepository = applicationUserRepository;
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
 
-        public async Task<bool> CreatePlayerAsync(PlayerCreateViewModel model, string userId)
+        public async Task<bool> CreatePlayerAsync(PlayerCreateViewModel model)
         {
             bool res=false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            Team? team = await this.dbContext.Teams
-                .FirstOrDefaultAsync(t => t.Id == model.TeamId);
-            Season? season = await this.dbContext.Seasons
-                .FirstOrDefaultAsync(s => s.Id == model.SeasonId);
+            Team? team = await this.teamRepository
+                .SingleOrDefaultAsync(t => t.Id == model.TeamId);
+            Season? season = await this.seasonRepository
+                .SingleOrDefaultAsync(s => s.Id == model.SeasonId);
             bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
-            if(user!=null && team!=null && season!=null && isPreferredFootValid)
+            if(team!=null && season!=null && isPreferredFootValid)
             {
                 Player player = new Player
                 {
@@ -45,35 +53,15 @@ namespace NextGenFootball.Services.Core
                     SeasonId = season.Id,
                     ImageUrl = model.ImageUrl
                 };
-                await this.dbContext.Players.AddAsync(player);
-                await this.dbContext.SaveChangesAsync();
+                await this.playerRepository.AddAsync(player);
                 res = true;
             }
             return res;
         }
-
-        public async Task<bool> DeletePlayerAsync(PlayerDeleteViewModel model, string userId)
-        {
-
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (user != null)
-            {
-                Player? player = await this.dbContext.Players
-                    .FirstOrDefaultAsync(p => p.Id == model.Id);
-                if (player != null)
-                {
-                    player.IsDeleted = true;
-                    await this.dbContext.SaveChangesAsync();
-                    res = true;
-                }
-            }
-            return res;
-        }
-
         public async Task<IEnumerable<PlayerIndexViewModel>> GetAllPlayersAsync()
         {
-            IEnumerable<PlayerIndexViewModel> players = await this.dbContext.Players
+            IEnumerable<PlayerIndexViewModel> players = await this.playerRepository
+                .GetAllAttached()
                 .Include(p => p.Team)
                 .Include(p=> p.Season)  
                 .Select(p => new PlayerIndexViewModel
@@ -94,17 +82,17 @@ namespace NextGenFootball.Services.Core
 
 
         }
-
         public async Task<PlayerDetailsViewModel?> GetPlayerDetailsAsync(Guid? id)
         {
             PlayerDetailsViewModel? details = null;
             bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
             if (isValidGuid)
             {
-                Player? player = await this.dbContext.Players
+                Player? player = await this.playerRepository
+                    .GetAllAttached()
                     .Include(p => p.Team)
                     .Include(p => p.Season)
-                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                    .SingleOrDefaultAsync(p => p.Id == id!.Value);
                 if (player != null)
                 {
                     details = new PlayerDetailsViewModel()
@@ -127,45 +115,18 @@ namespace NextGenFootball.Services.Core
             }
             return details;
         }
-
-        public async Task<PlayerDeleteViewModel?> GetPlayerForDeleteAsync(Guid? id, string userId)
-        {
-
-            PlayerDeleteViewModel? deleteModel = null;
-            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (isValidGuid && user != null)
-            {
-                Player? player = await this.dbContext.Players
-                    .Include(p => p.Team)
-                    .Include(p => p.Season)
-                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
-                if (player != null)
-                {
-                    deleteModel = new PlayerDeleteViewModel()
-                    {
-                        Id = player.Id,
-                        FirstName = player.FirstName,
-                        LastName = player.LastName,
-                        TeamName = player.Team.Name,
-                    };
-                }
-            }
-            return deleteModel;
-        }
-
-        public async Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id, string userId)
+        public async Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id)
         {
             PlayerEditViewModel? editModel = null;
             bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (isValidGuid && user!=null) 
+            if (isValidGuid) 
             {
                 
-                Player? player = await this.dbContext.Players
+                Player? player = await this.playerRepository
+                    .GetAllAttached()
                     .Include(p => p.Team)
                     .Include(p => p.Season)
-                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                    .SingleOrDefaultAsync(p => p.Id == id!.Value);
                 if (player != null)
                 {
                     editModel = new PlayerEditViewModel()
@@ -186,16 +147,55 @@ namespace NextGenFootball.Services.Core
             return editModel;
 
         }
-
-        public async Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id, string userId)
+        public async Task<bool> UpdatePlayerAsync(PlayerEditViewModel model)
+        {
+            bool res = false;
+            Team? team = await this.teamRepository
+                .SingleOrDefaultAsync(t => t.Id == model.TeamId);
+            Season? season = await this.seasonRepository
+                .SingleOrDefaultAsync(s => s.Id == model.SeasonId);
+            bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
+            bool isApplicationUserInDb=await this.applicationUserRepository
+                .ExistsByIdAsync(model.ApplicationUserId);
+            if (team != null && season != null && isPreferredFootValid)
+            {
+                Player? player = await this.playerRepository
+                    .GetAllAttached()
+                    .Include(p => p.Team)
+                    .Include(p => p.Season)
+                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                if (player != null)
+                {
+                    player.FirstName = model.FirstName;
+                    player.LastName = model.LastName;
+                    player.DateOfBirth = model.DateOfBirth;
+                    player.Position = model.Position;
+                    player.PreferredFoot = model.PreferredFoot;
+                    player.TeamId = team.Id;
+                    player.SeasonId = season.Id;
+                    player.ImageUrl = model.ImageUrl;
+                    if (isApplicationUserInDb)
+                    {
+                        player.ApplicationUserId = model.ApplicationUserId;
+                    }
+                    if (model.ApplicationUserId == null)
+                    {
+                        player.ApplicationUserId = null;
+                    }
+                    await this.playerRepository.UpdateAsync(player);
+                    res=true;
+                }
+            }
+            return res;
+        }
+        public async Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id)
         {
             PlayerStatsEditViewModel? statsEditModel = null;
             bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (isValidGuid && user != null)
+            if (isValidGuid)
             {
-                Player? player = await this.dbContext.Players
-                    .FirstOrDefaultAsync(p => p.Id == id!.Value);
+                Player? player = await this.playerRepository
+                    .SingleOrDefaultAsync(p => p.Id == id!.Value);
                 if (player != null)
                 {
                     statsEditModel = new PlayerStatsEditViewModel()
@@ -213,63 +213,62 @@ namespace NextGenFootball.Services.Core
             }
             return statsEditModel;
         }
-        public async Task<bool> UpdatePlayerAsync(PlayerEditViewModel model, string userId)
+        public async Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model)
         {
             bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            Team? team = await this.dbContext.Teams
-                .FirstOrDefaultAsync(t => t.Id == model.TeamId);
-            Season? season = await this.dbContext.Seasons
-                .FirstOrDefaultAsync(s => s.Id == model.SeasonId);
-            bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
-            bool isApplicationUserInDb=this.dbContext.Users.Any(u => u.Id == model.ApplicationUserId);
-            if(user != null && team != null && season != null && isPreferredFootValid)
+
+            Player? player = await this.playerRepository
+                .SingleOrDefaultAsync(p => p.Id == model.Id);
+            if (player != null)
             {
-                Player? player = await this.dbContext.Players
-                    .FirstOrDefaultAsync(p => p.Id == model.Id);
+                player.Goals = model.Goals;
+                player.MinutesPlayed = model.MinutesPlayed;
+                player.RedCards = model.RedCards;
+                player.YellowCards = model.YellowCards;
+                player.Assists = model.Assists;
+
+                await this.playerRepository.UpdateAsync(player);
+                res = true;
+            }
+            return res;
+
+        }
+        public async Task<PlayerDeleteViewModel?> GetPlayerForDeleteAsync(Guid? id)
+        {
+            PlayerDeleteViewModel? deleteModel = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            if (isValidGuid)
+            {
+                Player? player = await this.playerRepository
+                    .GetAllAttached()
+                    .Include(p => p.Team)
+                    .Include(p => p.Season)
+                    .SingleOrDefaultAsync(p => p.Id == id!.Value);
                 if (player != null)
                 {
-                    player.FirstName = model.FirstName;
-                    player.LastName = model.LastName;
-                    player.DateOfBirth = model.DateOfBirth;
-                    player.Position = model.Position;
-                    player.PreferredFoot = model.PreferredFoot;
-                    player.TeamId = team.Id;
-                    player.SeasonId = season.Id;
-                    player.ImageUrl = model.ImageUrl;
-                    if (isApplicationUserInDb)
+                    deleteModel = new PlayerDeleteViewModel()
                     {
-                        player.ApplicationUserId = model.ApplicationUserId;
-                    }
-                    await this.dbContext.SaveChangesAsync();
-                    res=true;
+                        Id = player.Id,
+                        FirstName = player.FirstName,
+                        LastName = player.LastName,
+                        TeamName = player.Team.Name,
+                    };
                 }
             }
-            return res;
+            return deleteModel;
         }
-
-        public async Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model, string userId)
+        public async Task<bool> DeletePlayerAsync(PlayerDeleteViewModel model)
         {
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (user != null)
+            Player? player = await this.playerRepository
+                .SingleOrDefaultAsync(p => p.Id == model.Id);
+            if (player == null)
             {
-                Player? player = await this.dbContext.Players
-                    .FirstOrDefaultAsync(p => p.Id == model.Id);
-                if (player != null)
-                {
-                    player.Goals = model.Goals;
-                    player.MinutesPlayed = model.MinutesPlayed;
-                    player.RedCards = model.RedCards;
-                    player.YellowCards = model.YellowCards;
-                    player.Assists = model.Assists;
-
-                    await this.dbContext.SaveChangesAsync();
-                    res = true;
-                }
+                return false;
             }
-            return res;
-
+            await this.playerRepository.DeleteAsync(player);
+            return true;
         }
+
+
     }
 }

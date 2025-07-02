@@ -11,12 +11,12 @@ namespace NextGenFootball.Services.Core.Interfaces
     {
         public Task<IEnumerable<PlayerIndexViewModel>> GetAllPlayersAsync();
         public Task<PlayerDetailsViewModel?> GetPlayerDetailsAsync(Guid? id);
-        public Task<bool> CreatePlayerAsync(PlayerCreateViewModel model, string userId);
-        public Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id, string userId);
-        public Task<bool> UpdatePlayerAsync(PlayerEditViewModel model, string userId);
-        public Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id, string userId);
-        public Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model, string userId);
-        public Task<PlayerDeleteViewModel?> GetPlayerForDeleteAsync(Guid? id, string userId);
-        public Task<bool> DeletePlayerAsync(PlayerDeleteViewModel model, string userId);
+        public Task<bool> CreatePlayerAsync(PlayerCreateViewModel model);
+        public Task<PlayerEditViewModel?> GetPlayerForEditAsync(Guid? id);
+        public Task<bool> UpdatePlayerAsync(PlayerEditViewModel model);
+        public Task<PlayerStatsEditViewModel?> GetPlayerStatsForEditAsync(Guid? id);
+        public Task<bool> UpdatePlayerStatsAsync(PlayerStatsEditViewModel model);
+        public Task<PlayerDeleteViewModel?> GetPlayerForDeleteAsync(Guid? id);
+        public Task<bool> DeletePlayerAsync(PlayerDeleteViewModel model);
     }
 }

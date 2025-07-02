@@ -8,37 +8,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.PlayerValidationConstants;
+using static NextGenFootball.Data.Common.EntityConstants.PlayerValidationMessages;
 
 namespace NextGenFootball.Web.ViewModels.Player
 {
     public class PlayerCreateViewModel
     {
-        [Required]
-        [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength)]
+        [Required(ErrorMessage = FirstNameRequired)]
+        [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength, ErrorMessage = FirstNameLength)]
         public string FirstName { get; set; } = null!;
 
-        [Required]
-        [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength)]
+        [Required(ErrorMessage = LastNameRequired)]
+        [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength, ErrorMessage = LastNameLength)]
         public string LastName { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = DateOfBirthRequired)]
         public DateTime DateOfBirth { get; set; }
 
-        [Required]
-        [StringLength(PositionMaxLength, MinimumLength = PositionMinLength)]
+        [Required(ErrorMessage = PositionRequired)]
+        [StringLength(PositionMaxLength, MinimumLength = PositionMinLength, ErrorMessage = PositionLength)]
         public string Position { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = PreferredFootRequired)]
         public PreferredFoot PreferredFoot { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = TeamRequired)]
         public int TeamId { get; set; }
         public IEnumerable<TeamDropdownViewModel>? Teams { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = SeasonRequired)]
         public int SeasonId { get; set; }
+        public IEnumerable<SeasonDropdownViewModel>? Seasons { get; set; }
 
-        public IEnumerable<SeasonDropdownViewModel>? Seasons { get; set; } 
         public string? ImageUrl { get; set; }
 
     }

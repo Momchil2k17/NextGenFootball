@@ -24,20 +24,12 @@ namespace NextGenFootball.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid? id)
         {
-            try
+            PlayerDetailsViewModel? player = await this.playerService.GetPlayerDetailsAsync(id);
+            if (player == null)
             {
-                PlayerDetailsViewModel? player = await this.playerService.GetPlayerDetailsAsync(id);
-                if (player == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(player);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(player);
         }
 
         [HttpGet]
@@ -55,161 +47,101 @@ namespace NextGenFootball.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PlayerCreateViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    inputModel.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
-                    inputModel.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isCreated = await this.playerService.CreatePlayerAsync(inputModel, userId);
-                if (isCreated == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while creating the player. Please try again.");
-                    return RedirectToAction(nameof(Create));
-                }
-                return RedirectToAction(nameof(Index));
+                inputModel.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                inputModel.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                return View(inputModel);
             }
-            catch (Exception e)
+            bool isCreated = await this.playerService.CreatePlayerAsync(inputModel);
+            if (isCreated == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while creating the player. Please try again.");
+                return RedirectToAction(nameof(Create));
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            try
+            PlayerEditViewModel? model = await this.playerService.GetPlayerForEditAsync(id);
+            if (model == null)
             {
-                string userId = this.GetUserId()!;
-                PlayerEditViewModel? model = await this.playerService.GetPlayerForEditAsync(id, userId);
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
-                model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
-                return View(model);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+            model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(PlayerEditViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    inputModel.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
-                    inputModel.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isUpdated = await this.playerService.UpdatePlayerAsync(inputModel, userId);
-                if (isUpdated == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while updating the player. Please try again.");
-                    return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
-                }
-                return RedirectToAction(nameof(Index));
+                inputModel.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                inputModel.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
+                return View(inputModel);
             }
-            catch (Exception e)
+
+            bool isUpdated = await this.playerService.UpdatePlayerAsync(inputModel);
+            if (isUpdated == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the player. Please try again.");
+                return RedirectToAction(nameof(Edit), new { id = inputModel.Id });
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> EditStats(Guid? id)
         {
-            try
+            PlayerStatsEditViewModel? model = await this.playerService.GetPlayerStatsForEditAsync(id);
+            if (model == null)
             {
-                string userId = this.GetUserId()!;
-                PlayerStatsEditViewModel? model = await this.playerService.GetPlayerStatsForEditAsync(id, userId);
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(model);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> EditStats(PlayerStatsEditViewModel inputModel)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isUpdated = await this.playerService.UpdatePlayerStatsAsync(inputModel, userId);
-                if (isUpdated == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while updating the player stats. Please try again.");
-                    return RedirectToAction(nameof(EditStats), new { id = inputModel.Id });
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inputModel);
             }
-            catch (Exception e)
+            bool isUpdated = await this.playerService.UpdatePlayerStatsAsync(inputModel);
+            if (isUpdated == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the player stats. Please try again.");
+                return RedirectToAction(nameof(EditStats), new { id = inputModel.Id });
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            try
+            PlayerDeleteViewModel? model = await this.playerService.GetPlayerForDeleteAsync(id);
+            if (model == null)
             {
-                string userId = this.GetUserId()!;
-                PlayerDeleteViewModel? model = await this.playerService.GetPlayerForDeleteAsync(id, userId);
-                if (model == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(model);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(PlayerDeleteViewModel inputModel)
         {
-            try
+
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(inputModel);
-                }
-                string userId = this.GetUserId()!;
-                bool isDeleted = await this.playerService.DeletePlayerAsync(inputModel, userId);
-                if (isDeleted == false)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while deleting the player. Please try again.");
-                    return RedirectToAction(nameof(Delete), new { id = inputModel.Id });
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inputModel);
             }
-            catch (Exception e)
+
+            bool isDeleted = await this.playerService.DeletePlayerAsync(inputModel);
+            if (isDeleted == false)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "An error occurred while deleting the player. Please try again.");
+                return RedirectToAction(nameof(Delete), new { id = inputModel.Id });
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

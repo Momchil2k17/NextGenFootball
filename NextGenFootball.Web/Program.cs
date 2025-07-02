@@ -48,6 +48,7 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<ILeagueRepository, LeagueRepository>();
             builder.Services.AddScoped<ITeamRepository, TeamRepository>();
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();

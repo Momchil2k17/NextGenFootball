@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NextGenFootball.Data.Repository
 {
-    public class PlayerRepository : BaseRepository<Player, int>, IPlayerRepository
+    public class PlayerRepository : BaseRepository<Player, Guid>, IPlayerRepository
     {
         public PlayerRepository(NextGenFootballDbContext dbContext)
             : base(dbContext)
