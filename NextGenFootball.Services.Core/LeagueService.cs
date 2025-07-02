@@ -16,16 +16,13 @@ namespace NextGenFootball.Services.Core
 {
     public class LeagueService : ILeagueService
     {
-        private readonly NextGenFootballDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
+       
         private readonly ILeagueRepository leagueRepository;
         private readonly ISeasonRepository seasonRepository;
-        public LeagueService(ILeagueRepository leagueRepository, ISeasonRepository seasonRepository, NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public LeagueService(ILeagueRepository leagueRepository, ISeasonRepository seasonRepository)
         {
             this.leagueRepository = leagueRepository;
             this.seasonRepository = seasonRepository;
-            this.dbContext = dbContext;
-            this.userManager = userManager;
         }
 
         public async Task<bool> CreateLeagueAsync(LeagueCreateViewModel model)

@@ -76,7 +76,6 @@ namespace NextGenFootball.Web.Controllers
                 model.Seasons = await this.seasonService.GetSeasonsForDropdownAsync();
                 return View(model);
             }
-            string userId = this.GetUserId()!;
             bool isEdited = await this.leagueService.EditLeagueAsync(model);
             if (!isEdited)
             {

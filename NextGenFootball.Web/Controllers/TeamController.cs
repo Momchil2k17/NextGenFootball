@@ -23,20 +23,13 @@ namespace NextGenFootball.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            try
+
+            TeamDetailsViewModel? team = await this.teamService.GetTeamDetailsAsync(id);
+            if (team == null)
             {
-                TeamDetailsViewModel? team = await this.teamService.GetTeamDetailsAsync(id);
-                if (team == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(team);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(team);
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -51,122 +44,78 @@ namespace NextGenFootball.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TeamCreateViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
-                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
-                    return View(model);
-                }
-                string userId = this.GetUserId()!;
-                bool isCreated = await this.teamService.CreateTeamAsync(model, userId);
-                if (!isCreated)
-                {
-                    ModelState.AddModelError(string.Empty, "Team creation failed. Please try again.");
-                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
-                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
-                    return View(model);
-                }
-                return RedirectToAction(nameof(Index));
+                model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                return View(model);
             }
-            catch (Exception e)
+
+            bool isCreated = await this.teamService.CreateTeamAsync(model);
+            if (!isCreated)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Team creation failed. Please try again.");
+                model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                return View(model);
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            try
+            TeamEditViewModel? teamEditViewModel = await this.teamService.GetTeamForEditAsync(id);
+            if (teamEditViewModel == null)
             {
-                string userId = this.GetUserId()!;
-                TeamEditViewModel? teamEditViewModel = await this.teamService.GetTeamForEditAsync(id, userId);
-                if (teamEditViewModel == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                teamEditViewModel.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
-                teamEditViewModel.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
-                return View(teamEditViewModel);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            teamEditViewModel.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+            teamEditViewModel.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+            return View(teamEditViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> Edit(TeamEditViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
-                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
-                    return View(model);
-                }
-                string userId = this.GetUserId()!;
-                bool isEdited = await this.teamService.EditTeamAsync(model, userId);
-                if (!isEdited)
-                {
-                    ModelState.AddModelError(string.Empty, "Team edit failed. Please try again.");
-                    model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
-                    model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
-                    return View(model);
-                }
-                return RedirectToAction(nameof(Index));
+                model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                return View(model);
             }
-            catch (Exception e)
+            bool isEdited = await this.teamService.EditTeamAsync(model);
+            if (!isEdited)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Team edit failed. Please try again.");
+                model.Leagues = await this.leagueService.GetLeaguesForDropdownAsync();
+                model.Stadiums = await this.stadiumService.GetStadiumsForDropdownAsync();
+                return View(model);
             }
+            return RedirectToAction(nameof(Index));
         }
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            try
+            TeamDeleteViewModel? teamDeleteViewModel = await this.teamService.GetTeamForDeleteAsync(id);
+            if (teamDeleteViewModel == null)
             {
-                string userId = this.GetUserId()!;
-                TeamDeleteViewModel? teamDeleteViewModel = await this.teamService.GetTeamForDeleteAsync(id, userId);
-                if (teamDeleteViewModel == null)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                return View(teamDeleteViewModel);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
+            return View(teamDeleteViewModel);
         }
         [HttpPost]
         public async Task<IActionResult> Delete(TeamDeleteViewModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-                string userId = this.GetUserId()!;
-                bool isDeleted = await this.teamService.DeleteTeamAsync(model, userId);
-                if (!isDeleted)
-                {
-                    ModelState.AddModelError(string.Empty, "Team deletion failed. Please try again.");
-                    return View(model);
-                }
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
-            catch (Exception e)
+            bool isDeleted = await this.teamService.DeleteTeamAsync(model);
+            if (!isDeleted)
             {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Team deletion failed. Please try again.");
+                return View(model);
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

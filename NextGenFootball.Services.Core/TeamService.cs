@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
 using NextGenFootball.Web.ViewModels.Team;
@@ -16,16 +17,48 @@ namespace NextGenFootball.Services.Core
 {
     public class TeamService : ITeamService
     {
-        private readonly NextGenFootballDbContext dbContext;
-        private readonly UserManager<ApplicationUser> userManager;
-        public TeamService(NextGenFootballDbContext dbContext, UserManager<ApplicationUser> userManager)
+        private readonly ITeamRepository teamRepository;
+        private readonly IStadiumRepository stadiumRepository;
+        private readonly ILeagueRepository leagueRepository;
+        private readonly IPlayerRepository playerRepository;
+
+        public TeamService(ITeamRepository teamRepository, IStadiumRepository stadiumRepository
+            , ILeagueRepository leagueRepository,IPlayerRepository playerRepository)
         {
-            this.dbContext = dbContext;
-            this.userManager = userManager;
+            this.teamRepository = teamRepository;
+            this.stadiumRepository = stadiumRepository;
+            this.leagueRepository = leagueRepository;
+            this.playerRepository = playerRepository;
+        }
+        public async Task<bool> CreateTeamAsync(TeamCreateViewModel model)
+        {
+            bool res = false;
+            bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
+            Stadium? stadium = await this.stadiumRepository
+                .SingleOrDefaultAsync(s => s.Id == model.StadiumId);
+            League? league = await this.leagueRepository
+                .SingleOrDefaultAsync(l => l.Id == model.LeagueId);
+            if(isValidRegion && stadium != null && league != null)
+            {
+                Team team = new Team
+                {
+                    Name = model.Name,
+                    Region = model.Region,
+                    AgeGroup = model.AgeGroup,
+                    ImageUrl = model.ImageUrl,
+                    Description = model.Description,
+                    StadiumId = stadium.Id,
+                    LeagueId = league.Id
+                };
+                await this.teamRepository.AddAsync(team);
+                res = true;
+            }
+            return res;
         }
         public async Task<IEnumerable<TeamIndexViewModel>> GetAllTeamsAsync()
         {
-            IEnumerable<TeamIndexViewModel> teams = await this.dbContext.Teams
+            IEnumerable<TeamIndexViewModel> teams = await this.teamRepository
+                .GetAllAttached()
                 .Include(t => t.Stadium)
                 .Include(t => t.League)
                 .Select(t => new TeamIndexViewModel
@@ -40,19 +73,14 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return teams;
         }
-        public static string GetDisplayName(Enum value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
-            return attribute?.Name ?? value.ToString();
-        }
 
         public async Task<TeamDetailsViewModel?> GetTeamDetailsAsync(int? id)
         {
             TeamDetailsViewModel? details= null;
             if (id.HasValue)
             {
-                Team? team= await this.dbContext.Teams
+                Team? team= await this.teamRepository
+                    .GetAllAttached()
                     .Include(t => t.Stadium)
                     .Include(t => t.League)
                     .FirstOrDefaultAsync(t => t.Id == id.Value);
@@ -67,7 +95,8 @@ namespace NextGenFootball.Services.Core
                         League = team.League.Name,
                         ImageUrl = team.ImageUrl,
                         Description = team.Description,
-                        Players= await this.dbContext.Players
+                        Players= await this.playerRepository
+                            .GetAllAttached()
                             .Where(p => p.TeamId == team.Id && !p.IsDeleted)
                             .Select(p => new PlayerForTeamDetailsViewModel
                             {
@@ -82,41 +111,14 @@ namespace NextGenFootball.Services.Core
             return details;
         }
 
-        public async Task<bool> CreateTeamAsync(TeamCreateViewModel model, string userId)
-        {
-            bool res = false;
-            ApplicationUser? user= await userManager.FindByIdAsync(userId);
-            bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
-            Stadium? stadium = await this.dbContext.Stadiums
-                .SingleOrDefaultAsync(s => s.Id == model.StadiumId);
-            League? league = await this.dbContext.Leagues
-                .SingleOrDefaultAsync(l => l.Id == model.LeagueId);
-            if(user!= null && isValidRegion && stadium != null && league != null)
-            {
-                Team team = new Team
-                {
-                    Name = model.Name,
-                    Region = model.Region,
-                    AgeGroup = model.AgeGroup,
-                    ImageUrl = model.ImageUrl,
-                    Description = model.Description,
-                    StadiumId = stadium.Id,
-                    LeagueId = league.Id
-                };
-                await dbContext.Teams.AddAsync(team);
-                await dbContext.SaveChangesAsync();
-                res = true;
-            }
-            return res;
-        }
 
-        public async Task<TeamEditViewModel?> GetTeamForEditAsync(int? id, string userId)
+        public async Task<TeamEditViewModel?> GetTeamForEditAsync(int? id)
         {
             TeamEditViewModel? model = null;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (id.HasValue && user!=null )
+            if (id.HasValue)
             {
-                Team? team = await this.dbContext.Teams
+                Team? team = await this.teamRepository
+                    .GetAllAttached()
                     .Include(t => t.Stadium)
                     .Include(t => t.League)
                     .SingleOrDefaultAsync(t => t.Id == id.Value);
@@ -138,19 +140,18 @@ namespace NextGenFootball.Services.Core
             return model;
         }
 
-        public async Task<bool> EditTeamAsync(TeamEditViewModel model, string userId)
+        public async Task<bool> EditTeamAsync(TeamEditViewModel model)
         {
 
             bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
             bool isValidRegion = Enum.IsDefined(typeof(Region), model.Region);
-            Stadium? stadium = await this.dbContext.Stadiums
+            Stadium? stadium = await this.stadiumRepository
                 .SingleOrDefaultAsync(s => s.Id == model.StadiumId);
-            League? league = await this.dbContext.Leagues
+            League? league = await this.leagueRepository
                 .SingleOrDefaultAsync(l => l.Id == model.LeagueId);
-            if (user != null && isValidRegion && stadium != null && league != null)
+            if (isValidRegion && stadium != null && league != null)
             {
-                Team? team = await this.dbContext.Teams
+                Team? team = await this.teamRepository
                     .SingleOrDefaultAsync(t => t.Id == model.Id);
                 if (team != null)
                 {
@@ -162,20 +163,20 @@ namespace NextGenFootball.Services.Core
                     team.StadiumId = stadium.Id;
                     team.LeagueId = league.Id;
 
-                    await dbContext.SaveChangesAsync();
+                    await this.teamRepository.UpdateAsync(team);
                     res = true;
                 }
             }
             return res;
         }
         
-        public async Task<TeamDeleteViewModel?> GetTeamForDeleteAsync(int? id, string userId)
+        public async Task<TeamDeleteViewModel?> GetTeamForDeleteAsync(int? id)
         {
             TeamDeleteViewModel? model = null;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (id.HasValue && user != null)
+            if (id.HasValue)
             {
-                Team? team = await this.dbContext.Teams
+                Team? team = await this.teamRepository
+                    .GetAllAttached()
                     .Include(t => t.League)
                     .SingleOrDefaultAsync(t => t.Id == id.Value);
                 if (team != null)
@@ -192,28 +193,22 @@ namespace NextGenFootball.Services.Core
             return model;
         }
 
-        public async Task<bool> DeleteTeamAsync(TeamDeleteViewModel model, string userId)
+        public async Task<bool> DeleteTeamAsync(TeamDeleteViewModel model)
         {
-
-            bool res = false;
-            ApplicationUser? user = await this.userManager.FindByIdAsync(userId);
-            if (user != null)
+            Team? team = await this.teamRepository
+                .SingleOrDefaultAsync(t => t.Id == model.Id);
+            if (team == null)
             {
-                Team? team = await this.dbContext.Teams
-                    .SingleOrDefaultAsync(t => t.Id == model.Id);
-                if (team != null)
-                {
-                    team.IsDeleted = true;
-                    await this.dbContext.SaveChangesAsync();
-                    res = true;
-                }
+                return false;
             }
-            return res;
+            await this.teamRepository.DeleteAsync(team);
+            return true;
         }
 
         public async Task<IEnumerable<TeamDropdownViewModel>?> GetTeamDropdownViewModelsAsync()
         {
-            IEnumerable<TeamDropdownViewModel>? teams = await this.dbContext.Teams
+            IEnumerable<TeamDropdownViewModel>? teams = await this.teamRepository
+                .GetAllAttached()
                 .Where(t => !t.IsDeleted)
                 .Select(t => new TeamDropdownViewModel
                 {
@@ -222,6 +217,12 @@ namespace NextGenFootball.Services.Core
                 })
                 .ToListAsync();
             return teams;
+        }
+        public static string GetDisplayName(Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
+            return attribute?.Name ?? value.ToString();
         }
     }
 }

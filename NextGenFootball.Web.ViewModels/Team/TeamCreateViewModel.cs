@@ -8,36 +8,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.TeamValidationConstants;
+using static NextGenFootball.Data.Common.EntityConstants.TeamValidationMessages;
 
 namespace NextGenFootball.Web.ViewModels.Team
 {
     public class TeamCreateViewModel
     {
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Team name must be between 3 and 100 characters.")]
+        [Required(ErrorMessage = NameRequired)]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = NameLength)]
         public string Name { get; set; } = null!;
 
-        [Required]
-        [StringLength(AgeGroupMaxLength, MinimumLength = AgeGroupMinLength, ErrorMessage = "Age group must be between 2 and 20 characters.")]
+        [Required(ErrorMessage = AgeGroupRequired)]
+        [StringLength(AgeGroupMaxLength, MinimumLength = AgeGroupMinLength, ErrorMessage = AgeGroupLength)]
         public string AgeGroup { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = RegionRequired)]
         public Region Region { get; set; }
 
-        [Required(ErrorMessage = "League is required.")]
+        [Required(ErrorMessage = LeagueRequired)]
         public int LeagueId { get; set; }
         public virtual IEnumerable<LeagueDropdownViewModel>? Leagues { get; set; }
 
-        [Required(ErrorMessage = "Stadium is required.")]
+        [Required(ErrorMessage = StadiumRequired)]
         public int StadiumId { get; set; }
         public virtual IEnumerable<StadiumDropdownViewModel>? Stadiums { get; set; }
 
-        [StringLength(ImageUrlMaxLength, ErrorMessage = "Image URL must not exceed 2048 characters.")]
+        [StringLength(ImageUrlMaxLength, ErrorMessage = ImageUrlLength)]
         public string? ImageUrl { get; set; }
 
-        [StringLength(DescriptionMaxLength, ErrorMessage = "Description must not exceed 500 characters.")]
+        [StringLength(DescriptionMaxLength, ErrorMessage = DescriptionLength)]
         public string? Description { get; set; }
-
-
     }
 }
