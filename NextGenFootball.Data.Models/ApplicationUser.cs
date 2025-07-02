@@ -14,5 +14,6 @@ namespace NextGenFootball.Data.Models
             this.Id = Guid.NewGuid();
         }
         public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
+        public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
     }
 }

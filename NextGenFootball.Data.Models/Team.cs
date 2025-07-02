@@ -38,5 +38,7 @@ namespace NextGenFootball.Data.Models
 
         [Comment("Collection of players in the team.")]
         public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
+
+        public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
     }
 }
