@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
@@ -37,11 +38,39 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return coaches;
         }
+        public async Task<CoachDetailsViewModel?> GetCoachDetailsAsync(Guid? id)
+        {
+            CoachDetailsViewModel? details = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            if (isValidGuid)
+            {
+                Coach? coach = await this.coachRepository
+                    .GetAllAttached()
+                    .Include(c => c.Team)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(c => c.Id == id!.Value);
+                if (coach != null)
+                {
+                    details = new CoachDetailsViewModel
+                    {
+                        Id = coach.Id,
+                        FirstName = coach.FirstName,
+                        LastName = coach.LastName,
+                        ImageUrl = coach.ImageUrl,
+                        TeamName = coach.Team.Name,
+                        TeamImageUrl = coach.Team.ImageUrl,
+                        Role = GetDisplayName(coach.Role),
+                    };
+                }
+            }
+            return details;
+        }
         public static string GetDisplayName(Enum value)
         {
             var field = value.GetType().GetField(value.ToString());
             var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
         }
+
     }
 }

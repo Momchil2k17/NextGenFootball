@@ -10,5 +10,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface ICoachService
     {
         public Task<IEnumerable<CoachIndexViewModel>> GetAllCoachesAsync();
+        public Task<CoachDetailsViewModel?> GetCoachDetailsAsync(Guid? id);
     }
 }

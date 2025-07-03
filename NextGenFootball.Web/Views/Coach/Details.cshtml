@@ -1,0 +1,65 @@
+﻿@using NextGenFootball.Web.ViewModels.Coach;
+@model CoachDetailsViewModel;
+
+@{
+    ViewData["Title"] = "Coach Details";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" alt="Coach Image"
+                                     style="width:100px; height:100px; object-fit:cover; border-radius:50%; border:3px solid #efefef; box-shadow:0 1px 4px rgba(0,0,0,.15);" />
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center"
+                                     style="width:100px; height:100px; border-radius:50%; border:3px solid #efefef;">
+                                    <span class="text-muted">No image</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="ms-4">
+                            <h2 class="mb-1">@Model.FirstName @Model.LastName</h2>
+                            <h5 class="text-secondary mb-0">@Model.Role</h5>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold">Team:</div>
+                        <div class="col-8 d-flex align-items-center">
+                            @if (!string.IsNullOrEmpty(Model.TeamImageUrl))
+                            {
+                                <img src="@Model.TeamImageUrl" alt="Team Photo"
+                                     style="width:32px; height:32px; object-fit:cover; border-radius:50%; margin-right:10px;" />
+                            }
+                            <span>@Model.TeamName</span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-4 fw-bold">Role:</div>
+                        <div class="col-8">
+                            @Model.Role
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary me-2">Back to List</a>
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

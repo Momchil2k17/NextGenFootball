@@ -16,5 +16,15 @@ namespace NextGenFootball.Web.Controllers
             IEnumerable<CoachIndexViewModel> coaches = await this.coachService.GetAllCoachesAsync();
             return View(coaches);
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            CoachDetailsViewModel? details = await this.coachService.GetCoachDetailsAsync(id);
+            if (details == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(details);
+        }
     }
 }
