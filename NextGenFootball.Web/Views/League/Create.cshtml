@@ -27,7 +27,7 @@
     </div>
     <div class="form-group mb-3">
         <label asp-for="@Model.SeasonId" class="form-label-add-edit">Select Season</label>
-        <select asp-for="@Model.SeasonId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Seasons, "Id", "Name"))">
+        <select asp-for="@Model.SeasonId" class="form-select" aria-required="true" asp-items="@(new SelectList(Model.Seasons, "Id", "Name"))">
             <option value="">...</option>
         </select>
         <span asp-validation-for="@Model.SeasonId" class="text-danger"></span>

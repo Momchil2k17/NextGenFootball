@@ -27,14 +27,14 @@
     </div>
     <div class="form-group mb-3">
         <label asp-for="LeagueId" class="form-label">Select League</label>
-        <select asp-for="LeagueId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Leagues, "Id", "Name"))">
+        <select asp-for="LeagueId" class="form-select" aria-required="true" asp-items="@(new SelectList(Model.Leagues, "Id", "Name"))">
             <option value="">-- Select League --</option>
         </select>
         <span asp-validation-for="LeagueId" class="text-danger"></span>
     </div>
     <div class="form-group mb-3">
         <label asp-for="StadiumId" class="form-label">Select Stadium</label>
-        <select asp-for="StadiumId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Stadiums, "Id", "Name"))">
+        <select asp-for="StadiumId" class="form-select" aria-required="true" asp-items="@(new SelectList(Model.Stadiums, "Id", "Name"))">
             <option value="">-- Select Stadium --</option>
         </select>
         <span asp-validation-for="StadiumId" class="text-danger"></span>
