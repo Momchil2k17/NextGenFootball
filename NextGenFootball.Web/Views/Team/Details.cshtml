@@ -36,7 +36,7 @@
             
             <h4>Players</h4>
             <ul class="list-group">
-            @foreach (var player in Model.Players)
+            @foreach (var player in Model.Players!)
             {
                     <li class="list-group-item d-flex align-items-center">
                         @if (!string.IsNullOrEmpty(player.ImageUrl))

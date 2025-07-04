@@ -50,6 +50,7 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
             builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
             builder.Services.AddScoped<ICoachRepository, CoachRepository>();
+            builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
             builder.Services.AddScoped<IStadiumService, StadiumService>();
             builder.Services.AddScoped<ISeasonService, SeasonService>();
@@ -57,6 +58,7 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<ITeamService, TeamService>();
             builder.Services.AddScoped<IPlayerService, PlayerService>();
             builder.Services.AddScoped<ICoachService, CoachService>();
+            builder.Services.AddScoped<IMatchService, MatchService>();
 
             WebApplication? app = builder.Build();
             

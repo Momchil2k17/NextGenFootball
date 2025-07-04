@@ -1,0 +1,67 @@
+﻿@using NextGenFootball.Web.ViewModels.Match;
+@model IEnumerable<MatchIndexViewModel>
+
+@{
+    ViewData["Title"] = "Matches";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .team-link {
+        color: #000 !important; /* Black */
+        text-decoration: none; /* No underline */
+    }
+
+   .team-link:hover {
+        text-decoration: underline; /* Optional: underline on hover */
+        color: #000 !important; /* Still black on hover */
+   }
+</style>
+
+<table class="table table-bordered text-center align-middle">
+    <thead>
+        <tr>
+            <th class="text-end">Home</th>
+            <th>Result &amp; Info</th>
+            <th class="text-start">Away</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var match in Model)
+        {
+            <tr>
+                <td class="text-end">
+                    <img src="@match.HomeTeamImageUrl" alt="@match.HomeTeamName" width="40" height="40" class="rounded-circle me-2" />
+                    <a asp-controller="Team" asp-action="Details" asp-route-id="@match.HomeTeamId" class="team-link">
+                        @match.HomeTeamName
+                    </a>
+                </td>
+                <td>
+                    <div>
+                        @if (match.IsPlayed)
+                        {
+                            <span class="fs-4 fw-bold">@match.HomeScore - @match.AwayScore</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">vs</span>
+                        }
+                    </div>
+                    <div class="small text-muted mt-1">
+                        <i class="bi bi-clock"></i>
+                        @match.Date.ToString("dd MMM yyyy, HH:mm")
+                        <br />
+                        <i class="bi bi-building"></i>
+                        @match.StadiumName
+                    </div>
+                </td>
+                <td class="text-start">
+                    <img src="@match.AwayTeamImageUrl" alt="@match.AwayTeamName" width="40" height="40" class="rounded-circle me-2" />
+                    <a asp-controller="Team" asp-action="Details" asp-route-id="@match.AwayTeamId" class="team-link">
+                        @match.AwayTeamName
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
