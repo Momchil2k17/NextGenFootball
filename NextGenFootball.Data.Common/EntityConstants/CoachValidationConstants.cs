@@ -19,4 +19,21 @@ namespace NextGenFootball.Data.Common.EntityConstants
 
         public const int ImageUrlMaxLength = 2048;
     }
+    public static class CoachValidationMessages
+    {
+        public const string FirstNameRequired = "First name is required.";
+        public const string FirstNameLength = "First name must be between {2} and {1} characters.";
+
+        public const string LastNameRequired = "Last name is required.";
+        public const string LastNameLength = "Last name must be between {2} and {1} characters.";
+
+        public const string PhoneNumberRequired = "Phone number is required.";
+        public const string PhoneNumberLength = "Phone number must be between {2} and {1} digits.";
+
+        public const string ImageUrlLength = "Image URL must not exceed {1} characters.";
+
+        public const string TeamRequired = "Team is required.";
+
+        public const string RoleRequired = "Role is required.";
+    }
 }

@@ -7,9 +7,11 @@ namespace NextGenFootball.Web.Controllers
     public class CoachController : BaseController
     {
         private readonly ICoachService coachService;
-        public CoachController(ICoachService coachService)
+        private readonly ITeamService teamService;
+        public CoachController(ICoachService coachService, ITeamService teamService)
         {
             this.coachService = coachService;
+            this.teamService = teamService;
         }
         public async Task<IActionResult> Index()
         {
@@ -25,6 +27,60 @@ namespace NextGenFootball.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(details);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            CoachCreateViewModel model = new CoachCreateViewModel
+            {
+                Teams = await this.teamService.GetTeamDropdownViewModelsAsync()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(CoachCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                return View(model);
+            }
+            bool isCreated = await this.coachService.CreateCoachAsync(model);
+            if (!isCreated)
+            {
+                ModelState.AddModelError(string.Empty, "Coach creation failed. Please try again.");
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            CoachEditViewModel? model = await this.coachService.GetCoachEditViewModel(id);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(CoachEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                return View(model);
+            }
+            bool isEdited = await this.coachService.EditCoachAsync(model);
+            if (!isEdited)
+            {
+                ModelState.AddModelError(string.Empty, "Coach edit failed. Please try again.");
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsAsync();
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

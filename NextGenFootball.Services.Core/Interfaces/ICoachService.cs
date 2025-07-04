@@ -11,5 +11,8 @@ namespace NextGenFootball.Services.Core.Interfaces
     {
         public Task<IEnumerable<CoachIndexViewModel>> GetAllCoachesAsync();
         public Task<CoachDetailsViewModel?> GetCoachDetailsAsync(Guid? id);
+        public Task<bool> CreateCoachAsync(CoachCreateViewModel model);
+        public Task<CoachEditViewModel?> GetCoachEditViewModel(Guid? id);
+        public Task<bool> EditCoachAsync(CoachEditViewModel model); 
     }
 }

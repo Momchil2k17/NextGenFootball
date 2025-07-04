@@ -1,0 +1,61 @@
+﻿@using NextGenFootball.Web.ViewModels.Coach;
+@model CoachCreateViewModel;
+
+@{
+    ViewData["Title"] = "Create Coach";
+}
+
+<h2>Create Coach</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <form asp-action="Create" method="post">
+            <div class="card shadow-sm border-0 p-4">
+
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="e.g. John" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="e.g. Smith" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="e.g. https://example.com/photo.jpg" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="@Model.TeamId" class="form-label-add-edit">Select Team</label>
+                    <select asp-for="@Model.TeamId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.Teams, "Id", "Name"))">
+                        <option value="">...</option>
+                    </select>
+                    <span asp-validation-for="@Model.TeamId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Role" class="form-label"></label>
+                    <select asp-for="Role" class="form-select" asp-items="Html.GetEnumSelectList<NextGenFootball.Data.Common.Enums.CoachRole>()">
+                        <option value="">-- Select Role --</option>
+                    </select>
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Create</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary ms-2">Cancel</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
