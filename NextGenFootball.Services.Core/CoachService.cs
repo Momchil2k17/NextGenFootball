@@ -134,10 +134,10 @@ namespace NextGenFootball.Services.Core
         {
             bool res = false;
             bool isValidRole = Enum.IsDefined(typeof(CoachRole), model.Role);
-            Team? team = this.teamRepository
+            Team? team = await this.teamRepository
                 .GetAllAttached()
                 .AsNoTracking()
-                .SingleOrDefault(t => t.Id == model.TeamId);
+                .SingleOrDefaultAsync(t => t.Id == model.TeamId);
             bool isApplicationUserInDb = await this.applicationUserRepository
                .ExistsByIdAsync(model.ApplicationUserId);
             if (team != null && isValidRole)
@@ -145,6 +145,7 @@ namespace NextGenFootball.Services.Core
                 Coach? coach = await this.coachRepository
                     .GetAllAttached()
                     .AsNoTracking()
+                    .Include(c => c.Team)
                     .SingleOrDefaultAsync(c => c.Id == model.Id);
                 if (coach != null)
                 {
@@ -168,6 +169,46 @@ namespace NextGenFootball.Services.Core
             }
             return res;
 
+        }
+
+        public async Task<CoachDeleteViewModel?> GetCoachForDeleteAsync(Guid? id)
+        {
+            CoachDeleteViewModel? coachDelete = null;
+            bool isValidGuid = id.HasValue && id.Value != Guid.Empty;
+            if (isValidGuid)
+            {
+                Coach? coach = await this.coachRepository
+                    .GetAllAttached()
+                    .Include(c => c.Team)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(c => c.Id == id!.Value);
+                if (coach != null)
+                {
+                    coachDelete = new CoachDeleteViewModel
+                    {
+                        Id = coach.Id,
+                        FirstName = coach.FirstName,
+                        LastName = coach.LastName,
+                        ImageUrl = coach.ImageUrl,
+                        TeamName = coach.Team.Name,
+                        TeamImageUrl = coach.Team.ImageUrl,
+                        Role = GetDisplayName(coach.Role),
+                    };
+                }
+            }
+            return coachDelete;
+        }
+
+        public async Task<bool> DeleteCoachAsync(CoachDeleteViewModel model)
+        {
+            Coach? coach = await this.coachRepository
+                .SingleOrDefaultAsync(c => c.Id == model.Id);
+            if (coach == null)
+            {
+                return false;
+            }
+            await this.coachRepository.DeleteAsync(coach);
+            return true;
         }
     }
 }

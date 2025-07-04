@@ -1,0 +1,52 @@
+﻿@model NextGenFootball.Web.ViewModels.Coach.CoachDeleteViewModel
+
+@{
+    ViewData["Title"] = "Delete Coach";
+}
+
+<h2>Delete Coach</h2>
+
+<div class="alert alert-danger" role="alert">
+    <strong>Warning:</strong> This action cannot be undone. Are you sure you want to delete the following coach?
+</div>
+
+<div class="card border-danger mb-4">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="Coach Image" style="width:80px; height:80px; object-fit:cover; border-radius:50%;" />
+                }
+                else
+                {
+                    <span class="text-muted">No image</span>
+                }
+            </div>
+            <div class="col">
+                <h4>@Model.FirstName @Model.LastName</h4>
+                <div class="d-flex align-items-center mb-1" style="gap: 8px;">
+                    
+                    <strong>Team:</strong>
+                    @if (!string.IsNullOrEmpty(Model.TeamImageUrl))
+                    {
+                        <img src="@Model.TeamImageUrl" alt="Team Image" style="width:32px; height:32px; object-fit:cover; border-radius:50%;" />
+                    }
+                   <span>@Model.TeamName</span>
+                </div>
+                <p class="mb-0"><strong>Role:</strong> @Model.Role</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="FirstName" />
+    <input type="hidden" asp-for="LastName" />
+    <input type="hidden" asp-for="TeamName" />
+    <input type="hidden" asp-for="Role" />
+    <input type="hidden" asp-for="TeamImageUrl" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary ms-2">Cancel</a>
+</form>

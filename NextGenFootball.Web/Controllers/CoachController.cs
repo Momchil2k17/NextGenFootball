@@ -82,5 +82,30 @@ namespace NextGenFootball.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            CoachDeleteViewModel? model = await this.coachService.GetCoachForDeleteAsync(id);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CoachDeleteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isDeleted = await this.coachService.DeleteCoachAsync(model);
+            if (!isDeleted)
+            {
+                ModelState.AddModelError(string.Empty, "Coach deletion failed. Please try again.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
