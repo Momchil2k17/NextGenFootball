@@ -37,5 +37,8 @@ namespace NextGenFootball.Data.Models
 
         [Comment("Collection of teams that play in this stadium.")]
         public virtual ICollection<Team> Teams { get; set; } = new HashSet<Team>();
+
+        [Comment("Collection of matches played in this stadium.")]
+        public virtual ICollection<Match> Matches { get; set; } = new HashSet<Match>();
     }
 }
