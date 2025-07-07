@@ -210,6 +210,22 @@ namespace NextGenFootball.Services.Core
             var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
         }
+        public DateTime GetNearestQuarter(DateTime dateTime)
+        {
+            int minutes = dateTime.Minute;
+            int addMinutes = 15 - (minutes % 15);
+            if (addMinutes == 15) addMinutes = 0; // Already on a quarter
+            dateTime = new DateTime(
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                dateTime.Hour,
+                dateTime.Minute,
+                0,
+                dateTime.Kind
+            );
+            return dateTime.AddMinutes(addMinutes);
+        }
 
     }
 }

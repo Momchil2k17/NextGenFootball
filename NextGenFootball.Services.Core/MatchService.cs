@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
+using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
@@ -24,6 +25,34 @@ namespace NextGenFootball.Services.Core
             this.leagueRepository = leagueRepository;
             this.stadiumRepository = stadiumRepository;
         }
+
+        public async Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id)
+        {
+            bool res = false;
+            Team? homeTeam=await this.teamRepository.GetAllAttached()
+                .Include(t=>t.Stadium)
+                .SingleOrDefaultAsync(t => t.Id == model.HomeTeamId);
+            Team? awayTeam=await this.teamRepository.SingleOrDefaultAsync(t => t.Id == model.AwayTeamId);
+            League? league = await this.leagueRepository.SingleOrDefaultAsync(l => l.Id == id);
+            bool isValidDate = model.Date > DateTime.Now;
+            if (homeTeam != null && awayTeam != null && league != null && isValidDate)
+            {
+                Match match = new Match
+                {
+                    HomeTeamId = homeTeam.Id,
+                    AwayTeamId = awayTeam.Id,
+                    Date = model.Date,
+                    StadiumId = homeTeam.Stadium.Id,
+                    LeagueId = league.Id,
+                    Status = MatchStatus.Scheduled
+                };
+                await this.matchRepository.AddAsync(match);
+                res = true;
+            }
+            return res;
+
+        }
+
         public async Task<IEnumerable<MatchIndexViewModel>> GetAllMatchesAsync()
         {
             IEnumerable<MatchIndexViewModel> matches = await this.matchRepository

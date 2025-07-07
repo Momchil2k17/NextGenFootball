@@ -1,0 +1,70 @@
+﻿@using NextGenFootball.Web.ViewModels.Match;
+@model MatchCreateViewModel;
+
+@{
+    ViewData["Title"] = "Add Match";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="CreateMatch" asp-route-leagueId="@Model.LeagueId" method="post" class="mt-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="LeagueId" />
+
+    <div class="row mb-3">
+        <div class="form-group mb-3">
+            <label asp-for="HomeTeamId" class="form-label">Home Team</label>
+            <select asp-for="HomeTeamId" class="form-select" id="homeTeam" aria-required="true" asp-items="@(new SelectList(Model.Teams, "Id", "Name"))">
+                <option value="">-- Select Team --</option>
+            </select>
+            <span asp-validation-for="HomeTeamId" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="AwayTeamId" class="form-label">Away Team</label>
+            <select asp-for="AwayTeamId" class="form-select" id="awayTeam" aria-required="true" asp-items="@(new SelectList(Model.Teams, "Id", "Name"))">
+                <option value="">-- Select Team --</option>
+            </select>
+            <span asp-validation-for="AwayTeamId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Date" class="form-label">Date & Time</label>
+        <input asp-for="Date" class="form-control" type="datetime-local" step="900" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Match</button>
+    <a asp-action="Details" asp-route-id="@Model.LeagueId" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <script>
+        function filterTeams(changed, toFilter) {
+            var selectedValue = document.getElementById(changed).value;
+            var toFilterDropdown = document.getElementById(toFilter);
+            for (var i = 0; i < toFilterDropdown.options.length; i++) {
+                toFilterDropdown.options[i].disabled = false;
+                if (toFilterDropdown.options[i].value === selectedValue && selectedValue !== "") {
+                    toFilterDropdown.options[i].disabled = true;
+                }
+            }
+            // If currently selected value is disabled, reset to empty
+            if (toFilterDropdown.value === selectedValue) {
+                toFilterDropdown.value = "";
+            }
+        }
+
+        document.getElementById('homeTeam').addEventListener('change', function () {
+            filterTeams('homeTeam', 'awayTeam');
+        });
+        document.getElementById('awayTeam').addEventListener('change', function () {
+            filterTeams('awayTeam', 'homeTeam');
+        });
+        // Initial filter in case of edit forms
+        filterTeams('homeTeam', 'awayTeam');
+        filterTeams('awayTeam', 'homeTeam');
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.League;
+using NextGenFootball.Web.ViewModels.Match;
 using NextGenFootball.Web.ViewModels.Season;
 
 namespace NextGenFootball.Web.Controllers
@@ -9,10 +10,15 @@ namespace NextGenFootball.Web.Controllers
     {
         private readonly ILeagueService leagueService;
         private readonly ISeasonService seasonService;
-        public LeagueController(ILeagueService leagueService, ISeasonService seasonService)
+        private readonly IMatchService matchService;
+        private readonly ITeamService teamService;
+        public LeagueController(ILeagueService leagueService, ISeasonService seasonService
+            , IMatchService matchService, ITeamService teamService)
         {
             this.leagueService = leagueService;
             this.seasonService = seasonService;
+            this.matchService = matchService;
+            this.teamService = teamService;
         }
         public async Task<IActionResult> Index()
         {
@@ -104,6 +110,33 @@ namespace NextGenFootball.Web.Controllers
             if (!isDeleted)
             {
                 ModelState.AddModelError(string.Empty, "League deletion failed. Please try again.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpGet]
+        public async Task<IActionResult> CreateMatch(int? id)
+        {
+            MatchCreateViewModel matchCreateViewModel = new MatchCreateViewModel
+            {
+                Teams = await this.teamService.GetTeamDropdownViewModelsByLeagueAsync(id),
+                Date= this.leagueService.GetNearestQuarter(DateTime.Now),
+            };
+            return View(matchCreateViewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateMatch(MatchCreateViewModel model, int? id)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsByLeagueAsync(id);
+                return View(model);
+            }
+            bool isCreated = await this.matchService.CreateMatchAsync(model, id);
+            if (!isCreated)
+            {
+                ModelState.AddModelError(string.Empty, "Match creation failed. Please try again.");
+                model.Teams = await this.teamService.GetTeamDropdownViewModelsByLeagueAsync(id);
                 return View(model);
             }
             return RedirectToAction(nameof(Index));

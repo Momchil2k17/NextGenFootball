@@ -10,5 +10,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     public interface IMatchService
     {
         public Task<IEnumerable<MatchIndexViewModel>> GetAllMatchesAsync();
+        public Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id);
     }
 }

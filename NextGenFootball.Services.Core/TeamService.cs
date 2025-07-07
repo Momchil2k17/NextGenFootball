@@ -224,5 +224,19 @@ namespace NextGenFootball.Services.Core
             var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
         }
+
+        public async Task<IEnumerable<TeamDropdownViewModel>?> GetTeamDropdownViewModelsByLeagueAsync(int? id)
+        {
+            IEnumerable<TeamDropdownViewModel>? teams = await this.teamRepository
+               .GetAllAttached()
+               .Where(t => !t.IsDeleted && t.LeagueId==id)
+               .Select(t => new TeamDropdownViewModel
+               {
+                   Id = t.Id,
+                   Name = t.Name
+               })
+               .ToListAsync();
+            return teams;
+        }
     }
 }
