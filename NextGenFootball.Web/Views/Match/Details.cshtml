@@ -1,0 +1,42 @@
+﻿@using NextGenFootball.Web.ViewModels.Match;
+@model MatchDetailsViewModel
+
+@{
+    ViewData["Title"] = "Match Details";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header text-center">
+            <h3>
+                <img src="@Model.HomeTeamImageUrl" alt="@Model.HomeTeamName" width="40" height="40" class="rounded-circle me-2" />
+                @Model.HomeTeamName
+                <span class="fw-light">vs</span>
+                @Model.AwayTeamName
+                <img src="@Model.AwayTeamImageUrl" alt="@Model.AwayTeamName" width="40" height="40" class="rounded-circle ms-2" />
+            </h3>
+            <div class="text-muted">@Model.LeagueName</div>
+        </div>
+        <div class="card-body text-center">
+            <h2 class="fw-bold">
+                @if (Model.IsPlayed)
+                {
+                    @($"{Model.HomeScore} - {Model.AwayScore}")
+                }
+                else
+                {
+                    <span class="text-muted"></span>
+                }
+            </h2>
+            <div class="mt-3">
+                <i class="bi bi-clock"></i>
+                @Model.Date.ToString("dd MMM yyyy, HH:mm")
+                <br />
+                <i class="bi bi-building"></i>
+                @Model.StadiumName
+            </div>
+        </div>
+    </div>
+</div>

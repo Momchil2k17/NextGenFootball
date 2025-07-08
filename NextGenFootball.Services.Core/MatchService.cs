@@ -84,5 +84,36 @@ namespace NextGenFootball.Services.Core
 
             return matches;
         }
+
+        public async Task<MatchDetailsViewModel?> GetMatchDetailsAsync(long? id)
+        {
+            MatchDetailsViewModel? match = null;
+            if (id.HasValue)
+            {
+                match = await this.matchRepository
+                    .GetAllAttached()
+                    .Include(m => m.HomeTeam)
+                    .Include(m => m.AwayTeam)
+                    .Include(m => m.League)
+                    .Include(m => m.Stadium)
+                    .AsNoTracking()
+                    .Where(m => m.Id == id.Value)
+                    .Select(m => new MatchDetailsViewModel
+                    {
+                        HomeTeamName = m.HomeTeam.Name,
+                        HomeTeamImageUrl = m.HomeTeam.ImageUrl,
+                        AwayTeamName = m.AwayTeam.Name,
+                        AwayTeamImageUrl = m.AwayTeam.ImageUrl,
+                        Date = m.Date,
+                        HomeScore = m.HomeScore,
+                        AwayScore = m.AwayScore,
+                        StadiumName = m.Stadium.Name,
+                        LeagueName = m.League.Name,
+                        IsPlayed= m.Status == MatchStatus.Played,
+                    })
+                    .FirstOrDefaultAsync();
+            }
+            return match;
+        }
     }
 }

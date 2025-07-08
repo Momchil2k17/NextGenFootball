@@ -16,5 +16,16 @@ namespace NextGenFootball.Web.Controllers
             IEnumerable<MatchIndexViewModel> matches = await this.matchService.GetAllMatchesAsync();
             return View(matches);
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(long? id)
+        {
+            MatchDetailsViewModel? match = await this.matchService.GetMatchDetailsAsync(id);
+            if (match == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(match);
+        }
     }
+    
 }

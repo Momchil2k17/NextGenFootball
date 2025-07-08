@@ -11,5 +11,6 @@ namespace NextGenFootball.Services.Core.Interfaces
     {
         public Task<IEnumerable<MatchIndexViewModel>> GetAllMatchesAsync();
         public Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id);
+        public Task<MatchDetailsViewModel?> GetMatchDetailsAsync(long? id);
     }
 }
