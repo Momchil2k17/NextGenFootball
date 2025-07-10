@@ -64,4 +64,4 @@
 ###############################################################################
 # Mark Bootstrap and theme CSS/JS as vendored (ignored in GitHub language stats)
 ###############################################################################
-wwwroot/css/mytheme.css linguist-vendored
+NextGenFootball.Web/wwwroot/css/mytheme.css linguist-vendored
