@@ -38,6 +38,30 @@ namespace NextGenFootball.Web.Infrastructure.Extensions
 
             return serviceCollection;
         }
+        public static IServiceCollection AddRepositories(this IServiceCollection serviceCollection,
+            Assembly repositoryAssembly)
+        {
+            Type[] repositoryClasses = repositoryAssembly
+                .GetTypes()
+                .Where(t => t.Name.EndsWith(RepositoryTypeSuffix) &&
+                            !t.IsInterface &&
+                            !t.IsAbstract)
+                .ToArray();
+            foreach (Type repositoryClass in repositoryClasses)
+            {
+                Type? repositoryInterface = repositoryClass
+                    .GetInterfaces()
+                    .FirstOrDefault(i => i.Name == $"{ProjectInterfacePrefix}{repositoryClass.Name}");
+                if (repositoryInterface == null)
+                {
+                    throw new ArgumentException(string.Format(InterfaceNotFoundMessage, repositoryClass.Name));
+                }
+
+                serviceCollection.AddScoped(repositoryInterface, repositoryClass);
+            }
+
+            return serviceCollection;
+        }
     }
 }
     

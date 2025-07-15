@@ -44,14 +44,7 @@ namespace NextGenFootball.Web
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
             builder.Services.AddControllersWithViews();
 
-            builder.Services.AddScoped<IStadiumRepository, StadiumRepository>();
-            builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
-            builder.Services.AddScoped<ILeagueRepository, LeagueRepository>();
-            builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-            builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-            builder.Services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
-            builder.Services.AddScoped<ICoachRepository, CoachRepository>();
-            builder.Services.AddScoped<IMatchRepository, MatchRepository>();
+            builder.Services.AddRepositories(typeof(ITeamRepository).Assembly);
 
             builder.Services.AddUserDefinedServices(typeof(ITeamService).Assembly);
 
