@@ -1,0 +1,57 @@
+﻿.zephyr-notfound-card {
+    max-width: 520px;
+    margin: auto;
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 32px rgba(56, 92, 228, 0.12); /* subtle shadow in your theme color */
+    padding: 48px 36px;
+    text-align: center;
+}
+
+.zephyr-notfound-image {
+    width: 320px; /* Bigger image */
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(56, 92, 228, 0.06);
+    background: #eef2fe;
+    object-fit: contain;
+}
+
+.zephyr-notfound-code {
+    font-size: 5rem;
+    font-weight: 800;
+    color: #385ce4; /* Your color */
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.zephyr-notfound-message {
+    font-size: 1.65rem;
+    color: #385ce4; /* Your color */
+    margin-bottom: 32px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #385ce4 0%, #5c80ec 100%);
+    border: none;
+}
+
+.btn-outline-primary {
+    border-color: #385ce4;
+    color: #385ce4;
+}
+
+    .btn-outline-primary:hover {
+        background: #385ce4;
+        color: #fff;
+    }
+
+.btn-lg {
+    font-size: 1.15rem;
+    padding: 14px 36px;
+}
+
+.rounded-pill {
+    border-radius: 2rem !important;
+}
