@@ -10,6 +10,7 @@ namespace NextGenFootball.Web
     using NextGenFootball.Data.Repository.Interfaces;
     using NextGenFootball.Services.Core;
     using NextGenFootball.Services.Core.Interfaces;
+    using NextGenFootball.Web.Infrastructure.Extensions;
 
     public class Program
     {
@@ -52,13 +53,7 @@ namespace NextGenFootball.Web
             builder.Services.AddScoped<ICoachRepository, CoachRepository>();
             builder.Services.AddScoped<IMatchRepository, MatchRepository>();
 
-            builder.Services.AddScoped<IStadiumService, StadiumService>();
-            builder.Services.AddScoped<ISeasonService, SeasonService>();
-            builder.Services.AddScoped<ILeagueService, LeagueService>();
-            builder.Services.AddScoped<ITeamService, TeamService>();
-            builder.Services.AddScoped<IPlayerService, PlayerService>();
-            builder.Services.AddScoped<ICoachService, CoachService>();
-            builder.Services.AddScoped<IMatchService, MatchService>();
+            builder.Services.AddUserDefinedServices(typeof(ITeamService).Assembly);
 
             WebApplication? app = builder.Build();
             

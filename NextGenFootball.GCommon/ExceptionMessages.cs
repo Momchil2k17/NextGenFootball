@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NextGenFootball.GCommon
+{
+    public static class ExceptionMessages
+    {
+        public const string InterfaceNotFoundMessage =
+            "The {0} could not be added to the Service Collection, because no interface matching the convention could be found! Convention for Interface naming: I{0}.";
+    }
+}
