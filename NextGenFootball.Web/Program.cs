@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NextGenFootball.Data;
 namespace NextGenFootball.Web
 {
     using Data;
@@ -29,16 +32,7 @@ namespace NextGenFootball.Web
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options =>
                 {
-                    options.SignIn.RequireConfirmedEmail = false;
-                    options.SignIn.RequireConfirmedAccount = false;
-                    options.SignIn.RequireConfirmedPhoneNumber = false;
-
-                    options.Password.RequiredLength = 3;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredUniqueChars = 0;
+                    ConfigureIdentity(builder.Configuration, options);
                 })
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
@@ -76,6 +70,29 @@ namespace NextGenFootball.Web
             app.MapRazorPages();
 
             app.Run();
+        }
+
+        private static void ConfigureIdentity(IConfigurationManager configurationManager, IdentityOptions identityOptions)
+        {
+            identityOptions.SignIn.RequireConfirmedEmail =
+                configurationManager.GetValue<bool>($"IdentityConfig:SignIn:RequireConfirmedEmail");
+            identityOptions.SignIn.RequireConfirmedAccount =
+                configurationManager.GetValue<bool>($"IdentityConfig:SignIn:RequireConfirmedAccount");
+            identityOptions.SignIn.RequireConfirmedPhoneNumber =
+                configurationManager.GetValue<bool>($"IdentityConfig:SignIn:RequireConfirmedPhoneNumber");
+
+            identityOptions.Password.RequiredLength =
+                configurationManager.GetValue<int>($"IdentityConfig:Password:RequiredLength");
+            identityOptions.Password.RequireNonAlphanumeric =
+                configurationManager.GetValue<bool>($"IdentityConfig:Password:RequireNonAlphanumeric");
+            identityOptions.Password.RequireDigit =
+                configurationManager.GetValue<bool>($"IdentityConfig:Password:RequireDigit");
+            identityOptions.Password.RequireLowercase =
+                configurationManager.GetValue<bool>($"IdentityConfig:Password:RequireLowercase");
+            identityOptions.Password.RequireUppercase =
+                configurationManager.GetValue<bool>($"IdentityConfig:Password:RequireUppercase");
+            identityOptions.Password.RequiredUniqueChars =
+                configurationManager.GetValue<int>($"IdentityConfig:Password:RequiredUniqueChars");
         }
     }
 }
