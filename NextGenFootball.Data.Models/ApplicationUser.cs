@@ -15,5 +15,6 @@ namespace NextGenFootball.Data.Models
         }
         public virtual ICollection<Player> Players { get; set; } = new HashSet<Player>();
         public virtual ICollection<Coach> Coaches { get; set; } = new HashSet<Coach>();
+        public virtual ICollection<Referee> Referees { get; set; } = new HashSet<Referee>();
     }
 }
