@@ -83,6 +83,7 @@ namespace NextGenFootball.Data.Configuration
                 .WithMany(r => r.AssistantReferee2Matches)
                 .HasForeignKey(m => m.AssistantReferee2Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
             entity
                 .HasQueryFilter(m => m.IsDeleted == false);
         }
