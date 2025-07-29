@@ -7,11 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NextGenFootball.GCommon\NextGenFootball.GCommon.csproj" />
+    <ProjectReference Include="..\NextGenFootball.Services.Core\NextGenFootball.Services.Core.csproj" />
   </ItemGroup>
 
 </Project>

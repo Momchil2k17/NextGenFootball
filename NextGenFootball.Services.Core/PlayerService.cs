@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
 {
@@ -49,7 +50,7 @@ namespace NextGenFootball.Services.Core
                     PreferredFoot = model.PreferredFoot,
                     TeamId = team.Id,
                     SeasonId = season.Id,
-                    ImageUrl = model.ImageUrl
+                    ImageUrl = model.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
                 };
                 await this.playerRepository.AddAsync(player);
                 res = true;
@@ -72,8 +73,8 @@ namespace NextGenFootball.Services.Core
                     PreferredFoot = p.PreferredFoot.ToString(),
                     Position = p.Position,
                     DateOfBirth = p.DateOfBirth,
-                    ImageUrl = p.ImageUrl,
-                    TeamImageUrl= p.Team.ImageUrl,
+                    ImageUrl = p.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
+                    TeamImageUrl = p.Team.ImageUrl,
                 })
                 .ToListAsync();
             return players;
@@ -102,7 +103,7 @@ namespace NextGenFootball.Services.Core
                         TeamImageUrl = player.Team!.ImageUrl!,
                         PreferredFoot = player.PreferredFoot.ToString(),
                         DateOfBirth = player.DateOfBirth,
-                        ImageUrl = player.ImageUrl,
+                        ImageUrl = player.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
                         Goals = player.Goals,
                         Assists = player.Assists,
                         MinutesPlayed = player.MinutesPlayed,
@@ -138,7 +139,7 @@ namespace NextGenFootball.Services.Core
                         DateOfBirth = player.DateOfBirth,
                         Position = player.Position,
                         PreferredFoot = player.PreferredFoot,
-                        ImageUrl = player.ImageUrl
+                        ImageUrl = player.ImageUrl ?? ""
                     };
                 }
             }

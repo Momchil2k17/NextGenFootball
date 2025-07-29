@@ -4,13 +4,14 @@ using NextGenFootball.Data;
 namespace NextGenFootball.Web
 {
     using Data;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
     using Microsoft.EntityFrameworkCore;
     using NextGenFootball.Data.Models;
     using NextGenFootball.Data.Repository;
     using NextGenFootball.Data.Repository.Interfaces;
+    using NextGenFootball.Data.Seeding;
+    using NextGenFootball.Data.Seeding.Interfaces;
     using NextGenFootball.Services.Core;
     using NextGenFootball.Services.Core.Interfaces;
     using NextGenFootball.Web.Infrastructure.Extensions;
@@ -36,11 +37,14 @@ namespace NextGenFootball.Web
                 })
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
-            builder.Services.AddControllersWithViews();
 
             builder.Services.AddRepositories(typeof(ITeamRepository).Assembly);
-
             builder.Services.AddUserDefinedServices(typeof(ITeamService).Assembly);
+
+            builder.Services.AddTransient<IIdentitySeeder, IdentitySeeder>();
+
+            builder.Services.AddControllersWithViews();
+
 
             WebApplication? app = builder.Build();
             
@@ -60,6 +64,8 @@ namespace NextGenFootball.Web
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.SeedDefaultIdentity();
 
             app.UseAuthentication();
             app.UseAuthorization();
