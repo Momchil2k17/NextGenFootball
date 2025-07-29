@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NextGenFootball.Data.Seeding.Interfaces;
+using NextGenFootball.Web.Infrastructure.Middlewares;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace NextGenFootball.Web.Infrastructure.Extensions
                 .SeedIdentityAsync()
                 .GetAwaiter()
                 .GetResult();
+
+            return app;
+        }
+        public static IApplicationBuilder UserRefereeRedirection(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<RefereeRedirectionMiddleware>();
 
             return app;
         }

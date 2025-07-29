@@ -70,6 +70,8 @@ namespace NextGenFootball.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UserRefereeRedirection();
+
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area}/{controller=Home}/{action=Index}/{id?}");
