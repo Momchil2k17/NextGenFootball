@@ -21,6 +21,8 @@
         public virtual DbSet<Coach> Coaches { get; set; } = null!;
         public virtual DbSet<Match> Matches { get; set; } = null!;
         public virtual DbSet<Referee> Referees { get; set; } = null!;
+        public virtual DbSet<MatchEvent> MatchEvents { get; set; } = null!;
+        public virtual DbSet<MatchReport> MatchReports { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

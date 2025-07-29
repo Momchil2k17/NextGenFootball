@@ -64,6 +64,8 @@ namespace NextGenFootball.Data.Models
         public virtual Referee? AssistantReferee1 { get; set; }
         public Guid? AssistantReferee2Id { get; set; }
         public virtual Referee? AssistantReferee2 { get; set; }
+
+        public virtual MatchReport? Report { get; set; }
     }
 }
 
