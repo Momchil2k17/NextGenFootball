@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Referee Home";
+}
+
+<link rel="stylesheet" href="~/css/referee-home.css" />
+
+<div class="container py-5">
+    <div class="row justify-content-center align-items-stretch" style="min-height:60vh;">
+        <div class="col-lg-5 mb-4">
+            <a asp-area="Referee" asp-controller="Matches" asp-action="Index" class="text-decoration-none">
+                <div class="card interactive-card text-white text-center h-100 d-flex flex-column justify-content-center shadow-lg">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <div class="icon mb-3">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <h2 class="card-title display-5 mb-3">My Matches</h2>
+                        <p class="lead mb-3">View and manage your upcoming and previous matches.</p>
+                        <span class="btn btn-light btn-lg fw-bold px-5">Go to Matches</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-5 mb-4">
+            <a asp-area="Referee" asp-controller="Calendar" asp-action="Index" class="text-decoration-none">
+                <div class="card interactive-card calendar text-white text-center h-100 d-flex flex-column justify-content-center shadow-lg">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        <div class="icon mb-3">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h2 class="card-title display-5 mb-3">My Calendar</h2>
+                        <p class="lead mb-3">Mark your availability and view your schedule.</p>
+                        <span class="btn btn-light btn-lg fw-bold px-5">Go to Calendar</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
