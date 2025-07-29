@@ -20,16 +20,18 @@ namespace NextGenFootball.Web.Areas.Referee.Controllers
             return retRes;
         }
 
-        protected string? GetUserId()
+        protected Guid? GetUserId()
         {
-            string? userId = null;
             if (this.IsUserAuthenticated())
             {
-                userId = this.User
-                    .FindFirstValue(ClaimTypes.NameIdentifier);
+                string? userIdString = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (Guid.TryParse(userIdString, out Guid userId))
+                {
+                    return userId;
+                }
             }
 
-            return userId;
+            return null;
         }
     }
 }

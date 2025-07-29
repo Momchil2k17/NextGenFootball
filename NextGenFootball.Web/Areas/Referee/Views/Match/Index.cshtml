@@ -1,0 +1,66 @@
+﻿@model IEnumerable<NextGenFootball.Web.ViewModels.Referee.RefereeMatches.MyMatchesViewModel>
+
+@{
+    ViewData["Title"] = "My Matches";
+}
+
+<h2 class="mb-4">My Matches</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        You have no assigned matches.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Main Referee</th>
+                    <th>Assistant 1</th>
+                    <th>Assistant 2</th>
+                    <th>Teams</th>
+                    <th>Stadium</th>
+                    <th>League</th>
+                    <th>Your Role</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var match in Model)
+                {
+                    <tr>
+                        <td>@match.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@match.RefereeName</td>
+                        <td>@match.AssistantReferee1Name</td>
+                        <td>@match.AssistantReferee2Name</td>
+                        <td>
+                            <span class="d-flex align-items-center gap-2">
+                                <img src="@match.HomeTeamImageUrl" alt="Home team logo" style="height: 24px; width: 24px; object-fit: contain; border-radius: 3px; background: #fff; border: 1px solid #dee2e6;" />
+                                <span>@match.HomeTeamName</span>
+                                <span class="mx-1 text-muted">vs</span>
+                                <span>@match.AwayTeamName</span>
+                                <img src="@match.AwayTeamImageUrl" alt="Away team logo" style="height: 24px; width: 24px; object-fit: contain; border-radius: 3px; background: #fff; border: 1px solid #dee2e6;" />
+                            </span>
+                        </td>
+                        <td>@match.StadiumName</td>
+                        <td>@match.LeagueName</td>
+                        <td>
+                            <span class="badge bg-primary">@match.MyRole</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary">@match.Status</span>
+                        </td>
+                        <td>
+                            <a asp-area="" asp-controller="Match" asp-action="Details" asp-route-id="@match.MatchId" class="btn btn-outline-info btn-sm">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

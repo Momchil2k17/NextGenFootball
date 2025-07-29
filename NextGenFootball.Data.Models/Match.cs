@@ -56,6 +56,14 @@ namespace NextGenFootball.Data.Models
 
         [Comment("Indicates whether the match is soft-deleted.")]
         public bool IsDeleted { get; set; }
+
+        public Guid? RefereeId { get; set; }
+        public virtual Referee? Referee { get; set; }
+
+        public Guid? AssistantReferee1Id { get; set; }
+        public virtual Referee? AssistantReferee1 { get; set; }
+        public Guid? AssistantReferee2Id { get; set; }
+        public virtual Referee? AssistantReferee2 { get; set; }
     }
 }
 

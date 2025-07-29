@@ -34,6 +34,8 @@ namespace NextGenFootball.Data.Models
         [Comment("Indicates whether the referee is deleted.")]
         public bool IsDeleted { get; set; } 
 
-        public virtual ICollection<Match> Matches { get; set; } = new HashSet<Match>();
+        public virtual ICollection<Match> MainRefereeMatches { get; set; } = new HashSet<Match>();
+        public virtual ICollection<Match> AssistantReferee1Matches { get; set; } = new HashSet<Match>();
+        public virtual ICollection<Match> AssistantReferee2Matches { get; set; } = new HashSet<Match>();
     }
 }
