@@ -63,10 +63,26 @@ namespace NextGenFootball.Data.Configuration
 
             entity
                 .HasOne(m => m.League)
-                .WithMany(l => l.Matches)
+                .WithMany(l=>l.Matches)
                 .HasForeignKey(m => m.LeagueId)
                 .OnDelete(DeleteBehavior.Restrict);
+            entity
+                .HasOne(m => m.Referee)
+                .WithMany(r => r.MainRefereeMatches)
+                .HasForeignKey(m => m.RefereeId)
+                .OnDelete(DeleteBehavior.Restrict);
 
+            entity
+                .HasOne(m => m.AssistantReferee1)
+                .WithMany(r => r.AssistantReferee1Matches)
+                .HasForeignKey(m => m.AssistantReferee1Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity
+                .HasOne(m => m.AssistantReferee2)
+                .WithMany(r => r.AssistantReferee2Matches)
+                .HasForeignKey(m => m.AssistantReferee2Id)
+                .OnDelete(DeleteBehavior.Restrict);
             entity
                 .HasQueryFilter(m => m.IsDeleted == false);
         }
