@@ -3,6 +3,7 @@ using NextGenFootball.Data.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,8 @@ namespace NextGenFootball.Data.Models
         public Guid? AssistantReferee2Id { get; set; }
         public virtual Referee? AssistantReferee2 { get; set; }
 
+        [ForeignKey("MatchReport")]
+        public Guid? MatchReportId { get; set; }
         public virtual MatchReport? Report { get; set; }
     }
 }

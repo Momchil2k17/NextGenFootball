@@ -1,4 +1,5 @@
-﻿@model IEnumerable<NextGenFootball.Web.ViewModels.Referee.RefereeMatches.MyMatchesViewModel>
+﻿@using NextGenFootball.Web.ViewModels.Referee.RefereeMatches
+@model IEnumerable<MyMatchesViewModel>
 
 @{
     ViewData["Title"] = "My Matches";
@@ -57,6 +58,26 @@ else
                         </td>
                         <td>
                             <a asp-area="" asp-controller="Match" asp-action="Details" asp-route-id="@match.MatchId" class="btn btn-outline-info btn-sm">Details</a>
+                            @if (match.HasReport)
+                            {
+                                <a asp-area="Referee"
+                                   asp-controller="Match"
+                                   asp-action="EditReport"
+                                   asp-route-id="@match.MatchId"
+                                   class="btn btn-warning btn-sm">
+                                    Edit Report
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-area="Referee"
+                                   asp-controller="Match"
+                                   asp-action="CreateReport"
+                                   asp-route-id="@match.MatchId"
+                                   class="btn btn-success btn-sm">
+                                    Create Report
+                                </a>
+                            }
                         </td>
                     </tr>
                 }

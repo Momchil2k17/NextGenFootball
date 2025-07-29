@@ -21,6 +21,7 @@ namespace NextGenFootball.Web.ViewModels.Referee.RefereeMatches
         public string? AssistantReferee1Name { get; set; }
         public string? AssistantReferee2Name { get; set; }
         public MatchStatus Status { get; set; }
-        public string MyRole { get; set; }=null!; // "Main Referee", "Assistant Referee 1", "Assistant Referee 2"
+        public string MyRole { get; set; }=null!;
+        public bool HasReport { get; set; }
     }
 }

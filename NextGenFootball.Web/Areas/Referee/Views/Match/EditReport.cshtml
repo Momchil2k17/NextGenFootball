@@ -1,0 +1,354 @@
+﻿@model NextGenFootball.Web.ViewModels.Referee.RefereeMatches.MatchReportViewModel
+
+@{
+    ViewData["Title"] = "Edit Match Report";
+    var statTypes = new[] { "Goal", "Assist", "Yellow Card", "Red Card", "Own Goal" };
+}
+
+<h2>Edit Match Report</h2>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form asp-action="EditReport" method="post" autocomplete="off">
+    <input type="hidden" asp-for="MatchId" />
+    <input type="hidden" asp-for="RefereeName" />
+
+    <div class="row mb-3">
+        <div class="col">
+            <label asp-for="HomeScore" class="form-label">Home Score</label>
+            <input asp-for="HomeScore" class="form-control" id="HomeScore" readonly />
+        </div>
+        <div class="col">
+            <label asp-for="AwayScore" class="form-label">Away Score</label>
+            <input asp-for="AwayScore" class="form-control" id="AwayScore" readonly />
+        </div>
+    </div>
+
+    <div id="yellowCardWarning" class="alert alert-warning d-none"></div>
+
+    <h4>First Half Events</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Home Team</h5>
+            <table class="table table-sm" id="FirstHalfHomeEventsTable">
+                <thead>
+                    <tr>
+                        <th>Minute</th>
+                        <th>Player</th>
+                        <th>Stat Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < (Model.FirstHalfHomeEvents?.Count ?? 0); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input name="FirstHalfHomeEvents[@i].Minute" type="number" class="form-control event-minute"
+                                    value="@Model.FirstHalfHomeEvents[i].Minute" min="1" max="45" />
+                            </td>
+                            <td>
+                                <select name="FirstHalfHomeEvents[@i].PlayerId" class="form-select event-player">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var player in Model.HomePlayers)
+                                    {
+                                        <!option value="@player.PlayerId" @(player.PlayerId == Model.FirstHalfHomeEvents[i].PlayerId ? "selected" : null)>@player.PlayerName</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <select name="FirstHalfHomeEvents[@i].StatType" class="form-select event-stat">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var stat in statTypes)
+                                    {
+                                        <!option value="@stat" @(stat == Model.FirstHalfHomeEvents[i].StatType ? "selected" : null)>@stat</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this, 'FirstHalfHomeEvents')">-</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addEventRow('FirstHalfHomeEvents', 1, 45, homePlayers)">+ Add Event</button>
+        </div>
+        <div class="col-md-6">
+            <h5>Away Team</h5>
+            <table class="table table-sm" id="FirstHalfAwayEventsTable">
+                <thead>
+                    <tr>
+                        <th>Minute</th>
+                        <th>Player</th>
+                        <th>Stat Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < (Model.FirstHalfAwayEvents?.Count ?? 0); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input name="FirstHalfAwayEvents[@i].Minute" type="number" class="form-control event-minute"
+                                    value="@Model.FirstHalfAwayEvents[i].Minute" min="1" max="45" />
+                            </td>
+                            <td>
+                                <select name="FirstHalfAwayEvents[@i].PlayerId" class="form-select event-player">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var player in Model.AwayPlayers)
+                                    {
+                                        <!option value="@player.PlayerId" @(player.PlayerId == Model.FirstHalfAwayEvents[i].PlayerId ? "selected" : null)>@player.PlayerName</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <select name="FirstHalfAwayEvents[@i].StatType" class="form-select event-stat">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var stat in statTypes)
+                                    {
+                                        <!option value="@stat" @(stat == Model.FirstHalfAwayEvents[i].StatType ? "selected" : null)>@stat</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this, 'FirstHalfAwayEvents')">-</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addEventRow('FirstHalfAwayEvents', 1, 45, awayPlayers)">+ Add Event</button>
+        </div>
+    </div>
+
+    <h4>Second Half Events</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Home Team</h5>
+            <table class="table table-sm" id="SecondHalfHomeEventsTable">
+                <thead>
+                    <tr>
+                        <th>Minute</th>
+                        <th>Player</th>
+                        <th>Stat Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < (Model.SecondHalfHomeEvents?.Count ?? 0); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input name="SecondHalfHomeEvents[@i].Minute" type="number" class="form-control event-minute"
+                                    value="@Model.SecondHalfHomeEvents[i].Minute" min="46" max="90" />
+                            </td>
+                            <td>
+                                <select name="SecondHalfHomeEvents[@i].PlayerId" class="form-select event-player">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var player in Model.HomePlayers)
+                                    {
+                                        <!option value="@player.PlayerId" @(player.PlayerId == Model.SecondHalfHomeEvents[i].PlayerId ? "selected" : null)>@player.PlayerName</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <select name="SecondHalfHomeEvents[@i].StatType" class="form-select event-stat">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var stat in statTypes)
+                                    {
+                                        <!option value="@stat" @(stat == Model.SecondHalfHomeEvents[i].StatType ? "selected" : null)>@stat</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this, 'SecondHalfHomeEvents')">-</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addEventRow('SecondHalfHomeEvents', 46, 90, homePlayers)">+ Add Event</button>
+        </div>
+        <div class="col-md-6">
+            <h5>Away Team</h5>
+            <table class="table table-sm" id="SecondHalfAwayEventsTable">
+                <thead>
+                    <tr>
+                        <th>Minute</th>
+                        <th>Player</th>
+                        <th>Stat Type</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < (Model.SecondHalfAwayEvents?.Count ?? 0); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input name="SecondHalfAwayEvents[@i].Minute" type="number" class="form-control event-minute"
+                                    value="@Model.SecondHalfAwayEvents[i].Minute" min="46" max="90" />
+                            </td>
+                            <td>
+                                <select name="SecondHalfAwayEvents[@i].PlayerId" class="form-select event-player">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var player in Model.AwayPlayers)
+                                    {
+                                        <!option value="@player.PlayerId" @(player.PlayerId == Model.SecondHalfAwayEvents[i].PlayerId ? "selected" : null)>@player.PlayerName</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <select name="SecondHalfAwayEvents[@i].StatType" class="form-select event-stat">
+                                    <option value="">-- Select --</option>
+                                    @foreach (var stat in statTypes)
+                                    {
+                                        <!option value="@stat" @(stat == Model.SecondHalfAwayEvents[i].StatType ? "selected" : null)>@stat</!option>
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this, 'SecondHalfAwayEvents')">-</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="button" class="btn btn-secondary" onclick="addEventRow('SecondHalfAwayEvents', 46, 90, awayPlayers)">+ Add Event</button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Save Changes</button>
+</form>
+
+@section Scripts {
+<script>
+    const homePlayers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HomePlayers));
+    const awayPlayers = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AwayPlayers));
+    const statTypes = ["Goal", "Assist", "Yellow Card", "Red Card", "Own Goal"];
+
+    function addEventRow(section, min, max, players) {
+        var table = document.getElementById(section + "Table").getElementsByTagName('tbody')[0];
+        if (table.rows.length > 0) {
+            var lastRow = table.rows[table.rows.length - 1];
+            var inputs = lastRow.querySelectorAll("input,select");
+            for (var input of inputs) {
+                if (input.value === "" || input.value === null) {
+                    input.classList.add("is-invalid");
+                    input.focus();
+                    return;
+                } else {
+                    input.classList.remove("is-invalid");
+                }
+            }
+        }
+        var idx = table.rows.length;
+        let playerOptions = '<option value="">-- Select --</option>';
+        players.forEach(function(player) {
+            playerOptions += `<option value="${player.PlayerId}">${player.PlayerName}</option>`;
+        });
+        let statOptions = '<option value="">-- Select --</option>';
+        statTypes.forEach(function(stat) {
+            statOptions += `<option value="${stat}">${stat}</option>`;
+        });
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>
+                <input name="${section}[${idx}].Minute" type="number" class="form-control event-minute" min="${min}" max="${max}" />
+            </td>
+            <td>
+                <select name="${section}[${idx}].PlayerId" class="form-select event-player">
+                    ${playerOptions}
+                </select>
+            </td>
+            <td>
+                <select name="${section}[${idx}].StatType" class="form-select event-stat">
+                    ${statOptions}
+                </select>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this, '${section}')">-</button>
+            </td>
+        `;
+        updateScores();
+        detectSecondYellow();
+    }
+
+    window.removeRow = function(btn, section) {
+        var row = btn.closest('tr');
+        var table = row.parentNode;
+        row.remove();
+        Array.from(table.rows).forEach((r, i) => {
+            r.querySelectorAll('input,select').forEach(input => {
+                input.name = input.name.replace(new RegExp(section + "\\[\\d+\\]"), section + "[" + i + "]");
+            });
+        });
+        updateScores();
+        detectSecondYellow();
+    };
+
+    function updateScores() {
+        let homeScore = 0, awayScore = 0;
+        document.querySelectorAll("#FirstHalfHomeEventsTable tbody tr, #SecondHalfHomeEventsTable tbody tr").forEach(row => {
+            const stat = row.querySelector('.event-stat')?.value;
+            if (stat === "Goal") homeScore++;
+            if (stat === "Own Goal") awayScore++;
+        });
+        document.querySelectorAll("#FirstHalfAwayEventsTable tbody tr, #SecondHalfAwayEventsTable tbody tr").forEach(row => {
+            const stat = row.querySelector('.event-stat')?.value;
+            if (stat === "Goal") awayScore++;
+            if (stat === "Own Goal") homeScore++;
+        });
+        document.getElementById('HomeScore').value = homeScore;
+        document.getElementById('AwayScore').value = awayScore;
+    }
+
+    function detectSecondYellow() {
+        const yellowCardMap = {};
+        let warningMsg = "";
+        document.querySelectorAll("#FirstHalfHomeEventsTable tbody tr, #SecondHalfHomeEventsTable tbody tr").forEach(row => {
+            const playerId = row.querySelector('.event-player')?.value;
+            const stat = row.querySelector('.event-stat')?.value;
+            if (playerId && stat === "Yellow Card") {
+                const key = "Home_" + playerId;
+                yellowCardMap[key] = (yellowCardMap[key] || 0) + 1;
+                if (yellowCardMap[key] === 2) {
+                    const playerName = row.querySelector('.event-player').selectedOptions[0].textContent;
+                    warningMsg += `Player <b>${playerName}</b> (Home) received a SECOND YELLOW CARD.<br/>`;
+                }
+            }
+        });
+        document.querySelectorAll("#FirstHalfAwayEventsTable tbody tr, #SecondHalfAwayEventsTable tbody tr").forEach(row => {
+            const playerId = row.querySelector('.event-player')?.value;
+            const stat = row.querySelector('.event-stat')?.value;
+            if (playerId && stat === "Yellow Card") {
+                const key = "Away_" + playerId;
+                yellowCardMap[key] = (yellowCardMap[key] || 0) + 1;
+                if (yellowCardMap[key] === 2) {
+                    const playerName = row.querySelector('.event-player').selectedOptions[0].textContent;
+                    warningMsg += `Player <b>${playerName}</b> (Away) received a SECOND YELLOW CARD.<br/>`;
+                }
+            }
+        });
+        const warnDiv = document.getElementById("yellowCardWarning");
+        if (warningMsg) {
+            warnDiv.innerHTML = warningMsg;
+            warnDiv.classList.remove("d-none");
+        } else {
+            warnDiv.innerHTML = "";
+            warnDiv.classList.add("d-none");
+        }
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('event-stat') || e.target.classList.contains('event-player')) {
+            updateScores();
+            detectSecondYellow();
+        }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        updateScores();
+        detectSecondYellow();
+    });
+</script>
+}
