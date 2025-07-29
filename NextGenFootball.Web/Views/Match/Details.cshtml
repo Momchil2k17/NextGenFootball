@@ -1,4 +1,4 @@
-﻿@using NextGenFootball.Web.ViewModels.Match;
+﻿@using NextGenFootball.Web.ViewModels.Match
 @model MatchDetailsViewModel
 
 @{
@@ -6,6 +6,7 @@
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="~/css/match-events.css">
 
 <div class="container mt-4">
     <div class="card shadow-sm">
@@ -40,3 +41,123 @@
         </div>
     </div>
 </div>
+
+@if (Model.Events != null && Model.Events.Any())
+{
+    <div class="container mt-4">
+        <h4 class="text-center">Match Events</h4>
+
+        @{
+            var firstHalfHome = Model.Events.Where(e => e.Team == "Home" && e.Minute >= 1 && e.Minute <= 45).OrderBy(e => e.Minute).ToList();
+            var firstHalfAway = Model.Events.Where(e => e.Team == "Away" && e.Minute >= 1 && e.Minute <= 45).OrderBy(e => e.Minute).ToList();
+            var secondHalfHome = Model.Events.Where(e => e.Team == "Home" && e.Minute >= 46 && e.Minute <= 90).OrderBy(e => e.Minute).ToList();
+            var secondHalfAway = Model.Events.Where(e => e.Team == "Away" && e.Minute >= 46 && e.Minute <= 90).OrderBy(e => e.Minute).ToList();
+
+            Func<string, string> eventIcon = (statType) =>
+            {
+                switch (statType)
+                {
+                    case "Goal": return "<span class='fs-5 text-success'>⚽️</span>";
+                    case "Own Goal": return "<i class='bi bi-emoji-dizzy fs-5 text-danger'></i>";
+                    case "Assist": return "<i class='bi bi-arrow-up-right-square fs-5 text-info'></i>";
+                    case "Yellow Card": return "<i class='bi bi-square-fill fs-5' style='color:gold;'></i>";
+                    case "Red Card": return "<i class='bi bi-square-fill fs-5 text-danger'></i>";
+                    default: return "";
+                }
+            };
+        }
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>First Half - Home</h5>
+                <ul class="list-group match-event-list">
+                    @if (firstHalfHome.Any())
+                    {
+                        @foreach (var e in firstHalfHome)
+                        {
+                            <li class="list-group-item d-flex align-items-center match-event-item">
+                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="fw-bold me-1">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
+                                <span class="me-1">@e.PlayerName</span>
+                                <span class="badge bg-secondary ms-auto">@e.StatType</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">No events</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5>First Half - Away</h5>
+                <ul class="list-group match-event-list">
+                    @if (firstHalfAway.Any())
+                    {
+                        @foreach (var e in firstHalfAway)
+                        {
+                            <li class="list-group-item d-flex align-items-center match-event-item">
+                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="fw-bold me-1">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
+                                <span class="me-1">@e.PlayerName</span>
+                                <span class="badge bg-secondary ms-auto">@e.StatType</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">No events</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>Second Half - Home</h5>
+                <ul class="list-group match-event-list">
+                    @if (secondHalfHome.Any())
+                    {
+                        @foreach (var e in secondHalfHome)
+                        {
+                            <li class="list-group-item d-flex align-items-center match-event-item">
+                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="fw-bold me-1">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
+                                <span class="me-1">@e.PlayerName</span>
+                                <span class="badge bg-secondary ms-auto">@e.StatType</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">No events</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5>Second Half - Away</h5>
+                <ul class="list-group match-event-list">
+                    @if (secondHalfAway.Any())
+                    {
+                        @foreach (var e in secondHalfAway)
+                        {
+                            <li class="list-group-item d-flex align-items-center match-event-item">
+                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="fw-bold me-1">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
+                                <span class="me-1">@e.PlayerName</span>
+                                <span class="badge bg-secondary ms-auto">@e.StatType</span>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item text-muted">No events</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿.match-event-list {
+    background: #f9f9fb;
+    border-radius: 0.5rem;
+}
+
+.match-event-item {
+    transition: background 0.15s;
+    border: none;
+    border-bottom: 1px solid #ececec;
+    font-size: 1.04rem;
+    background: transparent;
+}
+
+    .match-event-item:last-child {
+        border-bottom: none;
+    }
+
+    .match-event-item:hover {
+        background: #eef6ff;
+    }
+
+.event-player-img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    background: #fff;
+}

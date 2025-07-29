@@ -10,5 +10,7 @@ namespace NextGenFootball.Services.Core.Referee.Interfaces
     public interface IRefereeMatchService
     {
         public Task<IEnumerable<MyMatchesViewModel?>> GetRefereeMatches(Guid? id);
+        public Task<MatchReportViewModel?> GetMatchReportView(long matchId);
+        public Task CreateMatchReportAsync(MatchReportViewModel matchReport);
     }
 }

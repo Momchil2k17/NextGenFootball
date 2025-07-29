@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static NextGenFootball.GCommon.ApplicationConstants   ;
 
 namespace NextGenFootball.Services.Core
 {
@@ -18,12 +19,14 @@ namespace NextGenFootball.Services.Core
         private readonly ITeamRepository teamRepository;
         private readonly ILeagueRepository leagueRepository;
         private readonly IStadiumRepository stadiumRepository;
-        public MatchService(IMatchRepository matchRepository, ITeamRepository teamRepository, ILeagueRepository leagueRepository, IStadiumRepository stadiumRepository)
+        private readonly IPlayerRepository playerRepository;
+        public MatchService(IMatchRepository matchRepository, IPlayerRepository playerRepository, ITeamRepository teamRepository, ILeagueRepository leagueRepository, IStadiumRepository stadiumRepository)
         {
             this.matchRepository = matchRepository;
             this.teamRepository = teamRepository;
             this.leagueRepository = leagueRepository;
             this.stadiumRepository = stadiumRepository;
+            this.playerRepository = playerRepository;
         }
 
         public async Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id)
@@ -96,6 +99,8 @@ namespace NextGenFootball.Services.Core
                     .Include(m => m.AwayTeam)
                     .Include(m => m.League)
                     .Include(m => m.Stadium)
+                    .Include(m=>m.Report)
+                    .ThenInclude(m=>m.Events)
                     .AsNoTracking()
                     .Where(m => m.Id == id.Value)
                     .Select(m => new MatchDetailsViewModel
@@ -110,6 +115,20 @@ namespace NextGenFootball.Services.Core
                         StadiumName = m.Stadium.Name,
                         LeagueName = m.League.Name,
                         IsPlayed= m.Status == MatchStatus.Played,
+                        Events= m.Report != null ? m.Report.Events.Select(e => new MatchEventViewModel
+                        {
+                            Minute= e.Minute,
+                            PlayerName = this.playerRepository.GetAllAttached()
+                                .Where(p => p.Id == e.PlayerId)
+                                .Select(p => $"{p.FirstName} {p.LastName}")
+                                .FirstOrDefault() ?? "Unknown",
+                            StatType = e.StatType.ToString(),
+                            Team=e.Team,
+                            PlayerImageUrl= this.playerRepository.GetAllAttached()
+                                .Where(p => p.Id == e.PlayerId)
+                                .Select(p => p.ImageUrl)
+                                .FirstOrDefault()  ?? $"/images/{NoImagePeopleUrl}",
+                        }).ToList() : new List<MatchEventViewModel>()
                     })
                     .FirstOrDefaultAsync();
             }

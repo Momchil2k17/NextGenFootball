@@ -16,13 +16,121 @@ namespace NextGenFootball.Services.Core.Referee
     {
         private readonly IMatchRepository matchRepository;
         private readonly IRefereeRepository refereeRepository;
+        private readonly IPlayerRepository playerRepository;
+        private readonly IMatchReportRepository matchReportRepository;
         private readonly UserManager<ApplicationUser> userManager;  
         public RefereeMatchService(IMatchRepository matchRepository,UserManager<ApplicationUser> userManager
-            ,IRefereeRepository refereeRepository)
+            ,IRefereeRepository refereeRepository, IPlayerRepository playerRepository
+            , IMatchReportRepository matchReportRepository)
         {
             this.matchRepository = matchRepository;
             this.userManager = userManager;
             this.refereeRepository = refereeRepository;
+            this.playerRepository = playerRepository;
+            this.matchReportRepository = matchReportRepository;
+        }
+
+        public async Task CreateMatchReportAsync(MatchReportViewModel matchReport)
+        {
+            var report = new MatchReport
+            {
+                Id = Guid.NewGuid(),
+                MatchId = matchReport.MatchId,
+                HomeScore = matchReport.HomeScore,
+                AwayScore = matchReport.AwayScore,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = matchReport.RefereeName,
+            };
+
+            var events = matchReport.FirstHalfHomeEvents
+                .Select(e => new { e.Minute, e.PlayerId, e.StatType, Half = 1, Team = "Home" })
+                .Concat(matchReport.FirstHalfAwayEvents.Select(e => new { e.Minute, e.PlayerId, e.StatType, Half = 1, Team = "Away" }))
+                .Concat(matchReport.SecondHalfHomeEvents.Select(e => new { e.Minute, e.PlayerId, e.StatType, Half = 2, Team = "Home" }))
+                .Concat(matchReport.SecondHalfAwayEvents.Select(e => new { e.Minute, e.PlayerId, e.StatType, Half = 2, Team = "Away" }))
+                .ToList();
+
+            report.Events = events.Select(e => new MatchEvent
+            {
+                Minute = e.Minute,
+                PlayerId = e.PlayerId,
+                StatType = e.StatType,
+                Half = e.Half,
+                Team = e.Team,
+                MatchReportId = report.Id
+            }).ToList();
+
+            await this.matchReportRepository.AddAsync(report);
+
+            foreach (var e in events)
+            {
+                var player = await this.playerRepository.GetByIdAsync(e.PlayerId);
+                if (player != null)
+                {
+                    switch (e.StatType)
+                    {
+                        case "Goal":
+                            player.Goals += 1;
+                            break;
+                        case "Assist":
+                            player.Assists += 1;
+                            break;
+                        case "Yellow Card":
+                            player.YellowCards += 1;
+                            break;
+                        case "Red Card":
+                            player.RedCards += 1;
+                            break;
+                    }
+                    await this.playerRepository.UpdateAsync(player);
+                }
+            }
+
+            var match = await this.matchRepository.GetByIdAsync(matchReport.MatchId);
+            if (match != null)
+            {
+                match.HomeScore = matchReport.HomeScore;
+                match.AwayScore = matchReport.AwayScore;
+                match.MatchReportId = report.Id;
+                await this.matchRepository.UpdateAsync(match);
+
+            }
+        }
+
+        public async Task<MatchReportViewModel?> GetMatchReportView(long matchId)
+        {
+            Match? match = await this.matchRepository
+                .GetAllAttached()
+                .Include(m => m.HomeTeam)
+                .ThenInclude(m => m.Players)
+                .Include(m => m.AwayTeam)
+                .ThenInclude(m => m.Players)
+                .Include(m => m.Referee)
+                .FirstOrDefaultAsync(m => m.Id == matchId && !m.IsDeleted);
+            MatchReportViewModel? matchReport = null;
+            if (match!=null)
+            {
+               matchReport = new MatchReportViewModel
+                {
+                    MatchId = matchId,
+                    HomePlayers = match.HomeTeam.Players.Select(p => new PlayerSimpleDto()
+                    {
+                        PlayerId = p.Id,
+                        PlayerName = $"{p.FirstName} {p.LastName}",
+                        PlayerImageUrl = p.ImageUrl
+                    }).ToList(),
+                    AwayPlayers = match.AwayTeam.Players.Select(p => new PlayerSimpleDto()
+                    {
+                        PlayerId = p.Id,
+                        PlayerName = $"{p.FirstName} {p.LastName}",
+                        PlayerImageUrl = p.ImageUrl
+
+                    }).ToList(),
+                    HomeScore = match.HomeScore ?? 0,
+                    AwayScore = match.AwayScore ?? 0,
+                    RefereeName = match.Referee != null ? $"{match.Referee.FirstName} {match.Referee.LastName}" : "N/A",
+               };
+            }
+            return matchReport;
         }
 
         public async Task<IEnumerable<MyMatchesViewModel?>> GetRefereeMatches(Guid? id)
@@ -57,6 +165,7 @@ namespace NextGenFootball.Services.Core.Referee
                             m.AssistantReferee1!.ApplicationUserId == id ? "Assistant Referee 1" :
                             m.AssistantReferee2!.ApplicationUserId == id ? "Assistant Referee 2" : "Unknown",
                     Status=m.Status,
+                    HasReport= m.MatchReportId != null,
                 });
             return matches;
         }

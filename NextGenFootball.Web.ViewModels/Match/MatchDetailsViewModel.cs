@@ -19,5 +19,6 @@ namespace NextGenFootball.Web.ViewModels.Match
         public int? AwayScore { get; set; }
         public bool IsPlayed { get; set; }
         public string LeagueName { get; set; } = null!;
+        public List<MatchEventViewModel> Events { get; set; } = new List<MatchEventViewModel>();
     }
 }
