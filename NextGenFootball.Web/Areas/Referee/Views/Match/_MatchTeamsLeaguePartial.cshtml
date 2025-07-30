@@ -1,0 +1,15 @@
+﻿@model NextGenFootball.Web.ViewModels.Referee.RefereeMatches.MyMatchesViewModel
+
+<div class="match-teams-league d-flex flex-column">
+    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+        <img src="@Model.HomeTeamImageUrl" alt="Home team logo" class="my-team-img-lg flex-shrink-0" />
+        <span class="fw-semibold team-name home-team-name text-truncate">@Model.HomeTeamName</span>
+        <span class="mx-1 text-muted flex-shrink-0">vs</span>
+        <span class="fw-semibold team-name away-team-name text-truncate">@Model.AwayTeamName</span>
+        <img src="@Model.AwayTeamImageUrl" alt="Away team logo" class="my-team-img-lg flex-shrink-0" />
+    </div>
+    <div class="league-name fs-6 text-primary-emphasis fw-semibold text-truncate">
+        <i class="bi bi-trophy-fill me-1"></i>
+        @Model.LeagueName
+    </div>
+</div>

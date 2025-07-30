@@ -162,8 +162,8 @@ namespace NextGenFootball.Services.Core.Referee
                     AssistantReferee1Name = m.AssistantReferee1 != null ? $"{m.AssistantReferee1.FirstName} {m.AssistantReferee1.LastName}" : "N/A",
                     AssistantReferee2Name = m.AssistantReferee2 != null ? $"{m.AssistantReferee2.FirstName} {m.AssistantReferee2.LastName}" : "N/A",
                     MyRole= m.Referee!.ApplicationUserId == id ? "Main Referee" :
-                            m.AssistantReferee1!.ApplicationUserId == id ? "Assistant Referee 1" :
-                            m.AssistantReferee2!.ApplicationUserId == id ? "Assistant Referee 2" : "Unknown",
+                            m.AssistantReferee1!.ApplicationUserId == id ? "AR 1" :
+                            m.AssistantReferee2!.ApplicationUserId == id ? "AR 2" : "Unknown",
                     Status=m.Status,
                     HasReport= m.MatchReportId != null,
                 });

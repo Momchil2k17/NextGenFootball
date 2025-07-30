@@ -1,0 +1,80 @@
+﻿.my-matches-table {
+    border-radius: 16px;
+    overflow: hidden;
+    background: #f8fafd;
+    font-size: 1.03rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.my-team-img, .my-team-img-lg {
+    height: 26px;
+    width: 26px;
+    object-fit: contain;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.my-team-img-lg {
+    height: 36px;
+    width: 36px;
+}
+
+.match-teams-league .team-name {
+    max-width: 180px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.match-teams-league .league-name {
+    margin-left: 3px;
+    margin-top: 2px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.match-teams-league .text-truncate {
+    max-width: 100%;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+    vertical-align: middle;
+}
+
+@media (max-width: 1200px) {
+    .match-teams-league .team-name {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 992px) {
+    .my-matches-table {
+        font-size: 0.97rem;
+    }
+
+    .match-teams-league .team-name {
+        max-width: 65px;
+    }
+
+    .match-teams-league .league-name {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 600px) {
+    .match-teams-league .team-name {
+        max-width: 40vw;
+    }
+
+    .match-teams-league .league-name {
+        max-width: 60vw;
+    }
+}

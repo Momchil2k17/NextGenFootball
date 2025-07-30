@@ -9,15 +9,29 @@
     border-bottom: 1px solid #ececec;
     font-size: 1.04rem;
     background: transparent;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 8px 12px;
 }
 
-    .match-event-item:last-child {
-        border-bottom: none;
-    }
+/* Dedicated fixed-width spaces for icon, minute, and player image */
+.match-event-icon {
+    width: 32px;
+    min-width: 32px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .match-event-item:hover {
-        background: #eef6ff;
-    }
+.match-event-minute {
+    width: 38px;
+    min-width: 38px;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 8px;
+}
 
 .event-player-img {
     width: 28px;
@@ -26,4 +40,22 @@
     object-fit: cover;
     border: 1px solid #ddd;
     background: #fff;
+    margin-right: 8px;
+}
+
+.match-event-playername {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-right: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.match-event-item:last-child {
+    border-bottom: none;
+}
+
+.match-event-item:hover {
+    background: #eef6ff;
 }

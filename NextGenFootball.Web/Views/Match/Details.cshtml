@@ -75,11 +75,11 @@
                     {
                         @foreach (var e in firstHalfHome)
                         {
-                            <li class="list-group-item d-flex align-items-center match-event-item">
-                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
-                                <span class="fw-bold me-1">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
-                                <span class="me-1">@e.PlayerName</span>
+                            <li class="list-group-item match-event-item">
+                                <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="match-event-minute">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                <span class="match-event-playername">@e.PlayerName</span>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -97,11 +97,11 @@
                     {
                         @foreach (var e in firstHalfAway)
                         {
-                            <li class="list-group-item d-flex align-items-center match-event-item">
-                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
-                                <span class="fw-bold me-1">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
-                                <span class="me-1">@e.PlayerName</span>
+                            <li class="list-group-item match-event-item">
+                                <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="match-event-minute">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                <span class="match-event-playername">@e.PlayerName</span>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -121,11 +121,11 @@
                     {
                         @foreach (var e in secondHalfHome)
                         {
-                            <li class="list-group-item d-flex align-items-center match-event-item">
-                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
-                                <span class="fw-bold me-1">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
-                                <span class="me-1">@e.PlayerName</span>
+                            <li class="list-group-item match-event-item">
+                                <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="match-event-minute">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                <span class="match-event-playername">@e.PlayerName</span>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -143,11 +143,11 @@
                     {
                         @foreach (var e in secondHalfAway)
                         {
-                            <li class="list-group-item d-flex align-items-center match-event-item">
-                                <span class="me-2">@Html.Raw(eventIcon(e.StatType))</span>
-                                <span class="fw-bold me-1">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img me-2" />
-                                <span class="me-1">@e.PlayerName</span>
+                            <li class="list-group-item match-event-item">
+                                <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
+                                <span class="match-event-minute">@e.Minute'</span>
+                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                <span class="match-event-playername">@e.PlayerName</span>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }

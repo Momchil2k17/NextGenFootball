@@ -1,0 +1,23 @@
+﻿@model NextGenFootball.Web.ViewModels.Referee.RefereeMatches.MyMatchesViewModel
+
+<div class="referees-list">
+    <div>
+        <span class="fw-semibold">Main:</span>
+        <span>@Model.RefereeName</span>
+    </div>
+    <div>
+        <span class="fw-semibold">Assistant 1:</span>
+        <span>@Model.AssistantReferee1Name</span>
+    </div>
+    <div>
+        <span class="fw-semibold">Assistant 2:</span>
+        <span>@Model.AssistantReferee2Name</span>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.MyRole))
+    {
+        <div>
+            <span class="fw-semibold">Your Role:</span>
+            <span>@Model.MyRole</span>
+        </div>
+    }
+</div>
