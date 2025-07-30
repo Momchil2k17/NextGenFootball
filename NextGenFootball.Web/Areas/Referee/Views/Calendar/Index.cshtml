@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "My Calendar";
+    Layout = "_Layout";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.13/fullcalendar.min.css" rel="stylesheet" />
+<link href="~/css/referee-calendar.css" rel="stylesheet" />
+
+<div class="container my-5">
+    <h1 class="mb-4 display-5 fw-bold text-primary text-center">My Calendar</h1>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div id="referee-calendar"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.13/index.global.min.js"></script>
+<script src="~/js/referee-calendar.js"></script>
