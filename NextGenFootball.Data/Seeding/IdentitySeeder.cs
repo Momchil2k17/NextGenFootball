@@ -11,7 +11,7 @@ namespace NextGenFootball.Data.Seeding
 {
     public class IdentitySeeder : IIdentitySeeder
     {
-        private readonly string[] DefaultRoles = { AdminRoleName, UserRoleName, RefereeRoleName };
+        private readonly string[] DefaultRoles = { AdminRoleName, UserRoleName, RefereeRoleName,LeagueManagerRoleName };
 
         private readonly RoleManager<IdentityRole<Guid>> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
@@ -64,10 +64,13 @@ namespace NextGenFootball.Data.Seeding
             string? adminUserPassword = this.configuration["UserSeed:TestAdmin:Password"];
             string? refereeUserEmail = this.configuration["UserSeed:TestReferee:Email"];
             string? refereeUserPassword = this.configuration["UserSeed:TestReferee:Password"];
+            string? leagueManagerUserEmail = this.configuration["UserSeed:TestLeagueManager:Email"];
+            string? leagueManagerPassword = this.configuration["UserSeed:TestLeagueManager:Password"];
 
             if (testUserEmail == null || testUserPassword == null ||
                 adminUserEmail == null || adminUserPassword == null ||
-                refereeUserEmail == null || refereeUserPassword == null)
+                refereeUserEmail == null || refereeUserPassword == null
+                || leagueManagerUserEmail==null || leagueManagerPassword==null)
             {
                 throw new Exception("Missing configuration values for seeding users.");
             }
@@ -75,6 +78,7 @@ namespace NextGenFootball.Data.Seeding
             await CreateUserIfNotExists(testUserEmail, testUserPassword, UserRoleName);
             await CreateUserIfNotExists(adminUserEmail, adminUserPassword, AdminRoleName);
             await CreateUserIfNotExists(refereeUserEmail, refereeUserPassword, RefereeRoleName);
+            await CreateUserIfNotExists(leagueManagerUserEmail, leagueManagerPassword, LeagueManagerRoleName);
         }
 
         private async Task CreateUserIfNotExists(string email, string password, string role)

@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Areas\LeagueManager\Controllers\" />
+    <Folder Include="Areas\LeagueManager\Views\" />
   </ItemGroup>
 
 </Project>

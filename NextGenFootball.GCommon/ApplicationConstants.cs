@@ -13,7 +13,9 @@ namespace NextGenFootball.GCommon
         public const string UserRoleName = "User";
         public const string AdminRoleName = "Admin";
         public const string RefereeRoleName = "Referee";
+        public const string LeagueManagerRoleName = "LeagueManager";
 
         public const string RefereeAreaName = "Referee";
+        public const string LeagueManagerAreaName = "LeagueManager";
     }
 }
