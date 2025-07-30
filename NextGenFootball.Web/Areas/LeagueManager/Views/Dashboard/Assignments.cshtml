@@ -1,0 +1,54 @@
+﻿@using NextGenFootball.Web.ViewModels.Referee.RefereeAssignments;
+@model RefereeAssignmentsIndexViewModel
+
+@{
+    ViewData["Title"] = "Referee Assignments";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-primary">@ViewData["Title"]</h2>
+    <table class="table table-bordered table-hover bg-white shadow-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Date</th>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>Main Referee</th>
+                <th>Assistant 1</th>
+                <th>Assistant 2</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in Model.Matches)
+            {
+                <tr>
+                    <td>@match.Date.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <img src="@match.HomeTeamImageUrl"
+                             alt="@match.HomeTeam"
+                             style="width:32px;height:32px;object-fit:cover;vertical-align:middle;border-radius:50%;margin-right:8px;">
+                        <span>@match.HomeTeam</span>
+                    </td>
+                    <td>
+                        <img src="@match.AwayTeamImageUrl"
+                             alt="@match.AwayTeam"
+                             style="width:32px;height:32px;object-fit:cover;vertical-align:middle;border-radius:50%;margin-right:8px;">
+                        <span>@match.AwayTeam</span>
+                    </td>
+                    <td>@(match.MainReferee ?? "—")</td>
+                    <td>@(match.Assistant1 ?? "—")</td>
+                    <td>@(match.Assistant2 ?? "—")</td>
+                    <td>
+                        <a asp-action="Assign"
+                           asp-route-leagueId="@Model.LeagueId"
+                           asp-route-matchId="@match.MatchId"
+                           class="btn btn-primary btn-sm">
+                            Assign
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

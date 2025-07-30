@@ -28,7 +28,7 @@
             @foreach (var league in Model)
             {
                 <div class="col-md-4">
-                    <a asp-area="LeagueManager" asp-controller="Dashboard" asp-action="Index" asp-route-leagueId="@league.Id"
+                    <a asp-area="LeagueManager" asp-controller="Dashboard" asp-action="Index" asp-route-id="@league.Id"
                        class="text-decoration-none">
                         <div class="card interactive-card text-white text-center h-100 d-flex flex-column justify-content-center shadow-lg dark-card-1 league-card-hover">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">

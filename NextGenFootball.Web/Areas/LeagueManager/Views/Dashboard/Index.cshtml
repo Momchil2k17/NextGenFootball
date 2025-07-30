@@ -24,7 +24,7 @@
                         <h5 class="card-title fw-bold mb-3 text-white">Add New Match</h5>
                         <p class="card-text mb-4 text-light-50">Schedule a new match in the league calendar.</p>
                     </div>
-                    <a asp-area="LeagueManager" asp-controller="Matches" asp-action="Create" class="btn btn-success btn-lg px-5 fw-semibold w-100 mt-auto">
+                    <a asp-area="LeagueManager" asp-controller="Dashboard" asp-action="CreateMatch" asp-route-id="@ViewBag.LeagueId" class="btn btn-success btn-lg px-5 fw-semibold w-100 mt-auto">
                         <i class="bi bi-plus"></i> Add Match
                     </a>
                 </div>
@@ -41,7 +41,7 @@
                         <h5 class="card-title fw-bold mb-3 text-white">Assign Referees</h5>
                         <p class="card-text mb-4 text-light-50">Assign referees to upcoming matches with ease.</p>
                     </div>
-                    <a asp-area="LeagueManager" asp-controller="Assignments" asp-action="Index" class="btn btn-info btn-lg px-5 fw-semibold w-100 mt-auto text-white">
+                    <a asp-area="LeagueManager" asp-controller="Dashboard" asp-action="Assignments" asp-route-id="@ViewBag.LeagueId" class="btn btn-info btn-lg px-5 fw-semibold w-100 mt-auto text-white">
                         <i class="bi bi-arrow-right-circle"></i> Assign
                     </a>
                 </div>
