@@ -60,6 +60,27 @@
                             <a class="nav-link px-2 @(ViewContext.RouteData.Values["controller"]?.ToString() == "Match" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
                                asp-area="" asp-controller="Match" asp-action="Index">Matches</a>
                         </li>
+                        @if (User.IsInRole("Referee"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light fw-bold" href="#" id="refereeDropdown"
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-badge"></i> Referee
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark border-0">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Referee" asp-controller="Match" asp-action="Index">
+                                            <i class="bi bi-calendar-check"></i> My Matches
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="Referee" asp-controller="Calendar" asp-action="Index">
+                                            <i class="bi bi-calendar3"></i> My Calendar
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                     <form class="d-flex me-2" role="search">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

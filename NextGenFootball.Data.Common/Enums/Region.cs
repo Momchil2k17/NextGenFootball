@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace NextGenFootball.Data.Common.Enums
 {
@@ -19,6 +20,9 @@ namespace NextGenFootball.Data.Common.Enums
         ЮгозападнаБългария = 3,
 
         [Display(Name = "Югоизточна България")]
-        ЮгоизточнаБългария = 4
+        ЮгоизточнаБългария = 4,
+
+        [Display(Name = "България")]
+        България = 5
     }
 }
