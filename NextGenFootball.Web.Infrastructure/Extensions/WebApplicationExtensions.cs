@@ -31,5 +31,11 @@ namespace NextGenFootball.Web.Infrastructure.Extensions
 
             return app;
         }
+        public static IApplicationBuilder UserLeagueManagerRedirection(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<LeagueManagerRedirectionMiddleware>();
+
+            return app;
+        }
     }
 }
