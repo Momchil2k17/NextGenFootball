@@ -1,0 +1,84 @@
+﻿.league-bg {
+    background: linear-gradient(120deg, #e6ecf3 0%, #f3f7fa 100%);
+    border-radius: 18px;
+    box-shadow: 0 6px 36px rgba(38,50,56,0.13);
+}
+
+.interactive-card {
+    transition: transform 0.13s, box-shadow 0.16s;
+    min-height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    background: #0d2237;
+}
+
+.card-hover:hover {
+    transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 14px 54px rgba(38,50,56,0.19);
+    cursor: pointer;
+}
+
+.icon {
+    transition: transform 0.16s;
+}
+
+.card-hover:hover .icon {
+    transform: scale(1.16) rotate(-8deg);
+}
+
+.btn-lg {
+    font-size: 1.1rem;
+}
+
+.text-light-50 {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.card .btn {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.card-body {
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.dark-card-1 {
+    background: linear-gradient(135deg, #0d2237 80%, #1c485c 100%);
+}
+
+.dark-card-2 {
+    background: linear-gradient(135deg, #10344c 80%, #225071 100%);
+}
+
+.dark-card-3 {
+    background: linear-gradient(135deg, #195286 80%, #1f3a60 100%);
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+@media (max-width: 700px) {
+    .league-bg {
+        padding: 1rem !important;
+        border-radius: 8px;
+    }
+
+    .card-body {
+        min-height: 210px;
+        gap: 0.2rem;
+    }
+
+    .btn-lg {
+        font-size: 1rem;
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+    }
+}

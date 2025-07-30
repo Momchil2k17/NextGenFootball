@@ -1,0 +1,62 @@
+﻿@using NextGenFootball.Web.ViewModels.League;
+@model IEnumerable<LeagueIndexViewModel>
+
+@{
+    ViewData["Title"] = "My Leagues";
+    
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+<link href="~/css/league-list.css" rel="stylesheet" />
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-primary mb-2">My Leagues</h1>
+        <p class="lead text-muted">Select a league to manage matches, referees, and more.</p>
+    </div>
+    <div class="row g-4">
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> You are not managing any leagues yet.
+                </div>
+            </div>
+        }
+        else
+        {
+            @foreach (var league in Model)
+            {
+                <div class="col-md-4">
+                    <a asp-area="LeagueManager" asp-controller="Dashboard" asp-action="Index" asp-route-leagueId="@league.Id"
+                       class="text-decoration-none">
+                        <div class="card interactive-card text-white text-center h-100 d-flex flex-column justify-content-center shadow-lg dark-card-1 league-card-hover">
+                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                <div class="mb-3">
+                                    @if (!string.IsNullOrEmpty(league.ImageUrl))
+                                    {
+                                        <img src="@league.ImageUrl" alt="League Logo"
+                                             style="width:60px; height:60px; object-fit:cover; border-radius:12px; border:2px solid #ddd; background:#fff;" />
+                                    }
+                                    else
+                                    {
+                                        <span class="d-inline-block text-secondary" style="font-size:2.2rem;" title="No image">
+                                            <i class="bi bi-trophy-fill"></i>
+                                        </span>
+                                    }
+                                </div>
+                                <h2 class="card-title display-6 mb-2">@league.Name</h2>
+                                <div class="mb-2 text-light-50 d-flex flex-column align-items-center">
+                                    <span class="mb-1"><i class="bi bi-geo-alt-fill"></i> @league.Region</span>
+                                    <span class="mb-1"><i class="bi bi-person-badge"></i> @league.AgeGroup</span>
+                                    <span><i class="bi bi-calendar-week"></i> @league.SeasonName</span>
+                                </div>
+                                <span class="btn btn-light btn-lg fw-bold px-5 mt-3">Manage League</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>

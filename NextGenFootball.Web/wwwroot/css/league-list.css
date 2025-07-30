@@ -1,0 +1,62 @@
+﻿.league-list-wrapper {
+    background: #f5f7fb;
+    border-radius: 14px;
+    padding: 2.2rem 1.6rem;
+    box-shadow: 0 4px 32px rgba(44, 62, 80, 0.08);
+}
+
+.interactive-card {
+    transition: transform 0.13s, box-shadow 0.16s;
+    min-height: 370px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    background: #0d2237;
+    border: none;
+}
+
+.league-card-hover:hover {
+    transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 14px 54px rgba(38,50,56,0.19);
+    cursor: pointer;
+}
+
+.text-light-50 {
+    color: rgba(255,255,255,0.7) !important;
+}
+
+.dark-card-1 {
+    background: linear-gradient(135deg, #0d2237 80%, #1c485c 100%);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #0d6efd 70%, #3b8beb 100%);
+    border: none;
+}
+
+    .btn-primary:hover, .btn-primary:focus {
+        background: linear-gradient(90deg, #1064c8 60%, #2992ff 100%);
+        color: #fff;
+    }
+
+.card .btn {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+    .league-list-wrapper {
+        padding: 1rem 0.3rem;
+        border-radius: 7px;
+    }
+
+    .interactive-card {
+        min-height: 210px;
+    }
+
+    .btn-lg {
+        font-size: 1rem;
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+    }
+}
