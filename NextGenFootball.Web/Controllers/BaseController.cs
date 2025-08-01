@@ -3,6 +3,7 @@ using System.Security.Claims;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [AutoValidateAntiforgeryToken]
     public abstract class BaseController : Controller
     {
         protected bool IsUserAuthenticated()
