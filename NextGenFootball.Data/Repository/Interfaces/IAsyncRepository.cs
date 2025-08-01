@@ -30,5 +30,6 @@ namespace NextGenFootball.Data.Repository.Interfaces
         Task<bool> UpdateAsync(TEntity item);
 
         Task SaveChangesAsync();
+        Task<bool> AnyAsync();
     }
 }

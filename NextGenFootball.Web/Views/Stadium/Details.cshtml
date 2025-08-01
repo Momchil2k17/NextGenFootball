@@ -5,27 +5,50 @@
     ViewData["Title"] = "Stadium Details";
 }
 
-<h1>Stadium Details</h1>
+<link rel="stylesheet" href="~/css/stadium-details.css" />
 
-<div class="card mb-4" style="max-width: 600px;">
-    <div class="row g-0">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <div class="col-md-4">
-                <img src="@Model.ImageUrl" class="img-fluid rounded-start" alt="@Model.Name" style="max-width: 100%; max-height: 250px;" />
-            </div>
-        }
-        <div class="col-md-8">
-            <div class="card-body">
-                <h4 class="card-title">@Model.Name</h4>
-                <p class="card-text"><strong>Description:</strong> @Model.Description</p>
-                <p class="card-text"><strong>Address:</strong> @Model.Address</p>
-                <p class="card-text"><strong>Capacity:</strong> @Model.Capacity</p>
-                <p class="card-text"><strong>Surface:</strong> @Model.Surface</p>
+<div class="stadiums-detail-container">
+    <div class="stadium-card details-card">
+        <div class="row g-0">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="col-md-4 stadium-card-img-col">
+                    <img src="@Model.ImageUrl" class="img-fluid rounded-start stadium-card-img" alt="@Model.Name" />
+                </div>
+            }
+            <div class="col-md-8 stadium-card-body-col">
+                <div class="card-body">
+                    <h4 class="stadium-card-title">@Model.Name</h4>
+                    <p class="stadium-card-text"><span class="stadium-card-label">Description:</span> @Model.Description</p>
+                    <p class="stadium-card-text"><span class="stadium-card-label">Address:</span> @Model.Address</p>
+                    <p class="stadium-card-text"><span class="stadium-card-label">Capacity:</span> @Model.Capacity</p>
+                    <p class="stadium-card-text"><span class="stadium-card-label">Surface:</span> @Model.Surface</p>
+                    @* <div class="stadium-card-actions">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div> *@
+                </div>
             </div>
         </div>
     </div>
+    <div class="stadium-card map-card">
+        <div class="card-body">
+            <h5 class="stadium-map-title">Location Map</h5>
+            @if (!string.IsNullOrEmpty(Model.Address))
+            {
+                <div class="map-outer-container">
+                    <div class="map-responsive">
+                        <iframe width="100%"
+                                height="280"
+                                style="border:0; border-radius: 12px;"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                src="https://www.google.com/maps?q=@(System.Net.WebUtility.UrlEncode(Model.Address))&output=embed">
+                        </iframe>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>
-
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>

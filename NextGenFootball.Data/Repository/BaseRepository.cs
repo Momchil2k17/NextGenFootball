@@ -207,5 +207,11 @@ namespace NextGenFootball.Data.Repository
                 .FirstOrDefault(pi => pi.PropertyType == typeof(bool) &&
                                                  pi.Name == "IsDeleted");
         }
+
+        public Task<bool> AnyAsync()
+        {
+            return this.DbSet
+                .AnyAsync();
+        }
     }
 }
