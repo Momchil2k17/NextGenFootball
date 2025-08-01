@@ -74,10 +74,12 @@
 .player-img {
     height: 42px;
     width: 42px;
-    object-fit: cover;
+    object-fit: contain; 
     border-radius: 50%;
     margin-right: 14px;
     border: 2px solid #e6eaf0;
+    background: #fff;
+    padding:3px; 
 }
 
 @media (max-width: 900px) {
