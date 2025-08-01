@@ -12,8 +12,8 @@ using NextGenFootball.Data;
 namespace NextGenFootball.Data.Migrations
 {
     [DbContext(typeof(NextGenFootballDbContext))]
-    [Migration("20250801143041_SeedPlayers1")]
-    partial class SeedPlayers1
+    [Migration("20250801230110_SeedPlayers2")]
+    partial class SeedPlayers2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -605,7 +605,7 @@ namespace NextGenFootball.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("71d6e1f7-e74c-4109-b550-69057a601341"),
+                            Id = new Guid("baf55755-2ed2-4ef1-a677-1ec3ff28c877"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Gustavo",
@@ -624,7 +624,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3c6d4a43-777a-4c58-897c-7ee1e85ec6b2"),
+                            Id = new Guid("5cee5265-9c12-4663-8b46-88d6b41973e2"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2001, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Dimitar",
@@ -643,7 +643,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7e09dcd0-c560-4f9b-b25c-b7c63229ae81"),
+                            Id = new Guid("241c5605-e77f-45ec-9113-7010bd9c4ab5"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Ivan",
@@ -662,7 +662,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6ac67eb3-7fa0-45b3-a101-c4be645922bb"),
+                            Id = new Guid("22011a6a-7ab6-4ba0-981e-69b95149eb7f"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Thibaut",
@@ -681,7 +681,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9e8db81b-7b28-4053-8271-b10f04a8bc2c"),
+                            Id = new Guid("41f2b640-9b10-4a55-85a0-18835aa8df21"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jurgen",
@@ -700,7 +700,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("51344bb3-c79d-4adb-9d0c-2dbd97c83b02"),
+                            Id = new Guid("181f700b-43ff-438e-b4a2-61ee9a0fee0c"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Brian",
@@ -719,7 +719,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9a3cdf99-023b-4007-8ec1-ef9d092340eb"),
+                            Id = new Guid("16d57034-b7ac-4ca9-9793-5d153666de03"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1992, 12, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Amos",
@@ -738,7 +738,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("03aba06b-99bf-4895-be6c-fe90e1f4f009"),
+                            Id = new Guid("d3e493e0-c099-4a34-9eda-a1f907db1838"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2002, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Stanislav",
@@ -757,7 +757,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("861fc92c-35ab-4223-8f87-d561eb7958c2"),
+                            Id = new Guid("2530050e-9159-4d75-a0e9-261c2a144747"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jonathan",
@@ -776,7 +776,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0b9716e8-2d49-4747-8b53-65e6dc4788e7"),
+                            Id = new Guid("db254800-0c32-4fbf-a0aa-0894b90c0219"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Tobias",
@@ -795,7 +795,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("eba5f54f-c2bd-41e2-8887-3a05dfbbd23e"),
+                            Id = new Guid("47fc8ab4-62ce-4a9d-91dd-53f426de9fd3"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Duckens",
@@ -814,7 +814,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c1089a98-334a-4009-8f0a-973aeb2cf11d"),
+                            Id = new Guid("3aaf8d51-b732-4555-9320-75a6e1a71fec"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Michael",
@@ -833,7 +833,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("90e741a3-726f-478a-a754-e45add15e468"),
+                            Id = new Guid("68c6f941-0806-4604-8eaa-8010b6563688"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Enes",
@@ -852,7 +852,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("74725050-c2d7-468d-86c0-fe6257e18ce0"),
+                            Id = new Guid("0d692beb-72a2-4f13-ab51-8e0501e5335f"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Lazar",
@@ -871,7 +871,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6e498cd3-461d-4c95-925c-498dcee39bdd"),
+                            Id = new Guid("5c8d78cb-dece-4e67-97ec-1800dcac3c82"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 7, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Menno",
@@ -890,7 +890,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1ded2fcf-8953-4076-9675-8f908f324644"),
+                            Id = new Guid("f5f6bb92-2b1c-4052-8eda-92af3fd5e0be"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Brayan",
@@ -909,7 +909,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b90dc02b-82c5-4c73-b27d-6758c005ec0c"),
+                            Id = new Guid("c19bd113-4ccd-4083-b9e0-a7652fac2232"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Marcelino",
@@ -924,6 +924,576 @@ namespace NextGenFootball.Data.Migrations
                             RedCards = 0,
                             SeasonId = 1,
                             TeamId = 1,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("71a92a67-f0cd-4824-a70a-e030a6759567"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1990, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Sergio",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/79573-1753810372.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Padt",
+                            MinutesPlayed = 0,
+                            Position = "Goalkeeper",
+                            PositionEnum = 1,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("1335091a-111c-4c5a-8bb1-9426efecba04"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1993, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Anton",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/218441-1753810308.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Nedyalkov",
+                            MinutesPlayed = 0,
+                            Position = "Left Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 1,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("1f59ac5d-1910-4b6f-898a-8b981b9eec7c"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1990, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Igor",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/97335-1629575683.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Plastun",
+                            MinutesPlayed = 0,
+                            Position = "Center Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("0873c249-0017-4769-ad2a-54d031d9731a"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1995, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Olivier",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/504125-1753810743.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Verdon",
+                            MinutesPlayed = 0,
+                            Position = "Center Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("e7220e48-fd30-4f5c-a449-d9a845259209"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2000, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Dominik",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/541287-1740597154.jpg?lm=1",
+                            IsDeleted = false,
+                            LastName = "Yankov",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("ea247199-3602-42f0-b89c-106f9b8b000b"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1997, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Jakub",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/377243-1691005537.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Piotrowski",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("d6d60379-3fc4-4749-a6ba-885ac345ff77"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1994, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Claude",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/280178-1721812558.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Gonçalves",
+                            MinutesPlayed = 0,
+                            Position = "Defensive Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("4226d958-257c-4a4f-a7bc-6e01b9a1a839"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1996, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Kiril",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/221540-1727967569.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Despodov",
+                            MinutesPlayed = 0,
+                            Position = "Right Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2ebb99d4-6a52-4843-965c-88520541655b"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1997, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Bernard",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/422380-1720984240.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Tekpetey",
+                            MinutesPlayed = 0,
+                            Position = "Left Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("c634850c-5687-46d2-8aca-0d943fbb51b8"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1995, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Rick",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/645955-1720984771.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Lourenço",
+                            MinutesPlayed = 0,
+                            Position = "Right Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("47ce2080-951c-47a7-9271-8e2d506b46fc"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1996, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Matías",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/503001-1720984447.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Tissera",
+                            MinutesPlayed = 0,
+                            Position = "Center Forward",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("5c8022ef-1734-475d-abc3-39201b52f4e8"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1994, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Dinis",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/329519-1753810578.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Almeida",
+                            MinutesPlayed = 0,
+                            Position = "Center Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("9bca9ba0-f00b-4119-af71-5d2afcf47318"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2000, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Filip",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/396230-1753810681.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Kaloc",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("90df5116-8e2b-4b0f-8ac7-d27e7de29c1d"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2001, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Rwan",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/973569-1691005715.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Seco",
+                            MinutesPlayed = 0,
+                            Position = "Center Forward",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("d8132d92-73aa-41c6-b2f4-85c16d771ba9"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1996, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Aslak",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/313944-1691003407.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Fonn Witry",
+                            MinutesPlayed = 0,
+                            Position = "Right Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 2,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("ff7121c4-f10e-46e4-9791-373ee116bc3b"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2002, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Svetoslav",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/628038-1754077358.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Vutsov",
+                            MinutesPlayed = 0,
+                            Position = "Goalkeeper",
+                            PositionEnum = 1,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("3eeb8c52-d3c7-4685-99fc-63e77376eeab"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1997, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Kristian",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/351800-1754077260.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Dimitrov",
+                            MinutesPlayed = 0,
+                            Position = "Center Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 1,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("d550bf8e-0d42-4aea-bfa2-69b6a62f33c1"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2000, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Christian",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/463667-1754077287.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Makoun",
+                            MinutesPlayed = 0,
+                            Position = "Center Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("0a1d9bdf-ec89-41c3-97e1-752a1da2a611"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1998, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Jeremy",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/532858-1688876742.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Petris",
+                            MinutesPlayed = 0,
+                            Position = "Right Back",
+                            PositionEnum = 2,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("f04bc3f7-b0ad-44ef-b474-a1ca98b05964"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1997, 2, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Welton",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/858213-1680124417.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Felix",
+                            MinutesPlayed = 0,
+                            Position = "Left Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("0d32ffe0-4cba-466a-b2c6-20176a232a8f"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1999, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Andrian",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/820371-1680122620.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Kraev",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("66c09598-a7a3-41d5-962e-b7bc8ada67bb"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1999, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Iliyan",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/310144-1680123802.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Stefanov",
+                            MinutesPlayed = 0,
+                            Position = "Attacking Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("c75bc95d-329f-4df1-a1cb-763e45509b08"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2000, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Ronaldo",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/328758-1733317063.jpg?lm=1",
+                            IsDeleted = false,
+                            LastName = "Henrique",
+                            MinutesPlayed = 0,
+                            Position = "Right Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("dbd9abd5-703b-466d-944c-5cce21350568"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2001, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Filip",
+                            Goals = 0,
+                            ImageUrl = "https://cdn.soccerwiki.org/images/player/104559.png",
+                            IsDeleted = false,
+                            LastName = "Krastev",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("49e1faca-6b57-4438-a23a-95256e2d5031"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1993, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Carlos",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/239998-1754075190.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Ohene",
+                            MinutesPlayed = 0,
+                            Position = "Center Forward",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("b5a90a0c-9e53-4761-a76a-e8516fc77fe4"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1992, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Georgi",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/134158-1732263336.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Milanov",
+                            MinutesPlayed = 0,
+                            Position = "Central Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("3607da5a-73b5-4aab-bfc5-435a3f025598"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1998, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Darlan",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/570582-1691301973.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Cruz",
+                            MinutesPlayed = 0,
+                            Position = "Defensive Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("14101b7e-e0f9-466c-8dcf-2a8d3af2f9b3"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(2003, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Marin",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/675946-1754077435.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Petkov",
+                            MinutesPlayed = 0,
+                            Position = "Right Winger",
+                            PositionEnum = 4,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("fb90071e-1efb-4d62-a746-b20c8df50858"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1988, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Nikolay",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/24480-1681658070.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Mihaylov",
+                            MinutesPlayed = 0,
+                            Position = "Goalkeeper",
+                            PositionEnum = 1,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
+                            YellowCards = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("be260856-b05c-49f5-8820-ceafcf450505"),
+                            Assists = 0,
+                            DateOfBirth = new DateTime(1990, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Georgi",
+                            Goals = 0,
+                            ImageUrl = "https://img.a.transfermarkt.technology/portrait/header/198816-1754075148.png?lm=1",
+                            IsDeleted = false,
+                            LastName = "Kostadinov",
+                            MinutesPlayed = 0,
+                            Position = "Defensive Midfield",
+                            PositionEnum = 3,
+                            PreferredFoot = 2,
+                            RedCards = 0,
+                            SeasonId = 1,
+                            TeamId = 3,
                             YellowCards = 0
                         });
                 });
