@@ -15,7 +15,6 @@
     padding: 8px 12px;
 }
 
-/* Dedicated fixed-width spaces for icon, minute, and player image */
 .match-event-icon {
     width: 32px;
     min-width: 32px;
@@ -37,10 +36,20 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain;
     border: 1px solid #ddd;
     background: #fff;
     margin-right: 8px;
+    padding: 3px;
+}
+
+.event-player-link,
+.event-player-link:visited,
+.event-player-link:active {
+    color: inherit !important;
+    text-decoration: none !important;
+    font-weight: inherit;
+    background: none;
 }
 
 .match-event-playername {
@@ -50,6 +59,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: inherit !important;
+    font-weight: inherit;
+}
+
+.event-player-link:hover .match-event-playername,
+.event-player-link:focus .match-event-playername {
+    color: inherit !important;
+    text-decoration: underline !important;
 }
 
 .match-event-item:last-child {
@@ -59,3 +76,19 @@
 .match-event-item:hover {
     background: #eef6ff;
 }
+
+/* Stadium link: remove underline, normal color, underline on hover */
+.stadium-link,
+.stadium-link:visited,
+.stadium-link:active {
+    color: inherit !important;
+    text-decoration: none !important;
+/*    font-weight: 500;*/
+    background: none;
+}
+
+    .stadium-link:hover,
+    .stadium-link:focus {
+        color: inherit !important;
+        text-decoration: underline !important;
+    }

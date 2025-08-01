@@ -9,6 +9,7 @@ namespace NextGenFootball.Web.ViewModels.Match
     public class MatchEventViewModel
     {
         public int Minute { get; set; }
+        public Guid PlayerId { get; set; }
         public string PlayerName { get; set; }=null!;
         public string PlayerImageUrl { get; set; } = null!;
         public string Team { get; set; } = null!; 

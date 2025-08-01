@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Referee.Interfaces;
@@ -91,6 +92,7 @@ namespace NextGenFootball.Services.Core.Referee
                 match.HomeScore = matchReport.HomeScore;
                 match.AwayScore = matchReport.AwayScore;
                 match.MatchReportId = report.Id;
+                match.Status=MatchStatus.Played;
                 await this.matchRepository.UpdateAsync(match);
 
             }

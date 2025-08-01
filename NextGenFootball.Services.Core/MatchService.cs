@@ -112,12 +112,14 @@ namespace NextGenFootball.Services.Core
                         Date = m.Date,
                         HomeScore = m.HomeScore,
                         AwayScore = m.AwayScore,
+                        StadiumId = m.Stadium.Id,
                         StadiumName = m.Stadium.Name,
                         LeagueName = m.League.Name,
                         IsPlayed= m.Status == MatchStatus.Played,
                         Events= m.Report != null ? m.Report.Events.Select(e => new MatchEventViewModel
                         {
                             Minute= e.Minute,
+                            PlayerId = e.PlayerId,
                             PlayerName = this.playerRepository.GetAllAttached()
                                 .Where(p => p.Id == e.PlayerId)
                                 .Select(p => $"{p.FirstName} {p.LastName}")

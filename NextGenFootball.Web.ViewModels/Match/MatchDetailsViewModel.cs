@@ -10,6 +10,7 @@ namespace NextGenFootball.Web.ViewModels.Match
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public int StadiumId { get; set; }
         public string StadiumName { get; set; }= null!;
         public string HomeTeamName { get; set; } = null!;
         public string? HomeTeamImageUrl { get; set; }

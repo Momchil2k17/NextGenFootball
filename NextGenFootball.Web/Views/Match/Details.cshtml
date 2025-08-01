@@ -11,12 +11,12 @@
 <div class="container mt-4">
     <div class="card shadow-sm">
         <div class="card-header text-center">
-            <h3>
-                <img src="@Model.HomeTeamImageUrl" alt="@Model.HomeTeamName" width="40" height="40" class="rounded-circle me-2" />
-                @Model.HomeTeamName
-                <span class="fw-light">vs</span>
-                @Model.AwayTeamName
-                <img src="@Model.AwayTeamImageUrl" alt="@Model.AwayTeamName" width="40" height="40" class="rounded-circle ms-2" />
+            <h3 class="d-flex align-items-center justify-content-center gap-2">
+                <img src="@Model.HomeTeamImageUrl" alt="@Model.HomeTeamName" width="40" height="40" class="rounded-circle" />
+                <span class="fw-semibold">@Model.HomeTeamName</span>
+                <span class="fw-light px-2">vs</span>
+                <span class="fw-semibold">@Model.AwayTeamName</span>
+                <img src="@Model.AwayTeamImageUrl" alt="@Model.AwayTeamName" width="40" height="40" class="rounded-circle" />
             </h3>
             <div class="text-muted">@Model.LeagueName</div>
         </div>
@@ -36,7 +36,9 @@
                 @Model.Date.ToString("dd MMM yyyy, HH:mm")
                 <br />
                 <i class="bi bi-building"></i>
-                @Model.StadiumName
+                <a asp-controller="Stadium" asp-action="Details" asp-route-id="@Model.StadiumId" class="text-dark text-decoration-none stadium-link">
+                    @Model.StadiumName
+                </a>
             </div>
         </div>
     </div>
@@ -78,8 +80,10 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
-                                <span class="match-event-playername">@e.PlayerName</span>
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                    <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                    <span class="match-event-playername fw-normal">@e.PlayerName</span>
+                                </a>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -100,8 +104,10 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
-                                <span class="match-event-playername">@e.PlayerName</span>
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                    <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                    <span class="match-event-playername fw-normal">@e.PlayerName</span>
+                                </a>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -124,8 +130,10 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
-                                <span class="match-event-playername">@e.PlayerName</span>
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                    <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                    <span class="match-event-playername fw-normal">@e.PlayerName</span>
+                                </a>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
@@ -146,8 +154,10 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
-                                <span class="match-event-playername">@e.PlayerName</span>
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                    <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
+                                    <span class="match-event-playername fw-normal">@e.PlayerName</span>
+                                </a>
                                 <span class="badge bg-secondary ms-auto">@e.StatType</span>
                             </li>
                         }
