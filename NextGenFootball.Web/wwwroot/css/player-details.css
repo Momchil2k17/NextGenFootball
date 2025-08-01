@@ -1,0 +1,115 @@
+﻿.player-details-row {
+    margin-top: 2.5rem;
+}
+
+.player-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 2.5rem 1.3rem 2rem 1.3rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10), 0 1.5px 4px rgba(0,0,0,0.09);
+    min-height: 470px;
+}
+
+.player-img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 3px solid #e0e3e8;
+    background: #f9f9f9;
+    padding: 10px;
+}
+.player-name {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #274690;
+}
+
+.player-meta .badge {
+    font-size: 1.03em;
+}
+
+.blue-sneaker {
+    filter: hue-rotate(320deg) saturate(3);
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.team-card-mini {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1rem 0.7rem;
+    margin-top: 1.2rem;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    display: inline-block;
+    width: 100%;
+}
+
+.team-img-mini {
+    height: 38px;
+    width: 38px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.team-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.stats-card {
+    background: #f8fafc;
+    border-radius: 15px;
+    padding: 1.4rem 1.1rem;
+}
+
+.section-title {
+    font-weight: 600;
+    color: #274690;
+    margin-bottom: 0.8rem;
+}
+
+.table-stats th {
+    width: 50%;
+    font-weight: 500;
+    color: #3a3a3a;
+    background: none !important;
+    border: none !important;
+}
+
+.table-stats td {
+    width: 50%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #274690;
+    background: none !important;
+    border: none !important;
+}
+
+.yellow-card {
+    color: #ffd600;
+}
+
+.red-card {
+    color: #e74c3c;
+}
+
+@media (max-width: 900px) {
+    .player-details-row {
+        flex-direction: column;
+    }
+
+    .player-card,
+    .stats-card {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .player-img {
+        width: 120px;
+        height: 120px;
+    }
+}

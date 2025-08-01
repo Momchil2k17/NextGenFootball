@@ -5,51 +5,126 @@
     ViewData["Title"] = "Team Details";
 }
 
-<div class="row">
-    <!-- Left Side: Team Info -->
-    <div class="col-md-7">
-        <h2>@Model.Name</h2>
-        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid mb-3" style="max-width:300px;" />
-        }
-        <dl class="row">
-            <dt class="col-sm-4">Region</dt>
-            <dd class="col-sm-8">@Model.Region</dd>
-            <dt class="col-sm-4">Stadium</dt>
-            <dd class="col-sm-8">@Model.Stadium</dd>
-            <dt class="col-sm-4">League</dt>
-            <dd class="col-sm-8">@Model.League</dd>
-            @if (!string.IsNullOrWhiteSpace(Model.Description))
-            {
-                <dt class="col-sm-4">Description</dt>
-                <dd class="col-sm-8">@Model.Description</dd>
-            }
-        </dl>
+<link rel="stylesheet" href="~/css/team-details.css" />
 
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div class="row team-details-row">
+    <!-- Left Side: Team Info -->
+    <div class="col-md-7 team-info">
+        <div class="team-card shadow-sm">
+            <h2 class="team-name">@Model.Name</h2>
+            @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="team-img mb-3" />
+            }
+            <dl class="row team-meta">
+                <dt class="col-sm-4">Region</dt>
+                <dd class="col-sm-8">@Model.Region</dd>
+                <dt class="col-sm-4">Stadium</dt>
+                <dd class="col-sm-8">@Model.Stadium</dd>
+                <dt class="col-sm-4">League</dt>
+                <dd class="col-sm-8">@Model.League</dd>
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <dt class="col-sm-4">Description</dt>
+                    <dd class="col-sm-8">@Model.Description</dd>
+                }
+            </dl>
+            <div class="btn-group mt-3">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
     </div>
 
+    <!-- Right Side: Players -->
     <div class="col-md-5">
-        @{
-            
-            <h4>Players</h4>
-            <ul class="list-group">
-            @foreach (var player in Model.Players!)
+        <div class="players-card shadow-sm">
+            <h4 class="mb-3">Players</h4>
+
+            @if (Model.Goalkeepers != null && Model.Goalkeepers.Any())
             {
-                    <li class="list-group-item d-flex align-items-center">
-                        @if (!string.IsNullOrEmpty(player.ImageUrl))
+                <div class="player-section">
+                    <h5 class="player-section-title">Goalkeepers <span class="badge bg-primary">@Model.Goalkeepers.Count()</span></h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var player in Model.Goalkeepers)
                         {
-                            <img src="@player.ImageUrl" alt="@player.Name" style="height:40px;width:40px;object-fit:cover;border-radius:50%;margin-right:10px;" />
+                            <li class="list-group-item player-item d-flex align-items-center">
+                                @if (!string.IsNullOrEmpty(player.ImageUrl))
+                                {
+                                    <img src="@player.ImageUrl" alt="@player.Name" class="player-img" />
+                                }
+                                <div>
+                                    <div class="fw-semibold">@player.Name</div>
+                                    <div class="small text-muted">@player.Position</div>
+                                </div>
+                            </li>
                         }
-                        <span>
-                            @player.Name (@player.Position)
-                        </span>
-                    </li>
+                    </ul>
+                </div>
             }
-            </ul>
-           
-        }
+            @if (Model.Defenders != null && Model.Defenders.Any())
+            {
+                <div class="player-section">
+                    <h5 class="player-section-title">Defenders <span class="badge bg-primary">@Model.Defenders.Count()</span></h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var player in Model.Defenders)
+                        {
+                            <li class="list-group-item player-item d-flex align-items-center">
+                                @if (!string.IsNullOrEmpty(player.ImageUrl))
+                                {
+                                    <img src="@player.ImageUrl" alt="@player.Name" class="player-img" />
+                                }
+                                <div>
+                                    <div class="fw-semibold">@player.Name</div>
+                                    <div class="small text-muted">@player.Position</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            @if (Model.Midfielders != null && Model.Midfielders.Any())
+            {
+                <div class="player-section">
+                    <h5 class="player-section-title">Midfielders <span class="badge bg-primary">@Model.Midfielders.Count()</span></h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var player in Model.Midfielders)
+                        {
+                            <li class="list-group-item player-item d-flex align-items-center">
+                                @if (!string.IsNullOrEmpty(player.ImageUrl))
+                                {
+                                    <img src="@player.ImageUrl" alt="@player.Name" class="player-img" />
+                                }
+                                <div>
+                                    <div class="fw-semibold">@player.Name</div>
+                                    <div class="small text-muted">@player.Position</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            @if (Model.Forwards != null && Model.Forwards.Any())
+            {
+                <div class="player-section">
+                    <h5 class="player-section-title">Forwards <span class="badge bg-primary">@Model.Forwards.Count()</span></h5>
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var player in Model.Forwards)
+                        {
+                            <li class="list-group-item player-item d-flex align-items-center">
+                                @if (!string.IsNullOrEmpty(player.ImageUrl))
+                                {
+                                    <img src="@player.ImageUrl" alt="@player.Name" class="player-img" />
+                                }
+                                <div>
+                                    <div class="fw-semibold">@player.Name</div>
+                                    <div class="small text-muted">@player.Position</div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+        </div>
     </div>
 </div>

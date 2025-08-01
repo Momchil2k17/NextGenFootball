@@ -1,0 +1,92 @@
+﻿.team-details-row {
+    margin-top: 2rem;
+}
+
+.team-card,
+.players-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07), 0 1.5px 4px rgba(0,0,0,0.09);
+    margin-bottom: 2rem;
+}
+
+.team-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #274690;
+    margin-bottom: 1rem;
+}
+
+.team-img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 1.5rem;
+    background: #f9f9f9;
+}
+
+.team-meta dt {
+    font-weight: 600;
+    color: #7f8fa6;
+}
+
+.team-meta dd {
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.btn-group .btn {
+    min-width: 110px;
+    font-weight: 600;
+}
+
+.players-card {
+    padding: 1.5rem 1rem;
+}
+
+.player-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #274690;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.player-item {
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 12px 8px 12px 8px;
+    background: transparent;
+    transition: background 0.2s;
+}
+
+    .player-item:last-child {
+        border-bottom: none;
+    }
+
+    .player-item:hover {
+        background: #f7faff;
+    }
+
+.player-img {
+    height: 42px;
+    width: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 14px;
+    border: 2px solid #e6eaf0;
+}
+
+@media (max-width: 900px) {
+    .team-details-row {
+        flex-direction: column;
+    }
+
+    .team-card, .players-card {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+}

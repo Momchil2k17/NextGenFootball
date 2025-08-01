@@ -20,6 +20,8 @@ namespace NextGenFootball.Web.ViewModels.Player
         public DateTime DateOfBirth { get; set; } 
         public string? ImageUrl { get; set; }
 
+        public string Position { get; set; } = null!;
+
         // Statistics
         public int Goals { get; set; }
         public int Assists { get; set; }

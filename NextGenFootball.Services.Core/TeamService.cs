@@ -95,16 +95,47 @@ namespace NextGenFootball.Services.Core
                         League = team.League.Name,
                         ImageUrl = team.ImageUrl,
                         Description = team.Description,
-                        Players= await this.playerRepository
+                        Goalkeepers= await this.playerRepository
                             .GetAllAttached()
-                            .Where(p => p.TeamId == team.Id && !p.IsDeleted)
+                            .Where(p => p.TeamId == team.Id && !p.IsDeleted && p.PositionEnum==PositionEnum.Goalkeeper)
                             .Select(p => new PlayerForTeamDetailsViewModel
                             {
                                 Name=p.FirstName+" "+p.LastName,
                                 Position = p.Position,
                                 ImageUrl = p.ImageUrl,
                             })
+                            .ToListAsync(),
+                        Defenders = await this.playerRepository
+                            .GetAllAttached()
+                            .Where(p => p.TeamId == team.Id && !p.IsDeleted && p.PositionEnum == PositionEnum.Defender)
+                            .Select(p => new PlayerForTeamDetailsViewModel
+                            {
+                                Name = p.FirstName + " " + p.LastName,
+                                Position = p.Position,
+                                ImageUrl = p.ImageUrl,
+                            })
+                            .ToListAsync(),
+                        Midfielders = await this.playerRepository
+                            .GetAllAttached()
+                            .Where(p => p.TeamId == team.Id && !p.IsDeleted && p.PositionEnum == PositionEnum.Midfielder)
+                            .Select(p => new PlayerForTeamDetailsViewModel
+                            {
+                                Name = p.FirstName + " " + p.LastName,
+                                Position = p.Position,
+                                ImageUrl = p.ImageUrl,
+                            })
+                            .ToListAsync(),
+                        Forwards = await this.playerRepository
+                            .GetAllAttached()
+                            .Where(p => p.TeamId == team.Id && !p.IsDeleted && p.PositionEnum == PositionEnum.Forward)
+                            .Select(p => new PlayerForTeamDetailsViewModel
+                            {
+                                Name = p.FirstName + " " + p.LastName,
+                                Position = p.Position,
+                                ImageUrl = p.ImageUrl,
+                            })
                             .ToListAsync()
+
                     };
                 }
             }

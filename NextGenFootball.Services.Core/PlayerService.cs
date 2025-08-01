@@ -104,6 +104,7 @@ namespace NextGenFootball.Services.Core
                         TeamName = player.Team!.Name,
                         TeamImageUrl = player.Team!.ImageUrl!,
                         PreferredFoot = player.PreferredFoot.ToString(),
+                        Position=player.Position,
                         DateOfBirth = player.DateOfBirth,
                         ImageUrl = player.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
                         Goals = player.Goals,

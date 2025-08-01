@@ -17,6 +17,9 @@ namespace NextGenFootball.Web.ViewModels.Team
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
 
-         public IEnumerable<PlayerForTeamDetailsViewModel>? Players { get; set; }
+         public IEnumerable<PlayerForTeamDetailsViewModel>? Goalkeepers { get; set; }
+         public IEnumerable<PlayerForTeamDetailsViewModel>? Defenders { get; set; }
+         public IEnumerable<PlayerForTeamDetailsViewModel>? Midfielders { get; set; }
+         public IEnumerable<PlayerForTeamDetailsViewModel>? Forwards { get; set; }
     }
 }
