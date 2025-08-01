@@ -13,7 +13,6 @@ namespace NextGenFootball.Data.Models
     {
         public Guid Id { get; set; }
 
-
         public Guid? ApplicationUserId { get; set; }
         public virtual ApplicationUser? ApplicationUser { get; set; }
 
@@ -34,6 +33,8 @@ namespace NextGenFootball.Data.Models
         public DateTime DateOfBirth { get; set; }
 
         public string Position { get; set; } = null!;
+
+        public PositionEnum PositionEnum { get; set; }
         public PreferredFoot PreferredFoot { get; set; } 
 
         public int Goals { get; set; }

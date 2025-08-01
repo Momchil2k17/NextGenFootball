@@ -28,6 +28,8 @@ namespace NextGenFootball.Web.ViewModels.Player
         [Required(ErrorMessage = PositionRequired)]
         [StringLength(PositionMaxLength, MinimumLength = PositionMinLength, ErrorMessage = PositionLength)]
         public string Position { get; set; } = null!;
+        public PositionEnum PositionEnum { get; set; }
+
 
         [Required(ErrorMessage = PreferredFootRequired)]
         public PreferredFoot PreferredFoot { get; set; }

@@ -39,7 +39,8 @@ namespace NextGenFootball.Services.Core
             Season? season = await this.seasonRepository
                 .SingleOrDefaultAsync(s => s.Id == model.SeasonId);
             bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
-            if(team!=null && season!=null && isPreferredFootValid)
+            bool isPositionEnumValid = Enum.IsDefined(typeof(PositionEnum), model.PositionEnum);
+            if (team!=null && season!=null && isPreferredFootValid && isPositionEnumValid)
             {
                 Player player = new Player
                 {
@@ -47,6 +48,7 @@ namespace NextGenFootball.Services.Core
                     LastName = model.LastName,
                     DateOfBirth = model.DateOfBirth,
                     Position = model.Position,
+                    PositionEnum = model.PositionEnum,
                     PreferredFoot = model.PreferredFoot,
                     TeamId = team.Id,
                     SeasonId = season.Id,
@@ -138,6 +140,7 @@ namespace NextGenFootball.Services.Core
                         SeasonId = player.SeasonId,
                         DateOfBirth = player.DateOfBirth,
                         Position = player.Position,
+                        PositionEnum = player.PositionEnum,
                         PreferredFoot = player.PreferredFoot,
                         ImageUrl = player.ImageUrl ?? ""
                     };
@@ -156,6 +159,7 @@ namespace NextGenFootball.Services.Core
             bool isPreferredFootValid = Enum.IsDefined(typeof(PreferredFoot), model.PreferredFoot);
             bool isApplicationUserInDb=await this.applicationUserRepository
                 .ExistsByIdAsync(model.ApplicationUserId);
+            bool isPositionEnumValid = Enum.IsDefined(typeof(PositionEnum), model.PositionEnum);
             if (team != null && season != null && isPreferredFootValid)
             {
                 Player? player = await this.playerRepository
@@ -173,6 +177,7 @@ namespace NextGenFootball.Services.Core
                     player.TeamId = team.Id;
                     player.SeasonId = season.Id;
                     player.ImageUrl = model.ImageUrl;
+                    player.PositionEnum = model.PositionEnum;
                     if (isApplicationUserInDb)
                     {
                         player.ApplicationUserId = model.ApplicationUserId;

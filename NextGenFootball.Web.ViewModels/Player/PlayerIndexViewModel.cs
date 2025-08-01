@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextGenFootball.Data.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
