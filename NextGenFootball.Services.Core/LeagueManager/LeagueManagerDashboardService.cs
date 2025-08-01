@@ -28,6 +28,67 @@ namespace NextGenFootball.Services.Core.LeagueManager
             this.playerRepository = playerRepository;
             this.leagueRepository = leagueRepository;
         }
+
+        public async Task<bool> AssignRefereeToMatchAsync(AssignRefereeViewModel model)
+        {
+            bool res=false;
+            Match? match=await this.matchRepository
+                .FirstOrDefaultAsync(m => m.Id == model.MatchId && m.LeagueId == model.LeagueId && !m.IsDeleted);
+            if (match != null) 
+            {
+                match.RefereeId = model.MainRefereeId;
+                match.AssistantReferee1Id = model.AssistantReferee1Id;
+                match.AssistantReferee2Id = model.AssistantReferee2Id;
+                await this.matchRepository.UpdateAsync(match);
+                res = true;
+            }
+            return res;
+
+        }
+
+        public async Task<AssignRefereeViewModel> GetMatchDetailsForAssignment(long matchId, int leagueId)
+        {
+            AssignRefereeViewModel model = new AssignRefereeViewModel();
+            League? league = await this.leagueRepository
+                .SingleOrDefaultAsync(l => l.Id == leagueId);
+            if (league != null)
+            {
+                Match? match = await this.matchRepository
+                    .GetAllAttached()
+                    .Include(m => m.HomeTeam)
+                    .Include(m => m.AwayTeam)
+                    .Include(m => m.Referee)
+                    .Include(m => m.AssistantReferee1)
+                    .Include(m => m.AssistantReferee2)
+                    .SingleOrDefaultAsync(m => m.Id == matchId && m.LeagueId == leagueId && !m.IsDeleted);
+                if (match != null)
+                {
+                    List<FreeRefereeModel> availableReferees = await this.refereeRepository
+                        .GetAllAttached()
+                        .Select(r => new FreeRefereeModel
+                        {
+                            Id = r.Id,
+                            Name = $"{r.FirstName} {r.LastName}"
+                        }).ToListAsync();
+                    model = new AssignRefereeViewModel
+                    {
+                        LeagueId = league.Id,
+                        MatchId = match.Id,
+                        HomeTeam = match.HomeTeam.Name,
+                        HomeTeamImageUrl = match.HomeTeam.ImageUrl,
+                        AwayTeam = match.AwayTeam.Name,
+                        AwayTeamImageUrl = match.AwayTeam.ImageUrl,
+                        Date = match.Date,
+                        AvailableReferees = availableReferees,
+                        MainRefereeId = match.Referee?.Id,
+                        AssistantReferee1Id = match.AssistantReferee1?.Id,
+                        AssistantReferee2Id = match.AssistantReferee2?.Id
+                    };
+                }
+            }
+            return model;
+        }
+
         public async Task<RefereeAssignmentsIndexViewModel> GetMatchesForAssignment(int id)
         {
             RefereeAssignmentsIndexViewModel model = new RefereeAssignmentsIndexViewModel();

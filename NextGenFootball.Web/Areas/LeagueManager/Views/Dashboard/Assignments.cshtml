@@ -40,7 +40,7 @@
                     <td>@(match.Assistant1 ?? "—")</td>
                     <td>@(match.Assistant2 ?? "—")</td>
                     <td>
-                        <a asp-action="Assign"
+                        <a asp-action="AssignReferee"
                            asp-route-leagueId="@Model.LeagueId"
                            asp-route-matchId="@match.MatchId"
                            class="btn btn-primary btn-sm">

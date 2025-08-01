@@ -1,0 +1,105 @@
+﻿@model NextGenFootball.Web.ViewModels.Referee.RefereeAssignments.AssignRefereeViewModel
+
+@{
+    ViewData["Title"] = "Assign Referees";
+}
+
+<!-- Bootstrap Icons CDN (include in your _Layout.cshtml <head> if not already) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Match Details</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Centered Match Teams with VS, logo before/after team name -->
+                    <div class="row align-items-center mb-3">
+                        <div class="col-5 text-end pe-0 d-flex justify-content-end align-items-center">
+                            <img src="@Model.HomeTeamImageUrl" alt="@Model.HomeTeam" style="width:48px;height:48px;object-fit:cover;border-radius:50%;margin-right:8px;">
+                            <span class="fw-semibold" style="font-size:1.1rem;">@Model.HomeTeam</span>
+                        </div>
+                        <div class="col-2 text-center px-0">
+                            <div class="display-6 fw-bold" style="line-height:48px;">vs</div>
+                        </div>
+                        <div class="col-5 text-start ps-0 d-flex justify-content-start align-items-center">
+                            <span class="fw-semibold" style="font-size:1.1rem;">@Model.AwayTeam</span>
+                            <img src="@Model.AwayTeamImageUrl" alt="@Model.AwayTeam" style="width:48px;height:48px;object-fit:cover;border-radius:50%;margin-left:8px;">
+                        </div>
+                    </div>
+                    <!-- Match Date -->
+                    <div class="text-center mb-1">
+                        <span style="color:#212529;font-weight:bold;">
+                            <i class="bi bi-calendar-event"></i>
+                            @Model.Date.ToString("dd/MM/yyyy HH:mm")
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="AssignReferee"
+                  asp-route-leagueId="@Model.LeagueId"
+                  asp-route-matchId="@Model.MatchId"
+                  method="post"
+                  class="card p-4 shadow-sm"
+                  id="refereeAssignmentForm">
+                <input type="hidden" asp-for="HomeTeam" />
+                <input type="hidden" asp-for="AwayTeam" />
+
+                <h4 class="text-center mb-4">Assign Referees</h4>
+                <div class="row g-4 justify-content-center">
+                    <!-- Main Referee -->
+                    <div class="col-md-4 text-center">
+                        <div class="mb-2">
+                            <i class="bi bi-person-plus" style="font-size:2.5rem;color:#0d6efd;"></i>
+                        </div>
+                        <label asp-for="MainRefereeId" class="form-label fw-bold d-block mt-2">Main Referee</label>
+                        <select asp-for="MainRefereeId" class="form-select referee-select"
+                                asp-items="@(new SelectList(Model.AvailableReferees ?? new List<NextGenFootball.Web.ViewModels.Referee.RefereeAssignments.FreeRefereeModel>(), "Id", "Name", Model.MainRefereeId))">
+                            <option value="">Select Main Referee</option>
+                        </select>
+                        <span asp-validation-for="MainRefereeId" class="text-danger small"></span>
+                    </div>
+                    <!-- Assistant Referee 1 -->
+                    <div class="col-md-4 text-center">
+                        <div class="mb-2">
+                            <i class="bi bi-person-plus" style="font-size:2.5rem;color:#0d6efd;"></i>
+                        </div>
+                        <label asp-for="AssistantReferee1Id" class="form-label fw-bold d-block mt-2">Assistant Referee 1</label>
+                        <select asp-for="AssistantReferee1Id" class="form-select referee-select"
+                                asp-items="@(new SelectList(Model.AvailableReferees ?? new List<NextGenFootball.Web.ViewModels.Referee.RefereeAssignments.FreeRefereeModel>(), "Id", "Name", Model.AssistantReferee1Id))">
+                            <option value="">Select Assistant 1</option>
+                        </select>
+                        <span asp-validation-for="AssistantReferee1Id" class="text-danger small"></span>
+                    </div>
+                    <!-- Assistant Referee 2 -->
+                    <div class="col-md-4 text-center">
+                        <div class="mb-2">
+                            <i class="bi bi-person-plus" style="font-size:2.5rem;color:#0d6efd;"></i>
+                        </div>
+                        <label asp-for="AssistantReferee2Id" class="form-label fw-bold d-block mt-2">Assistant Referee 2</label>
+                        <select asp-for="AssistantReferee2Id" class="form-select referee-select"
+                                asp-items="@(new SelectList(Model.AvailableReferees ?? new List<NextGenFootball.Web.ViewModels.Referee.RefereeAssignments.FreeRefereeModel>(), "Id", "Name", Model.AssistantReferee2Id))">
+                            <option value="">Select Assistant 2</option>
+                        </select>
+                        <span asp-validation-for="AssistantReferee2Id" class="text-danger small"></span>
+                    </div>
+                </div>
+                <div id="referee-error-message" class="text-danger text-center mt-2" style="display:none;"></div>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="submit" class="btn btn-success px-4 fw-bold">Save Assignments</button>
+                    <a asp-action="Index" asp-route-id="@Model.LeagueId" class="btn btn-outline-secondary px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/assign-referees.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

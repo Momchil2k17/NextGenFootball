@@ -2,6 +2,7 @@
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Services.Core.LeagueManager.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
+using NextGenFootball.Web.ViewModels.Referee.RefereeAssignments;
 
 namespace NextGenFootball.Web.Areas.LeagueManager.Controllers
 {
@@ -63,6 +64,31 @@ namespace NextGenFootball.Web.Areas.LeagueManager.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> AssignReferee(long matchId, int leagueId)
+        {
+            var model = await this.leagueManagerDashboardService.GetMatchDetailsForAssignment(matchId, leagueId);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignReferee(AssignRefereeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isAssigned = await this.leagueManagerDashboardService.AssignRefereeToMatchAsync(model);
+            if (!isAssigned)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to assign referees. Please try again.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Assignments), new { id = model.LeagueId });
         }
     }
 }

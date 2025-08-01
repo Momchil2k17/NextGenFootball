@@ -10,5 +10,7 @@ namespace NextGenFootball.Services.Core.LeagueManager.Interfaces
     public interface ILeagueManagerDashboardService
     {
         public Task<RefereeAssignmentsIndexViewModel> GetMatchesForAssignment(int id);
+        public Task<AssignRefereeViewModel> GetMatchDetailsForAssignment(long matchId, int leagueId);
+        public Task<bool> AssignRefereeToMatchAsync(AssignRefereeViewModel model);
     }
 }
