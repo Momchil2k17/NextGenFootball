@@ -130,7 +130,9 @@ namespace NextGenFootball.Services.Core
                                 .Where(p => p.Id == e.PlayerId)
                                 .Select(p => p.ImageUrl)
                                 .FirstOrDefault()  ?? $"/images/{NoImagePeopleUrl}",
-                        }).ToList() : new List<MatchEventViewModel>()
+                        }).ToList() : new List<MatchEventViewModel>(),
+                        VideoUrl = m.VideoUrl
+
                     })
                     .FirstOrDefaultAsync();
             }

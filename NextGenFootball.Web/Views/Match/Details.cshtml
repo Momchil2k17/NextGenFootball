@@ -36,9 +36,17 @@
                 @Model.Date.ToString("dd MMM yyyy, HH:mm")
                 <br />
                 <i class="bi bi-building"></i>
-                <a asp-controller="Stadium" asp-action="Details" asp-route-id="@Model.StadiumId" class="text-dark text-decoration-none stadium-link">
+                <a asp-controller="Stadium" asp-action="Details" asp-route-id="@Model.StadiumId" class="stadium-link">
                     @Model.StadiumName
                 </a>
+                <br />
+                @if (!string.IsNullOrWhiteSpace(Model.VideoUrl))
+                {
+                    <i class="bi bi-camera-video fs-5 text-dark" style="vertical-align: middle;"></i>
+                    <a href="@Model.VideoUrl" target="_blank" rel="noopener" class="video-link ms-1">
+                        Watch Match Video
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -80,7 +88,7 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center">
                                     <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
                                     <span class="match-event-playername fw-normal">@e.PlayerName</span>
                                 </a>
@@ -104,7 +112,7 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center">
                                     <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
                                     <span class="match-event-playername fw-normal">@e.PlayerName</span>
                                 </a>
@@ -130,7 +138,7 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center">
                                     <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
                                     <span class="match-event-playername fw-normal">@e.PlayerName</span>
                                 </a>
@@ -154,7 +162,7 @@
                             <li class="list-group-item match-event-item">
                                 <span class="match-event-icon">@Html.Raw(eventIcon(e.StatType))</span>
                                 <span class="match-event-minute">@e.Minute'</span>
-                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center text-dark text-decoration-none">
+                                <a asp-controller="Player" asp-action="Details" asp-route-id="@e.PlayerId" class="event-player-link d-flex align-items-center">
                                     <img src="@e.PlayerImageUrl" alt="@e.PlayerName" class="event-player-img" />
                                     <span class="match-event-playername fw-normal">@e.PlayerName</span>
                                 </a>

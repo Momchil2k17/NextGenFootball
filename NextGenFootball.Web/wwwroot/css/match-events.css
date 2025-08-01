@@ -13,6 +13,7 @@
     align-items: center;
     min-height: 48px;
     padding: 8px 12px;
+    color: #000;
 }
 
 .match-event-icon {
@@ -30,6 +31,7 @@
     text-align: right;
     font-weight: bold;
     margin-right: 8px;
+    color: #000;
 }
 
 .event-player-img {
@@ -46,7 +48,7 @@
 .event-player-link,
 .event-player-link:visited,
 .event-player-link:active {
-    color: inherit !important;
+    color: #000 !important;
     text-decoration: none !important;
     font-weight: inherit;
     background: none;
@@ -59,13 +61,15 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: inherit !important;
+    color: #000 !important;
     font-weight: inherit;
 }
 
 .event-player-link:hover .match-event-playername,
-.event-player-link:focus .match-event-playername {
-    color: inherit !important;
+.event-player-link:focus .match-event-playername,
+.event-player-link:hover,
+.event-player-link:focus {
+    color: #000 !important;
     text-decoration: underline !important;
 }
 
@@ -81,14 +85,28 @@
 .stadium-link,
 .stadium-link:visited,
 .stadium-link:active {
-    color: inherit !important;
+    color: #000 !important;
     text-decoration: none !important;
-/*    font-weight: 500;*/
     background: none;
 }
 
     .stadium-link:hover,
     .stadium-link:focus {
-        color: inherit !important;
+        color: #000 !important;
+        text-decoration: underline !important;
+    }
+
+/* Video link: remove underline, normal color, underline on hover */
+.video-link,
+.video-link:visited,
+.video-link:active {
+    color: #000 !important;
+    text-decoration: none !important;
+    background: none;
+}
+
+    .video-link:hover,
+    .video-link:focus {
+        color: #000 !important;
         text-decoration: underline !important;
     }
