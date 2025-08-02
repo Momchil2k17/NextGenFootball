@@ -31,7 +31,19 @@
     }
 </dl>
 
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-secondary">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div class="mb-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-secondary me-2">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
 </div>
+
+<hr />
+
+@* Upcoming matches partial *@
+@await Html.PartialAsync("_UpcomingMatchesByRound", Model.UpcomingMatches)
+
+<hr />
+
+@* Standings partial *@
+@await Html.PartialAsync("_LeagueStandings", Model.Standings)
+
+<!-- You can add more sections/partials as needed below -->

@@ -47,7 +47,9 @@ namespace NextGenFootball.Services.Core
                     Date = model.Date,
                     StadiumId = homeTeam.Stadium.Id,
                     LeagueId = league.Id,
-                    Status = MatchStatus.Scheduled
+                    Status = MatchStatus.Scheduled,
+                    Round = model.Round,
+
                 };
                 await this.matchRepository.AddAsync(match);
                 res = true;

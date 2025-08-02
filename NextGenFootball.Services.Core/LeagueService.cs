@@ -73,30 +73,35 @@ namespace NextGenFootball.Services.Core
 
         public async Task<LeagueDetailsViewModel?> GetLeagueDetailsAsync(int? id)
         {
-            LeagueDetailsViewModel? details = null;
-            if(id.HasValue)
-            {
-                League? league = await this.leagueRepository
-                    .GetAllAttached()
-                    .Include(l => l.Season)
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(l => l.Id == id.Value );
-                if (league != null)
-                {
-                    details = new LeagueDetailsViewModel
-                    {
-                        Id = league.Id,
-                        Name = league.Name,
-                        Region = GetDisplayName(league.Region),
-                        AgeGroup = league.AgeGroup,
-                        SeasonName = league.Season.Name,
-                        ImageUrl = league.ImageUrl,
-                        Description = league.Description
-                    };
-                }
-            }
-            return details;
+            if (!id.HasValue)
+                return null;
 
+            var league = await leagueRepository
+                .GetAllAttached()
+                .Include(l => l.Season)
+                .Include(l => l.Matches)
+                    .ThenInclude(m => m.HomeTeam)
+                .Include(l => l.Matches)
+                    .ThenInclude(m => m.AwayTeam)
+                .Include(l => l.Teams) 
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == id.Value);
+
+            if (league == null)
+                return null;
+
+            return new LeagueDetailsViewModel
+            {
+                Id = league.Id,
+                Name = league.Name,
+                Region = GetDisplayName(league.Region),
+                AgeGroup = league.AgeGroup,
+                SeasonName = league.Season?.Name ?? "Unknown",
+                ImageUrl = league.ImageUrl,
+                Description = league.Description,
+                UpcomingMatches = await GetUpcomingMatchesAsync(league),
+                Standings = await GetLeagueStandingsAsync(league)
+            };
         }
 
         public async Task<LeagueEditViewModel?> GetLeagueForEditAsync(int? id)
@@ -203,6 +208,99 @@ namespace NextGenFootball.Services.Core
                 })
                 .ToListAsync();
             return leagues;
+        }
+        private Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesAsync(League league)
+        {
+            var rounds = league.Matches?
+                .Where(m => m.Date >= DateTime.Now && !m.IsDeleted)
+                .GroupBy(m => m.Round)
+                .Select(g => new RoundMatchesViewModel
+                {
+                    RoundNumber = g.Key,
+                    Matches = g.Select(m => new MatchSummaryViewModel
+                    {
+                        MatchId = m.Id,
+                        HomeTeamId = m.HomeTeamId,
+                        HomeTeam = m.HomeTeam.Name,
+                        HomeTeamImageUrl = m.HomeTeam.ImageUrl,
+                        AwayTeamId = m.AwayTeamId,
+                        AwayTeam = m.AwayTeam.Name,
+                        AwayTeamImageUrl = m.AwayTeam?.ImageUrl,
+                        Date = m.Date
+                    }).ToList()
+                }).OrderBy(r => r.RoundNumber).ToList()
+                ?? new List<RoundMatchesViewModel>();
+
+            return Task.FromResult(new LeagueUpcomingMatchesViewModel
+            {
+                LeagueId = league.Id,
+                Rounds = rounds
+            });
+        }
+        private Task<LeagueStandingsViewModel> GetLeagueStandingsAsync(League league)
+        {
+            // Calculate for each team
+            var standings = league.Teams?.Select(team =>
+            {
+                var matches = league.Matches
+                    .Where(m => !m.IsDeleted &&
+                                (m.HomeTeamId == team.Id || m.AwayTeamId == team.Id)
+                                 && m.Status==MatchStatus.Played)
+                    .ToList();
+
+                int played = matches.Count;
+                int wins = matches.Count(m =>
+                    (m.HomeTeamId == team.Id && m.HomeScore > m.AwayScore) ||
+                    (m.AwayTeamId == team.Id && m.AwayScore > m.HomeScore));
+                int draws = matches.Count(m => m.HomeScore == m.AwayScore);
+                int losses = played - wins - draws;
+                int goalsScored = matches.Sum(m =>
+                    m.HomeTeamId == team.Id ? (m.HomeScore ?? 0) :
+                    m.AwayTeamId == team.Id ? (m.AwayScore ?? 0) : 0);
+                int goalsConceded = matches.Sum(m =>
+                    m.HomeTeamId == team.Id ? (m.AwayScore ?? 0) :
+                    m.AwayTeamId == team.Id ? (m.HomeScore ?? 0) : 0);
+                int goalDifference = goalsScored - goalsConceded;
+                int points = wins * 3 + draws;
+
+                // Form last five matches (W/D/L)
+                var lastFive = matches
+                    .OrderByDescending(m => m.Date)
+                    .Take(5)
+                    .Select(m =>
+                    {
+                        if ((m.HomeTeamId == team.Id && m.HomeScore > m.AwayScore) ||
+                            (m.AwayTeamId == team.Id && m.AwayScore > m.HomeScore))
+                            return "W";
+                        if (m.HomeScore == m.AwayScore)
+                            return "D";
+                        return "L";
+                    }).ToList();
+
+                return new TeamStandingViewModel
+                {
+                    TeamId = team.Id,
+                    TeamName = team.Name,
+                    TeamImageUrl = team.ImageUrl,
+                    Played = played,
+                    Wins = wins,
+                    Draws = draws,
+                    Losses = losses,
+                    GoalsScored = goalsScored,
+                    GoalsConceded = goalsConceded,
+                    Points = points,
+                    FormLastFive = lastFive
+                };
+            })
+            .OrderByDescending(ts => ts.Points)
+            .ThenByDescending(ts => ts.GoalDifference)
+            .ThenByDescending(ts => ts.GoalsScored)
+            .ToList() ?? new List<TeamStandingViewModel>();
+
+            return Task.FromResult(new LeagueStandingsViewModel
+            {
+                Standings = standings
+            });
         }
         public static string GetDisplayName(Enum value)
         {

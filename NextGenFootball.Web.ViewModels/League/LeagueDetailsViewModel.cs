@@ -15,5 +15,7 @@ namespace NextGenFootball.Web.ViewModels.League
         public string SeasonName { get; set; } = null!;
         public string? ImageUrl { get; set; }
         public string? Description { get; set; }
+        public LeagueUpcomingMatchesViewModel? UpcomingMatches { get; set; }
+        public LeagueStandingsViewModel? Standings { get; set; }
     }
 }

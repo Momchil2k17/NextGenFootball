@@ -53,7 +53,7 @@ namespace NextGenFootball.Web.Areas.LeagueManager.Controllers
                 model.Teams = await this.teamService.GetTeamDropdownViewModelsByLeagueAsync(id);
                 return View(model);
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index",new { id=model.LeagueId});
         }
         [HttpGet]
         public async Task<IActionResult> Assignments(int id)

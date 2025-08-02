@@ -1,0 +1,71 @@
+﻿@using NextGenFootball.Web.ViewModels.League;
+@model LeagueUpcomingMatchesViewModel
+
+<h3>Upcoming Matches</h3>
+<link rel="stylesheet" href="~/css/league-upcoming-matches.css" />
+
+@if (Model.Rounds == null || !Model.Rounds.Any())
+{
+    <div class="alert alert-info">No upcoming matches scheduled.</div>
+}
+else
+{
+    <div class="upcoming-matches-responsive-wrapper">
+        @foreach (var round in Model.Rounds.OrderBy(r => r.RoundNumber))
+        {
+            <h4 class="mt-4 mb-2">Round @round.RoundNumber</h4>
+            @if (round.Matches == null || !round.Matches.Any())
+            {
+                <div class="alert alert-secondary">No matches in this round.</div>
+            }
+            else
+            {
+                <table class="upcoming-matches-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th class="text-center">Home Team</th>
+                            <th class="upcoming-vs-cell"></th>
+                            <th class="text-center">Away Team</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var match in round.Matches)
+                        {
+                            <tr>
+                                <td data-label="Date">@match.Date.ToString("dd MMM yyyy, HH:mm")</td>
+                                <td data-label="Home Team" class="upcoming-home-team-cell text-center">
+                                    <div class="upcoming-team-cell">
+                                        <img src="@match.HomeTeamImageUrl"
+                                             alt="@match.HomeTeam" />
+                                        <a asp-controller="Team"
+                                           asp-action="Details"
+                                           asp-route-id="@match.HomeTeamId"
+                                           class="upcoming-team-name-link">
+                                            @match.HomeTeam
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="upcoming-vs-cell" data-label="">
+                                    vs
+                                </td>
+                                <td data-label="Away Team" class="upcoming-away-team-cell text-center">
+                                    <div class="upcoming-team-cell">
+                                        <img src="@match.AwayTeamImageUrl"
+                                             alt="@match.AwayTeam" />
+                                        <a asp-controller="Team"
+                                           asp-action="Details"
+                                           asp-route-id="@match.AwayTeamId"
+                                           class="upcoming-team-name-link">
+                                            @match.AwayTeam
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    </div>
+}

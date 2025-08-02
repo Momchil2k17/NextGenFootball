@@ -1,0 +1,144 @@
+﻿.league-standings-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.league-standings-table {
+    background: #f7fafd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 2rem;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .league-standings-table th,
+    .league-standings-table td {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+        font-size: 1.07em;
+        border-bottom: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    .league-standings-table th {
+        background: #eaf1fb;
+        font-weight: 600;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        color: #3a4e6d;
+        border-bottom: 2px solid #d6e6fa;
+    }
+
+    .league-standings-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .league-standings-table tbody tr {
+        transition: background 0.13s;
+    }
+
+        .league-standings-table tbody tr:hover {
+            background: #eaf1fb;
+        }
+
+.standings-team-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+    .standings-team-cell img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #e2e8f0;
+        background: #fff;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        transition: border-color 0.15s;
+    }
+
+.standings-team-name-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+    font-size: 1.07em;
+    transition: text-decoration 0.1s, color 0.15s;
+}
+
+    .standings-team-name-link:hover {
+        text-decoration: underline;
+    }
+
+.points-cell {
+    font-weight: 700;
+    font-size: 1.05em;
+    color: #1864ab;
+}
+
+.form-badge {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.95em;
+    font-weight: 600;
+    margin-right: 3px;
+    color: #fff;
+}
+
+    .form-badge.win {
+        background: #198754;
+    }
+
+    .form-badge.draw {
+        background: #6c757d;
+    }
+
+    .form-badge.loss {
+        background: #dc3545;
+    }
+
+@media (max-width: 900px) {
+    .league-standings-table th,
+    .league-standings-table td {
+        font-size: 0.97em;
+        padding: 0.6rem 0.25rem;
+    }
+
+    .standings-team-cell img {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 600px) {
+    .league-standings-table {
+        min-width: 520px;
+        font-size: 0.97em;
+    }
+
+    .standings-team-cell img {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+@media (max-width: 450px) {
+    .league-standings-table {
+        min-width: 410px;
+        font-size: 0.94em;
+    }
+
+    .standings-team-cell img {
+        width: 18px;
+        height: 18px;
+    }
+}

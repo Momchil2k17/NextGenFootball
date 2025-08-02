@@ -1,0 +1,144 @@
+﻿.upcoming-matches-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.upcoming-matches-table {
+    background: #f7fafd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 2rem;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .upcoming-matches-table th,
+    .upcoming-matches-table td {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+        font-size: 1.07em;
+        border-bottom: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    .upcoming-matches-table th {
+        background: #eaf1fb;
+        font-weight: 600;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        color: #3a4e6d;
+        border-bottom: 2px solid #d6e6fa;
+    }
+
+    .upcoming-matches-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .upcoming-matches-table tbody tr {
+        transition: background 0.13s;
+    }
+
+        .upcoming-matches-table tbody tr:hover {
+            background: #eaf1fb;
+        }
+
+.upcoming-team-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.upcoming-home-team-cell,
+.upcoming-away-team-cell {
+    text-align: center !important;
+}
+
+.upcoming-team-cell img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    transition: border-color 0.15s;
+}
+
+.upcoming-team-name-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+    font-size: 1.07em;
+    transition: text-decoration 0.1s, color 0.15s;
+}
+
+    .upcoming-team-name-link:hover {
+        text-decoration: underline;
+    }
+
+.upcoming-vs-cell {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+    letter-spacing: 0.5px;
+    padding-left: 0;
+    padding-right: 0;
+    color: #1864ab;
+    vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+    .upcoming-matches-table th,
+    .upcoming-matches-table td {
+        font-size: 0.97em;
+        padding: 0.6rem 0.25rem;
+    }
+
+    .upcoming-team-cell img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .upcoming-vs-cell {
+        font-size: 1.25em;
+    }
+}
+
+@media (max-width: 600px) {
+    .upcoming-matches-table {
+        min-width: 520px;
+        font-size: 0.97em;
+    }
+
+    .upcoming-team-cell img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .upcoming-vs-cell {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 450px) {
+    .upcoming-matches-table {
+        min-width: 410px;
+        font-size: 0.94em;
+    }
+
+    .upcoming-team-cell img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .upcoming-vs-cell {
+        font-size: 1em;
+    }
+}
