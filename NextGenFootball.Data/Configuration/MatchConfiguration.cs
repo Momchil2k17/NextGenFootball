@@ -85,6 +85,10 @@ namespace NextGenFootball.Data.Configuration
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity
+                .Property(m => m.Round)
+                .IsRequired();
+
+            entity
                 .HasQueryFilter(m => m.IsDeleted == false);
         }
     }

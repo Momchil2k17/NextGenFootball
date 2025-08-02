@@ -69,6 +69,8 @@ namespace NextGenFootball.Data.Models
         [ForeignKey("MatchReport")]
         public Guid? MatchReportId { get; set; }
         public virtual MatchReport? Report { get; set; }
+
+        public int Round { get; set; }
     }
 }
 

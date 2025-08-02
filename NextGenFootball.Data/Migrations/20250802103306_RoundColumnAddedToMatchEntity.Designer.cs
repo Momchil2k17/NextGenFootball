@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NextGenFootball.Data;
 
@@ -11,9 +12,11 @@ using NextGenFootball.Data;
 namespace NextGenFootball.Data.Migrations
 {
     [DbContext(typeof(NextGenFootballDbContext))]
-    partial class NextGenFootballDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250802103306_RoundColumnAddedToMatchEntity")]
+    partial class RoundColumnAddedToMatchEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,7 +426,7 @@ namespace NextGenFootball.Data.Migrations
                     b.Property<Guid?>("RefereeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Round")
+                    b.Property<int?>("Round")
                         .HasColumnType("int");
 
                     b.Property<int>("StadiumId")

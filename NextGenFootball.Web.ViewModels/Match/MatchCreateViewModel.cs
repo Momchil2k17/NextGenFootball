@@ -19,6 +19,7 @@ namespace NextGenFootball.Web.ViewModels.Match
         [Required]
         public int AwayTeamId { get; set; }
         public IEnumerable<TeamDropdownViewModel>? Teams { get; set; }
+        public int Round { get; set; } 
 
 
         [Required]
