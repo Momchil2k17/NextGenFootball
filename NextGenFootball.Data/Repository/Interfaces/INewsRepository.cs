@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NextGenFootball.Data.Repository.Interfaces
 {
-    internal interface INewsRepository : IRepository<News, int>, IAsyncRepository<News, int>
+    public interface INewsRepository : IRepository<News, int>, IAsyncRepository<News, int>
     {
     }
 }

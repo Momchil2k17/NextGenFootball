@@ -1,0 +1,24 @@
+﻿@model NextGenFootball.Web.ViewModels.News.NewsDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+<link rel="stylesheet" href="~/css/news-details.css">
+
+<div class="news-details-card">
+    <div class="news-details-body">
+        <h2 class="news-details-title">@Model.Title</h2>
+        @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" class="news-details-image" alt="@Model.Title" />
+        }
+        <div class="news-details-meta">
+            Published on @Model.PublishedOn.ToString("dd MMM yyyy") by @Model.Author
+        </div>
+        <div class="news-details-divider"></div>
+        <div class="news-details-content">@Model.Content</div>
+    </div>
+</div>
+<a asp-action="Index" class="btn btn-outline-primary news-details-back-btn">
+    <i class="bi bi-arrow-left"></i> Back to News
+</a>

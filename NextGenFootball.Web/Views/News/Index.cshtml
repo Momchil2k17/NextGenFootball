@@ -1,0 +1,43 @@
+﻿@using NextGenFootball.Web.ViewModels.News
+@model IEnumerable<NewsIndexViewModel>
+
+@{
+    ViewData["Title"] = "All News";
+}
+
+<h2 class="mb-4">Latest News</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No news available.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var news in Model.OrderByDescending(n => n.PublishedOn))
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrWhiteSpace(news.ImageUrl))
+                    {
+                        <img src="@news.ImageUrl" class="card-img-top" alt="@news.Title" style="object-fit:cover; max-height:180px;">
+                    }
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">@news.Title</h5>
+                    <p class="card-text text-muted" style="font-size:0.97em;">
+                        @news.PublishedOn.ToString("dd MMM yyyy") by @news.Author
+                    </p>
+                    <p class="card-text flex-grow-1">
+                        @(
+                                            news.Content.Length > 140
+                                            ? news.Content.Substring(0, 140) + "..."
+                                            : news.Content
+                                            )
+                    </p>
+                    <a asp-action="Details" asp-route-id="@news.Id" class="btn btn-primary mt-auto">Read More</a>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+}
