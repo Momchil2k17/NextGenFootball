@@ -12,8 +12,8 @@ using NextGenFootball.Data;
 namespace NextGenFootball.Data.Migrations
 {
     [DbContext(typeof(NextGenFootballDbContext))]
-    [Migration("20250801230110_SeedPlayers2")]
-    partial class SeedPlayers2
+    [Migration("20250802102958_PlayerSeed")]
+    partial class PlayerSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -605,7 +605,7 @@ namespace NextGenFootball.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("baf55755-2ed2-4ef1-a677-1ec3ff28c877"),
+                            Id = new Guid("a0415484-d6c7-4810-8c8c-7efc69d0ae9d"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1990, 10, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Gustavo",
@@ -624,7 +624,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5cee5265-9c12-4663-8b46-88d6b41973e2"),
+                            Id = new Guid("2e0b3b97-c5a0-4336-ae22-ef17a87c2843"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2001, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Dimitar",
@@ -643,7 +643,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("241c5605-e77f-45ec-9113-7010bd9c4ab5"),
+                            Id = new Guid("3694f527-8277-4e09-b861-ba8276910273"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 7, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Ivan",
@@ -662,7 +662,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("22011a6a-7ab6-4ba0-981e-69b95149eb7f"),
+                            Id = new Guid("fea3badc-0c3e-4249-9272-a54e3ed4b2ff"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Thibaut",
@@ -681,7 +681,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("41f2b640-9b10-4a55-85a0-18835aa8df21"),
+                            Id = new Guid("a2fb3e65-e3f4-4348-8335-5f4667e83c22"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jurgen",
@@ -700,7 +700,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("181f700b-43ff-438e-b4a2-61ee9a0fee0c"),
+                            Id = new Guid("56b3ff5e-7fde-49a8-99da-dc76833396b3"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 4, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Brian",
@@ -719,7 +719,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("16d57034-b7ac-4ca9-9793-5d153666de03"),
+                            Id = new Guid("9778c700-13ec-4cec-8e08-daa9577cea67"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1992, 12, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Amos",
@@ -738,7 +738,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d3e493e0-c099-4a34-9eda-a1f907db1838"),
+                            Id = new Guid("0efa81c3-9bd7-49a1-a5ce-8afd283a6c6e"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2002, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Stanislav",
@@ -757,7 +757,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2530050e-9159-4d75-a0e9-261c2a144747"),
+                            Id = new Guid("5a8967a3-0261-42a0-9841-16e52732f934"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jonathan",
@@ -776,7 +776,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("db254800-0c32-4fbf-a0aa-0894b90c0219"),
+                            Id = new Guid("1f4fb01d-52e7-4639-84b8-74107835f401"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 7, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Tobias",
@@ -795,7 +795,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("47fc8ab4-62ce-4a9d-91dd-53f426de9fd3"),
+                            Id = new Guid("f70355d9-0782-48f8-bd22-81d0fc9d8608"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Duckens",
@@ -814,7 +814,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3aaf8d51-b732-4555-9320-75a6e1a71fec"),
+                            Id = new Guid("3457b59a-8393-4d6d-b80f-08d471fcfe94"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 4, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Michael",
@@ -833,7 +833,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("68c6f941-0806-4604-8eaa-8010b6563688"),
+                            Id = new Guid("49db4761-2849-4877-a4a5-05df5a94700e"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Enes",
@@ -852,7 +852,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0d692beb-72a2-4f13-ab51-8e0501e5335f"),
+                            Id = new Guid("5ccd8183-2055-40bb-bd2f-5f75f09521e9"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 2, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Lazar",
@@ -871,7 +871,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5c8d78cb-dece-4e67-97ec-1800dcac3c82"),
+                            Id = new Guid("19f2b08f-953f-4726-8406-f2df5f3ccfab"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 7, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Menno",
@@ -890,7 +890,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f5f6bb92-2b1c-4052-8eda-92af3fd5e0be"),
+                            Id = new Guid("8417ad24-60cd-45d3-bfc8-c5503d544361"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Brayan",
@@ -909,7 +909,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c19bd113-4ccd-4083-b9e0-a7652fac2232"),
+                            Id = new Guid("f0435b87-ff3b-4cca-af13-f12e0b6a01eb"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 12, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Marcelino",
@@ -928,7 +928,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("71a92a67-f0cd-4824-a70a-e030a6759567"),
+                            Id = new Guid("24f78ede-17ac-4851-a123-89d68ac6653e"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1990, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Sergio",
@@ -947,7 +947,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1335091a-111c-4c5a-8bb1-9426efecba04"),
+                            Id = new Guid("258909b8-0a3a-40b9-ac3a-6949d29f02f5"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Anton",
@@ -966,7 +966,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1f59ac5d-1910-4b6f-898a-8b981b9eec7c"),
+                            Id = new Guid("aec3888f-733b-43c3-8e0b-626b187dee5d"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1990, 8, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Igor",
@@ -985,7 +985,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0873c249-0017-4769-ad2a-54d031d9731a"),
+                            Id = new Guid("1fe6c1e4-2556-4cb3-ba89-5772044fff00"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1995, 10, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Olivier",
@@ -1004,7 +1004,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e7220e48-fd30-4f5c-a449-d9a845259209"),
+                            Id = new Guid("68de397d-1790-4e81-ab59-84540ac236f9"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2000, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Dominik",
@@ -1023,7 +1023,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ea247199-3602-42f0-b89c-106f9b8b000b"),
+                            Id = new Guid("fa7a6506-2085-4d01-9182-a49e98b576c7"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 10, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jakub",
@@ -1042,7 +1042,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d6d60379-3fc4-4749-a6ba-885ac345ff77"),
+                            Id = new Guid("3cbb83f0-81a8-4d20-bfd2-73a299d0099b"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Claude",
@@ -1061,7 +1061,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("4226d958-257c-4a4f-a7bc-6e01b9a1a839"),
+                            Id = new Guid("6f4757c6-e5ee-4560-a659-1246b05e49ee"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Kiril",
@@ -1080,7 +1080,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("2ebb99d4-6a52-4843-965c-88520541655b"),
+                            Id = new Guid("539dab57-92ec-4899-9e3b-dfdf97295edc"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 9, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Bernard",
@@ -1099,7 +1099,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c634850c-5687-46d2-8aca-0d943fbb51b8"),
+                            Id = new Guid("3a90db90-008e-4a70-8421-5d1461558bc9"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1995, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Rick",
@@ -1118,7 +1118,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("47ce2080-951c-47a7-9271-8e2d506b46fc"),
+                            Id = new Guid("995f9627-2d72-4ac7-b478-10807a1145f1"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 9, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Matías",
@@ -1137,7 +1137,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("5c8022ef-1734-475d-abc3-39201b52f4e8"),
+                            Id = new Guid("f74653ea-0c60-4a4d-b798-f5d780ff562e"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1994, 6, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Dinis",
@@ -1156,7 +1156,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9bca9ba0-f00b-4119-af71-5d2afcf47318"),
+                            Id = new Guid("d0ba924f-2939-40fa-ae29-f611309f9f0a"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2000, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Filip",
@@ -1175,7 +1175,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("90df5116-8e2b-4b0f-8ac7-d27e7de29c1d"),
+                            Id = new Guid("0a2250ba-fd8f-4231-8663-3ae38f96cbc7"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2001, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Rwan",
@@ -1194,7 +1194,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d8132d92-73aa-41c6-b2f4-85c16d771ba9"),
+                            Id = new Guid("85b7e6a3-54a3-4530-80a8-b91aa1b5b166"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1996, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Aslak",
@@ -1213,7 +1213,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ff7121c4-f10e-46e4-9791-373ee116bc3b"),
+                            Id = new Guid("e3f774bc-8018-4aef-922d-b74bb43cc6cd"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2002, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Svetoslav",
@@ -1232,7 +1232,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3eeb8c52-d3c7-4685-99fc-63e77376eeab"),
+                            Id = new Guid("a034c70b-5dcb-4e27-9acd-5f2d7134a06c"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 2, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Kristian",
@@ -1251,7 +1251,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d550bf8e-0d42-4aea-bfa2-69b6a62f33c1"),
+                            Id = new Guid("12f3e458-05e4-4f30-9c19-2ac67fbcc4d7"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2000, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Christian",
@@ -1270,7 +1270,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0a1d9bdf-ec89-41c3-97e1-752a1da2a611"),
+                            Id = new Guid("e8060642-8ceb-42b6-95af-d851c0f220b2"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Jeremy",
@@ -1289,7 +1289,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f04bc3f7-b0ad-44ef-b474-a1ca98b05964"),
+                            Id = new Guid("7e46edaa-6e3a-46f8-9056-ccaee1774c6c"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1997, 2, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Welton",
@@ -1308,7 +1308,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("0d32ffe0-4cba-466a-b2c6-20176a232a8f"),
+                            Id = new Guid("4d2554c9-1f25-4243-aef0-318ce220efbc"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 2, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Andrian",
@@ -1327,7 +1327,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("66c09598-a7a3-41d5-962e-b7bc8ada67bb"),
+                            Id = new Guid("f7fecf7c-38f1-4864-be64-cafd57e1c715"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1999, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Iliyan",
@@ -1346,7 +1346,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("c75bc95d-329f-4df1-a1cb-763e45509b08"),
+                            Id = new Guid("8cb114c8-6038-4f83-8041-0dd3ac6af293"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2000, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Ronaldo",
@@ -1365,7 +1365,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dbd9abd5-703b-466d-944c-5cce21350568"),
+                            Id = new Guid("9b452ea7-95b7-40c6-9b77-0cf0daad83ce"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2001, 10, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Filip",
@@ -1384,7 +1384,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("49e1faca-6b57-4438-a23a-95256e2d5031"),
+                            Id = new Guid("ed18eeab-318b-42b7-9754-05c18bca3318"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1993, 7, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Carlos",
@@ -1403,7 +1403,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("b5a90a0c-9e53-4761-a76a-e8516fc77fe4"),
+                            Id = new Guid("2687a4ec-a2ba-4e9a-a7ae-821fc4c98de4"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1992, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Georgi",
@@ -1422,7 +1422,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3607da5a-73b5-4aab-bfc5-435a3f025598"),
+                            Id = new Guid("d5604c3f-3391-4198-af48-56160482d42d"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1998, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Darlan",
@@ -1441,7 +1441,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("14101b7e-e0f9-466c-8dcf-2a8d3af2f9b3"),
+                            Id = new Guid("aa6607cc-70df-40e0-921b-b65354175778"),
                             Assists = 0,
                             DateOfBirth = new DateTime(2003, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Marin",
@@ -1460,7 +1460,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("fb90071e-1efb-4d62-a746-b20c8df50858"),
+                            Id = new Guid("ae635af1-16f3-4e4d-91be-ffbaf359a4f8"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1988, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Nikolay",
@@ -1479,7 +1479,7 @@ namespace NextGenFootball.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("be260856-b05c-49f5-8820-ceafcf450505"),
+                            Id = new Guid("a916a6e8-fe05-4d6f-b0e4-967c07d74ff6"),
                             Assists = 0,
                             DateOfBirth = new DateTime(1990, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Georgi",
