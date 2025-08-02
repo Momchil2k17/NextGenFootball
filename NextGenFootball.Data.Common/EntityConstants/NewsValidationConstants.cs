@@ -34,5 +34,7 @@ namespace NextGenFootball.Data.Common.EntityConstants
         public const string AuthorLength = "Author name must be between {2} and {1} characters.";
 
         public const string ImageUrlLength = "Image URL must not exceed {1} characters.";
+
+        public const string PublishedOnRequired = "Published date is required.";
     }
 }

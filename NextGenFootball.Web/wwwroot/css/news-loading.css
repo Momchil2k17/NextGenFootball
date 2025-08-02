@@ -1,0 +1,9 @@
+﻿#news-results.loading-results {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+#news-loader {
+    min-height: 48px;
+}

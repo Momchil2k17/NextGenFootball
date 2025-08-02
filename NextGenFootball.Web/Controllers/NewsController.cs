@@ -27,5 +27,38 @@ namespace NextGenFootball.Web.Controllers
             }
             return View(details);
         }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(NewsCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isCreated = await this.newsService.CreateNewsAsync(model);
+            if (!isCreated)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to create news.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Search(string searchTerm, int page = 1, int pageSize = 9)
+        {
+            var (news, totalItems) = await newsService.SearchNewsAsync(searchTerm, page, pageSize);
+
+            var result = new
+            {
+                items = news,
+                currentPage = page,
+                totalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+            };
+
+            return Json(result);
+        }
     }
 }
