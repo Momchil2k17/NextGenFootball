@@ -1,0 +1,31 @@
+﻿@using NextGenFootball.Web.ViewModels.News
+@model IEnumerable<NewsIndexViewModel>
+
+<link rel="stylesheet" href="~/css/latest-news.css" />
+
+<h3 class="mb-3">Latest News</h3>
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No news available.</div>
+}
+else
+{
+    <div class="latest-news-grid">
+        @foreach (var news in Model)
+        {
+            <div class="latest-news-card">
+                <a asp-controller="News"
+                   asp-action="Details"
+                   asp-route-id="@news.Id"
+                   class="latest-news-image-link">
+                    <div class="latest-news-image-container">
+                        <img src="@news.ImageUrl" alt="@news.Title" class="latest-news-image" />
+                        <div class="latest-news-title-bar">
+                            <span class="latest-news-title">@news.Title</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}

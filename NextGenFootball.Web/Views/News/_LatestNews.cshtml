@@ -1,0 +1,46 @@
+﻿@using NextGenFootball.Web.ViewModels.News
+@model IEnumerable<NewsIndexViewModel>
+
+<h3>Latest News</h3>
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">No news available.</div>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var news in Model)
+        {
+            <li class="list-group-item">
+                <div class="d-flex align-items-center">
+                    @if (!string.IsNullOrEmpty(news.ImageUrl))
+                    {
+                        <img src="@news.ImageUrl"
+                             alt="@news.Title"
+                             style="width:80px;height:60px;object-fit:cover;border-radius:6px;margin-right:16px;" />
+                    }
+                    <div>
+                        <strong>@news.Title</strong>
+                        <br />
+                        <small>
+                            @news.PublishedOn.ToString("dd MMM yyyy") by @news.Author
+                        </small>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    @if (!string.IsNullOrWhiteSpace(news.Content) && news.Content.Length > 160)
+                    {
+                        <span>@news.Content.Substring(0, 160)...</span>
+                    }
+                    else
+                    {
+                        <span>@news.Content</span>
+                    }
+                </div>
+                <div class="mt-2">
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@news.Id" class="btn btn-link btn-sm">Read more</a>
+                </div>
+            </li>
+        }
+    </ul>
+}

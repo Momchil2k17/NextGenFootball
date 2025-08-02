@@ -1,0 +1,66 @@
+﻿@using NextGenFootball.Web.ViewModels.League;
+@model LeagueStandingsViewModel
+
+<h3>League Standings</h3>
+<link rel="stylesheet" href="~/css/league-standings.css" />
+
+@if (Model.Standings == null || !Model.Standings.Any())
+{
+    <div class="alert alert-info">No standings available.</div>
+}
+else
+{
+    <div class="league-standings-responsive-wrapper">
+        <table class="league-standings-table">
+            <thead>
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Team</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>GF:GA</th>
+                    <th>GD</th>
+                    <th>Pts</th>
+                    <th>Form</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Standings.Count; i++)
+                {
+                    var team = Model.Standings[i];
+                    <tr class="text-center">
+                        <td data-label="#">@(i + 1)</td>
+                        <td data-label="Team" class="text-start">
+                            <div class="standings-team-cell">
+                                <img src="@team.TeamImageUrl"
+                                     alt="@team.TeamName" />
+                                <a asp-controller="Team"
+                                   asp-action="Details"
+                                   asp-route-id="@team.TeamId"
+                                   class="standings-team-name-link">
+                                    @team.TeamName
+                                </a>
+                            </div>
+                        </td>
+                        <td data-label="MP">@team.Played</td>
+                        <td data-label="W">@team.Wins</td>
+                        <td data-label="D">@team.Draws</td>
+                        <td data-label="L">@team.Losses</td>
+                        <td data-label="GF:GA">@team.GoalsScored:@team.GoalsConceded</td>
+                        <td data-label="GD">@team.GoalDifference</td>
+                        <td data-label="Pts" class="points-cell">@team.Points</td>
+                        <td data-label="Form">
+                            @foreach (var res in team.FormLastFive)
+                            {
+                                var badgeClass = res == "W" ? "win" : res == "D" ? "draw" : "loss";
+                                <span class="form-badge @badgeClass">@res</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
@@ -273,7 +274,6 @@ namespace NextGenFootball.Services.Core
             await this.playerRepository.DeleteAsync(player);
             return true;
         }
-
 
     }
 }

@@ -209,7 +209,7 @@ namespace NextGenFootball.Services.Core
                 .ToListAsync();
             return leagues;
         }
-        private Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesAsync(League league)
+        public Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesAsync(League league)
         {
             var rounds = league.Matches?
                 .Where(m => m.Date >= DateTime.Now && !m.IsDeleted)
@@ -237,7 +237,7 @@ namespace NextGenFootball.Services.Core
                 Rounds = rounds
             });
         }
-        private Task<LeagueStandingsViewModel> GetLeagueStandingsAsync(League league)
+        public Task<LeagueStandingsViewModel> GetLeagueStandingsAsync(League league)
         {
             // Calculate for each team
             var standings = league.Teams?.Select(team =>
@@ -301,6 +301,33 @@ namespace NextGenFootball.Services.Core
             {
                 Standings = standings
             });
+        }
+        public async Task<LeagueStandingsViewModel> GetCurrentStandingsAsync()
+        {
+            var mainLeague = await leagueRepository
+                .GetAllAttached()
+                .Include(l => l.Teams)
+                .Include(l => l.Matches)
+                .FirstOrDefaultAsync(l=>l.Id==1);
+
+            if (mainLeague == null)
+                return new LeagueStandingsViewModel { Standings = new List<TeamStandingViewModel>() };
+
+            return await GetLeagueStandingsAsync(mainLeague);
+        }
+
+        public async Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForHomeAsync()
+        {
+            var mainLeague = await leagueRepository
+                .GetAllAttached()
+                .Include(l => l.Teams)
+                .Include(l => l.Matches)
+                .FirstOrDefaultAsync(l => l.Id == 1);
+
+            if (mainLeague == null)
+                return new LeagueUpcomingMatchesViewModel { Rounds = new List<RoundMatchesViewModel>() };
+
+            return await GetUpcomingMatchesAsync(mainLeague);
         }
         public static string GetDisplayName(Enum value)
         {

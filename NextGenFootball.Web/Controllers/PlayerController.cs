@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NextGenFootball.Services.Core;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
 
@@ -17,8 +18,8 @@ namespace NextGenFootball.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            IEnumerable<PlayerIndexViewModel> players = await this.playerService.GetAllPlayersAsync();
-            return View(players);
+            IEnumerable<PlayerIndexViewModel> items = await this.playerService.GetAllPlayersAsync();
+            return View(items);
         }
 
         [HttpGet]
@@ -143,5 +144,6 @@ namespace NextGenFootball.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+    
     }
 }

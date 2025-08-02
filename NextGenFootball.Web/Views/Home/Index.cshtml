@@ -1,8 +1,44 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using NextGenFootball.Web.ViewModels.Home
+@model HomePageViewModel
+
+@{
+    ViewData["Title"] = "Football Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="p-4 bg-primary text-white rounded shadow-sm">
+                <h1 class="mb-2">Welcome to NextGen Football</h1>
+                <p class="lead mb-0">Your source for the latest news, standings, and upcoming matches!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card h-90 shadow-sm">
+                <div class="card-body">
+                    @await Html.PartialAsync("_LatestNews", Model.LatestNews)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card h-90 shadow-sm">
+                <div class="card-body">
+                    @await Html.PartialAsync("_LeagueStandings", Model.Standings)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    @await Html.PartialAsync("_UpcomingMatchesByRound", Model.UpcomingMatches)
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

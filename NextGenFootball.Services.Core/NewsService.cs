@@ -56,6 +56,26 @@ namespace NextGenFootball.Services.Core
             return news;
         }
 
+        public async Task<IEnumerable<NewsIndexViewModel>?> GetLatestNewsAsync(int count)
+        {
+            IEnumerable<NewsIndexViewModel>? latestNews = null;
+            latestNews = this.newsRepository
+                .GetAllAttached()
+                .OrderByDescending(n => n.PublishedOn)
+                .Take(count)
+                .Select(n => new NewsIndexViewModel
+                {
+                    Id = n.Id,
+                    Title = n.Title,
+                    Content = n.Content,
+                    Author = n.Author,
+                    PublishedOn = n.PublishedOn,
+                    ImageUrl = n.ImageUrl
+                })
+                .ToList();
+            return latestNews;
+        }
+
         public async Task<NewsDetailsViewModel?> GetNewsDetailsAsync(int? id)
         {
             NewsDetailsViewModel? details = null;   

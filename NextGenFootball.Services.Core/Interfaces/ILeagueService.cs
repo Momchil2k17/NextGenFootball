@@ -18,5 +18,7 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model);
         public Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync();
         DateTime GetNearestQuarter(DateTime dateTime);
+        public Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForHomeAsync();
+        public Task<LeagueStandingsViewModel> GetCurrentStandingsAsync();
     }
 }

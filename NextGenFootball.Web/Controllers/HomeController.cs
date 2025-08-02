@@ -1,21 +1,36 @@
 namespace NextGenFootball.Web.Controllers
 {
-    using System.Diagnostics;
-
-    using ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
+    using NextGenFootball.Data.Models;
+    using NextGenFootball.Services.Core;
+    using NextGenFootball.Services.Core.Interfaces;
+    using NextGenFootball.Web.ViewModels.Home;
+    using System.Diagnostics;
+    using ViewModels;
 
     public class HomeController : Controller
     {
-        public HomeController(ILogger<HomeController> logger)
+        private readonly INewsService newsService;
+        private readonly ILeagueService leagueService;
+        public HomeController(ILogger<HomeController> logger, ILeagueService leagueService,INewsService newsService)
         {
-
+            this.leagueService = leagueService;
+            this.newsService = newsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var standingsVm = await leagueService.GetCurrentStandingsAsync();
+            var matchesVm = await leagueService.GetUpcomingMatchesForHomeAsync();
+            var newsVm = await newsService.GetLatestNewsAsync(3);
+
+            var homeVm = new HomePageViewModel
+            {
+                Standings = standingsVm,
+                UpcomingMatches = matchesVm,
+                LatestNews = newsVm
+            };
+            return View(homeVm);
         }
 
         public IActionResult Privacy()
