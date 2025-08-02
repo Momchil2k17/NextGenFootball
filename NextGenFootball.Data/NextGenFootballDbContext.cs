@@ -23,6 +23,7 @@
         public virtual DbSet<Referee> Referees { get; set; } = null!;
         public virtual DbSet<MatchEvent> MatchEvents { get; set; } = null!;
         public virtual DbSet<MatchReport> MatchReports { get; set; } = null!;
+        public virtual DbSet<News> News { get; set; } = null!;
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
