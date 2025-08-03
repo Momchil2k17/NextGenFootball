@@ -63,7 +63,11 @@
     </div>
 </div>
 
-<a asp-action="Index" class="btn btn-secondary mt-4">Back to All Players</a>
+<button type="button"
+        class="btn btn-outline-primary player-details-back-btn mt-4"
+        onclick="window.history.back();">
+    <i class="bi bi-arrow-left"></i> Back
+</button>
 
 @section Scripts {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />

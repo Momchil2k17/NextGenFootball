@@ -6,7 +6,7 @@ namespace NextGenFootball.Web.Areas.Referee.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View("UnderConstruction");
         }
     }
 }
