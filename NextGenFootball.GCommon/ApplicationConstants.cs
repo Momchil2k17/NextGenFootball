@@ -18,5 +18,6 @@ namespace NextGenFootball.GCommon
 
         public const string RefereeAreaName = "Referee";
         public const string LeagueManagerAreaName = "LeagueManager";
+        public const string AdminAreaName = "Admin";
     }
 }

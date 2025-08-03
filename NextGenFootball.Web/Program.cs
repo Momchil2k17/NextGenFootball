@@ -76,6 +76,7 @@ namespace NextGenFootball.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UserAdminRedirection();
             app.UserRefereeRedirection();
             app.UserLeagueManagerRedirection();
 
