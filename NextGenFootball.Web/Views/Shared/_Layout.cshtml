@@ -57,32 +57,6 @@
                                 </ul>
                             </li>
                         }
-                        @if (User.IsInRole("LeagueManager"))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nav-big dropdown-toggle text-light fw-bold" href="#" id="leagueManagerDropdown"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-gear"></i> League Manager
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark border-0">
-                                    <li>
-                                        <a class="dropdown-item" asp-area="LeagueManager" asp-controller="Dashboard" asp-action="CreateMatch" asp-route-id="@ViewBag.LeagueId">
-                                            <i class="bi bi-plus"></i> Add Match
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="LeagueManager" asp-controller="Dashboard" asp-action="Assignments" asp-route-id="@ViewBag.LeagueId">
-                                            <i class="bi bi-arrow-right-circle"></i> Assign
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" asp-area="LeagueManager" asp-controller="Matches" asp-action="Index">
-                                            <i class="bi bi-calendar-range"></i> View Matches
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
                     </ul>
                     <form class="d-flex me-2 position-relative align-items-center" role="search" autocomplete="off">
                         <input id="mainSearchBar"

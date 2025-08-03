@@ -32,7 +32,11 @@
     </div>
 
     <button type="submit" class="btn btn-success">Create</button>
-    <a asp-action="Index" class="btn btn-outline-primary ms-2">Cancel</a>
+    <button type="button"
+        class="btn btn-outline-primary player-details-back-btn"
+        onclick="window.history.back();">
+    <i class="bi bi-arrow-left"></i> Cancel
+</button>
 </form>
 
 @section Scripts {

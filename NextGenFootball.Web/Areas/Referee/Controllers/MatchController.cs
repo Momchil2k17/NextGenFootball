@@ -35,12 +35,7 @@ namespace NextGenFootball.Web.Areas.Referee.Controllers
         [HttpGet]
         public async Task<IActionResult> EditReport(long id)
         {
-            MatchReportViewModel? reportViewModel = await this.refereeMatchService.GetMatchReportView(id);
-            if (reportViewModel == null)
-            {
-                return NotFound();
-            }
-            return View(reportViewModel);
+            return View("UnderConstruction");
         }
     }
 }
