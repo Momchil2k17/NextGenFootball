@@ -3,47 +3,40 @@
 
 @{
     ViewData["Title"] = "League Details";
+    var canEdit = User.IsInRole("Admin") || User.IsInRole("LeagueManager");
 }
 
-<h2>@Model.Name</h2>
+<link rel="stylesheet" href="~/css/leaguedetails.css" />
 
-@if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
-{
-    <div class="mb-3">
-        <img src="@Model.ImageUrl" alt="@Model.Name" style="max-width:300px;max-height:200px;" class="img-fluid rounded" />
-    </div>
-}
-
-<dl class="row">
-    <dt class="col-sm-3">Region</dt>
-    <dd class="col-sm-9">@Model.Region</dd>
-
-    <dt class="col-sm-3">Age Group</dt>
-    <dd class="col-sm-9">@Model.AgeGroup</dd>
-
-    <dt class="col-sm-3">Season</dt>
-    <dd class="col-sm-9">@Model.SeasonName</dd>
-
-    @if (!string.IsNullOrWhiteSpace(Model.Description))
+<h2 class="league-details-header d-flex align-items-center mb-4">
+    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
     {
-        <dt class="col-sm-3">Description</dt>
-        <dd class="col-sm-9">@Model.Description</dd>
+        <img src="@Model.ImageUrl" alt="@Model.Name" class="league-details-header-img me-2" />
     }
-</dl>
+    <span>@Model.Name</span>
+</h2>
 
-<div class="mb-4">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-secondary me-2">Edit</a>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+<div class="row league-details-main-row mb-4">
+    <!-- Standings on the left -->
+    <div class="col-md-7 league-details-standings d-flex align-items-stretch order-1 order-md-1">
+        <div class="standings-scale-down w-100">
+            @await Html.PartialAsync("_LeagueStandings", Model.Standings)
+        </div>
+    </div>
+    <!-- Top Goalscorers on the right -->
+    <div class="col-md-5 d-flex flex-column order-2 order-md-2">
+        <div class="flex-grow-1 d-flex align-items-stretch">
+            @await Html.PartialAsync("_TopGoalscorers", Model.TopGoalscorers)
+        </div>
+        @{
+            /*
+            ...info card...
+            */
+        }
+    </div>
 </div>
-
-<hr />
-
-@* Upcoming matches partial *@
-@await Html.PartialAsync("_UpcomingMatchesByRound", Model.UpcomingMatches)
-
-<hr />
-
-@* Standings partial *@
-@await Html.PartialAsync("_LeagueStandings", Model.Standings)
-
-<!-- You can add more sections/partials as needed below -->
+<div class="row">
+    <div class="col-11 ms-2">
+        @await Html.PartialAsync("_UpcomingMatchesByRound", Model.UpcomingMatches)
+    </div>
+</div>

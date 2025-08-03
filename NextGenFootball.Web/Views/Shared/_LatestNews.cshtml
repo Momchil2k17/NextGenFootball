@@ -1,31 +1,37 @@
 ﻿@using NextGenFootball.Web.ViewModels.News
 @model IEnumerable<NewsIndexViewModel>
 
-<link rel="stylesheet" href="~/css/latest-news.css" />
+<div class="card mb-4 latest-news-main-card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Latest News</h5>
+    </div>
+    <div class="card-body p-0">
+        <link rel="stylesheet" href="~/css/latest-news.css" />
 
-<h3 class="mb-3">Latest News</h3>
-@if (Model == null || !Model.Any())
-{
-    <div class="alert alert-info">No news available.</div>
-}
-else
-{
-    <div class="latest-news-grid">
-        @foreach (var news in Model)
+        @if (Model == null || !Model.Any())
         {
-            <div class="latest-news-card">
-                <a asp-controller="News"
-                   asp-action="Details"
-                   asp-route-id="@news.Id"
-                   class="latest-news-image-link">
-                    <div class="latest-news-image-container">
-                        <img src="@news.ImageUrl" alt="@news.Title" class="latest-news-image" />
-                        <div class="latest-news-title-bar">
-                            <span class="latest-news-title">@news.Title</span>
-                        </div>
+            <div class="alert alert-info m-3">No news available.</div>
+        }
+        else
+        {
+            <div class="latest-news-grid px-3 pb-3 pt-3">
+                @foreach (var news in Model)
+                {
+                    <div class="latest-news-card">
+                        <a asp-controller="News"
+                           asp-action="Details"
+                           asp-route-id="@news.Id"
+                           class="latest-news-image-link">
+                            <div class="latest-news-image-container">
+                                <img src="@news.ImageUrl" alt="@news.Title" class="latest-news-image" />
+                                <div class="latest-news-title-bar">
+                                    <span class="latest-news-title">@news.Title</span>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </a>
+                }
             </div>
         }
     </div>
-}
+</div>

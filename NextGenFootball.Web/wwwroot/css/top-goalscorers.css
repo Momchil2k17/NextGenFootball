@@ -1,0 +1,163 @@
+﻿.top-goalscorers-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+.top-goalscorers-table {
+    background: #f7fafd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 2rem;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .top-goalscorers-table th,
+    .top-goalscorers-table td {
+        padding: 0.75rem 0.5rem;
+        vertical-align: middle;
+        font-size: 1.07em;
+        border-bottom: 1px solid #e2e8f0;
+        white-space: nowrap;
+    }
+
+    .top-goalscorers-table th {
+        background: #eaf1fb;
+        font-weight: 600;
+        font-size: 1em;
+        letter-spacing: 0.5px;
+        color: #3a4e6d;
+        border-bottom: 2px solid #d6e6fa;
+    }
+
+    .top-goalscorers-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .top-goalscorers-table tbody tr {
+        transition: background 0.13s;
+    }
+
+        .top-goalscorers-table tbody tr:hover {
+            background: #eaf1fb;
+        }
+
+.goalscorer-player-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .goalscorer-player-cell img {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #e2e8f0;
+        background: #fff;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        transition: border-color 0.15s;
+    }
+
+.goalscorer-player-img-placeholder {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: #eef2fe;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+}
+
+.goalscorer-player-name-link {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 500;
+    font-size: 1.07em;
+    transition: text-decoration 0.1s, color 0.15s;
+}
+
+    .goalscorer-player-name-link:hover {
+        text-decoration: underline;
+    }
+
+.goalscorer-team-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .goalscorer-team-cell img {
+        width: 26px;
+        height: 26px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #e2e8f0;
+        background: #fff;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        transition: border-color 0.15s;
+    }
+
+.goals-cell {
+    font-weight: 700;
+    font-size: 1.05em;
+    color: #1864ab;
+}
+
+@media (max-width: 900px) {
+    .top-goalscorers-table th,
+    .top-goalscorers-table td {
+        font-size: 0.97em;
+        padding: 0.6rem 0.25rem;
+    }
+
+    .goalscorer-player-cell img,
+    .goalscorer-player-img-placeholder {
+        width: 26px;
+        height: 26px;
+    }
+
+    .goalscorer-team-cell img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .top-goalscorers-table {
+        min-width: 420px;
+        font-size: 0.97em;
+    }
+
+    .goalscorer-player-cell img,
+    .goalscorer-player-img-placeholder {
+        width: 20px;
+        height: 20px;
+    }
+
+    .goalscorer-team-cell img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 450px) {
+    .top-goalscorers-table {
+        min-width: 340px;
+        font-size: 0.94em;
+    }
+
+    .goalscorer-player-cell img,
+    .goalscorer-player-img-placeholder {
+        width: 15px;
+        height: 15px;
+    }
+
+    .goalscorer-team-cell img {
+        width: 12px;
+        height: 12px;
+    }
+}

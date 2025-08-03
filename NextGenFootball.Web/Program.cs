@@ -38,6 +38,12 @@ namespace NextGenFootball.Web
                 .AddRoles<IdentityRole<Guid>>()
                 .AddEntityFrameworkStores<NextGenFootballDbContext>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Identity/Account/Login"; // or your login route
+                options.AccessDeniedPath = "/Home/Forbidden"; ; // Point to your controller/action that shows the forbidden page
+            });
+
             builder.Services.AddRepositories(typeof(ITeamRepository).Assembly);
             builder.Services.AddUserDefinedServices(typeof(ITeamService).Assembly);
 

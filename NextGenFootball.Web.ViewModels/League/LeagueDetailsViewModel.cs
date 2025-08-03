@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextGenFootball.Web.ViewModels.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,6 @@ namespace NextGenFootball.Web.ViewModels.League
         public string? Description { get; set; }
         public LeagueUpcomingMatchesViewModel? UpcomingMatches { get; set; }
         public LeagueStandingsViewModel? Standings { get; set; }
+        public IEnumerable<TopGoalscorerViewModel>? TopGoalscorers { get; set; }
     }
 }

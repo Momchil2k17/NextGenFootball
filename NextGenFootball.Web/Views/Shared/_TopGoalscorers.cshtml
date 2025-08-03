@@ -1,0 +1,73 @@
+﻿@using NextGenFootball.Web.ViewModels.Player
+@model IEnumerable<TopGoalscorerViewModel>
+
+<link rel="stylesheet" href="~/css/top-goalscorers.css" />
+
+<div class="card mb-4 top-goalscorers-card">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Top Goalscorers</h5>
+    </div>
+    <div class="card-body p-0">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-info m-3">No goalscorers data available.</div>
+        }
+        else
+        {
+            <div class="top-goalscorers-responsive-wrapper">
+                <table class="top-goalscorers-table">
+                    <thead>
+                        <tr class="text-center">
+                            <th>#</th>
+                            <th>Player</th>
+                            <th>Name</th>
+                            <th>Team</th>
+                            <th>Goals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var scorer in Model.Select((value, i) => new { value, i }))
+                        {
+                            <tr class="text-center">
+                                <td data-label="#">@(scorer.i + 1)</td>
+                                <td data-label="Player">
+                                    <div class="goalscorer-player-cell">
+                                        @if (!string.IsNullOrWhiteSpace(scorer.value.PlayerImageUrl))
+                                        {
+                                            <img src="@scorer.value.PlayerImageUrl"
+                                                 alt="@scorer.value.PlayerName" />
+                                        }
+                                        else
+                                        {
+                                            <span class="goalscorer-player-img-placeholder rounded-circle"></span>
+                                        }
+                                    </div>
+                                </td>
+                                <td data-label="Name" class="text-start">
+                                    <a asp-controller="Player"
+                                       asp-action="Details"
+                                       asp-route-id="@scorer.value.PlayerId"
+                                       class="goalscorer-player-name-link">
+                                        @scorer.value.PlayerName
+                                    </a>
+                                </td>
+                                <td data-label="Team" class="text-center">
+                                    <div class="goalscorer-team-cell">
+                                        @if (!string.IsNullOrWhiteSpace(scorer.value.TeamImageUrl))
+                                        {
+                                            <img src="@scorer.value.TeamImageUrl"
+                                                 alt="@scorer.value.TeamName" />
+                                        }
+                                    </div>
+                                </td>
+                                <td data-label="Goals" class="goals-cell">
+                                    @scorer.value.Goals
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

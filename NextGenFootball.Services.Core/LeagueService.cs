@@ -6,6 +6,7 @@ using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.League;
+using NextGenFootball.Web.ViewModels.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +20,12 @@ namespace NextGenFootball.Services.Core
        
         private readonly ILeagueRepository leagueRepository;
         private readonly ISeasonRepository seasonRepository;
-        public LeagueService(ILeagueRepository leagueRepository, ISeasonRepository seasonRepository)
+        private readonly IPlayerRepository playerRepository;
+        public LeagueService(ILeagueRepository leagueRepository, ISeasonRepository seasonRepository, IPlayerRepository playerRepository)
         {
             this.leagueRepository = leagueRepository;
             this.seasonRepository = seasonRepository;
+            this.playerRepository = playerRepository;
         }
 
         public async Task<bool> CreateLeagueAsync(LeagueCreateViewModel model)
@@ -100,7 +103,22 @@ namespace NextGenFootball.Services.Core
                 ImageUrl = league.ImageUrl,
                 Description = league.Description,
                 UpcomingMatches = await GetUpcomingMatchesAsync(league),
-                Standings = await GetLeagueStandingsAsync(league)
+                Standings = await GetLeagueStandingsAsync(league),
+                TopGoalscorers= this.playerRepository.GetAllAttached()
+                .Include(p=>p.Team)
+                .Where(p=>p.Team.LeagueId==league.Id)
+                .OrderByDescending(p=>p.Goals)
+                .Take(10)
+                .Select(p=>new TopGoalscorerViewModel
+                {
+                    Goals=p.Goals,
+                    PlayerId=p.Id,
+                    PlayerImageUrl=p.ImageUrl,
+                    PlayerName=p.FirstName+" "+p.LastName,
+                    TeamImageUrl=p.Team.ImageUrl,
+                    TeamName=p.Team.Name,
+                })
+                
             };
         }
 
