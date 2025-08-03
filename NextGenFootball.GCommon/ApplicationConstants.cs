@@ -9,6 +9,7 @@ namespace NextGenFootball.GCommon
     public static class ApplicationConstants
     {
         public const string NoImagePeopleUrl = "no-image-people.jpg";
+        public const string NoTeamImageUrl = "no-team-image.png";
 
         public const string UserRoleName = "User";
         public const string AdminRoleName = "Admin";

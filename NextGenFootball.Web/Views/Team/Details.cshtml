@@ -31,7 +31,11 @@
             </dl>
             <div class="btn-group mt-3">
                 <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                <button type="button"
+                        class="btn btn-outline-primary news-details-back-btn"
+                        onclick="window.history.back();">
+                    <i class="bi bi-arrow-left"></i> Back
+                </button>
             </div>
         </div>
     </div>

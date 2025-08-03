@@ -13964,3 +13964,90 @@ thead th {
 .modal-content {
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
+
+#mainSearchBar,
+.search-medium {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    width: 380px;
+    font-size: 1.11rem;
+    height: 44px;
+    background-color: #fff;
+    color: #0d6efd; /* Bootstrap primary blue */
+    border: 1px solid #ddd;
+}
+
+    #mainSearchBar::placeholder,
+    .search-medium::placeholder {
+        color: #6ea8fe; /* Lighter version of navbar blue for placeholder */
+        opacity: 1;
+    }
+
+    #mainSearchBar:focus,
+    .search-medium:focus {
+        border-color: #0d6efd;
+        background-color: #fff;
+        color: #0d6efd;
+        outline: none;
+    }
+
+/* Dropdown styles */
+#searchResultsDropdown {
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.14);
+    border: 1px solid #e0e0e0;
+    max-height: 360px;
+    overflow-y: auto;
+    width: 380px;
+    background: #fff;
+    padding: 4px 0;
+    margin-top: 2px;
+    transition: box-shadow 0.2s;
+}
+
+    #searchResultsDropdown .list-group-item {
+        cursor: pointer;
+        padding: 12px 18px;
+        background: #fff;
+        border: none;
+        font-size: 1.09rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #0d6efd; /* Same blue as navbar */
+        transition: background 0.16s, color 0.16s;
+        font-weight: 500;
+    }
+
+        #searchResultsDropdown .list-group-item:hover,
+        #searchResultsDropdown .list-group-item:focus {
+            background: #e8f4ff;
+            color: #084298; /* Bootstrap primary blue dark */
+        }
+
+        #searchResultsDropdown .list-group-item img {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+        }
+
+/* Login/Register buttons: nice size, not huge */
+.btn-login,
+.btn-register {
+    font-size: 1.11rem;
+    padding: 7px 20px;
+    font-weight: 550;
+    border-radius: 6px;
+}
+
+.nav-big {
+    font-size: 1.17rem !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    font-weight: 550;
+}
+
+.navbar-brand {
+    font-size: 1.7rem !important;
+}
