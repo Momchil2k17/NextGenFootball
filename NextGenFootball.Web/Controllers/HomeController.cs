@@ -1,5 +1,6 @@
 namespace NextGenFootball.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using NextGenFootball.Data.Models;
     using NextGenFootball.Services.Core;
@@ -8,6 +9,7 @@ namespace NextGenFootball.Web.Controllers
     using System.Diagnostics;
     using ViewModels;
 
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         private readonly INewsService newsService;
@@ -49,9 +51,16 @@ namespace NextGenFootball.Web.Controllers
                     return this.View("Forbidden");
                 case 404:
                     return this.View("NotFoundError");
+                case 500:
+                    return this.View("InternalServerError");
                 default:
                     return this.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
+        }
+        [Route("Home/Forbidden")]
+        public IActionResult Forbidden()
+        {
+            return View("Forbidden");
         }
     }
 }

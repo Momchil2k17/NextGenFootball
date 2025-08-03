@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize]
     public class CoachController : BaseController
     {
         private readonly ICoachService coachService;
@@ -19,6 +21,7 @@ namespace NextGenFootball.Web.Controllers
             return View(coaches);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid? id)
         {
             CoachDetailsViewModel? details = await this.coachService.GetCoachDetailsAsync(id);

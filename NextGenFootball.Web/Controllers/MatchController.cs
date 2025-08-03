@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize]
     public class MatchController : BaseController
     {
         private readonly IMatchService matchService;
@@ -17,6 +19,7 @@ namespace NextGenFootball.Web.Controllers
             return View(matches);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             MatchDetailsViewModel? match = await this.matchService.GetMatchDetailsAsync(id);

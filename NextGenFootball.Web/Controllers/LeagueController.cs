@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.League;
 using NextGenFootball.Web.ViewModels.Match;
 using NextGenFootball.Web.ViewModels.Season;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize(Roles = LeagueManagerRoleName)]
     public class LeagueController : BaseController
     {
         private readonly ILeagueService leagueService;
@@ -53,6 +56,7 @@ namespace NextGenFootball.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             LeagueDetailsViewModel? league = await this.leagueService.GetLeagueDetailsAsync(id);

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize]
     public class PlayerController : BaseController
     {
         private readonly IPlayerService playerService;
@@ -23,6 +25,7 @@ namespace NextGenFootball.Web.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(Guid? id)
         {
             PlayerDetailsViewModel? player = await this.playerService.GetPlayerDetailsAsync(id);

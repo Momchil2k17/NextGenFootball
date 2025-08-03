@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Stadium;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize]
     public class StadiumController : BaseController
     {
         private readonly IStadiumService stadiumService;
@@ -41,6 +43,7 @@ namespace NextGenFootball.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             StadiumDetailsViewModel? stadium = await this.stadiumService.GetStadiumDetailsAsync(id);

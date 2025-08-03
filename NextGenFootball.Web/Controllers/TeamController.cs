@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Team;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize]
     public class TeamController : BaseController
     {
         private readonly ITeamService teamService;
@@ -21,6 +23,7 @@ namespace NextGenFootball.Web.Controllers
             return View(teams);
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
 
