@@ -79,6 +79,7 @@ namespace NextGenFootball.Web
             app.UserAdminRedirection();
             app.UserRefereeRedirection();
             app.UserLeagueManagerRedirection();
+            app.UserCoachRedirection();
 
             app.MapControllerRoute(
                 name: "areas",
