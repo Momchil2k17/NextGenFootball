@@ -1,0 +1,87 @@
+﻿@using NextGenFootball.Web.ViewModels.Admin.UserManagement
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<UserManagementIndexViewModel>
+
+@inject RoleManager<IdentityRole<Guid>> roleManager;
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4 fw-bold user-mgmt-title">User Management</h1>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn user-mgmt-back-btn fw-bold">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="user-mgmt-table-responsive">
+        <table class="user-mgmt-table shadow-lg rounded-3">
+            <thead>
+                <tr class="user-mgmt-table-head">
+                    <th class="text-center user-mgmt-th-email">Email</th>
+                    <th class="text-center user-mgmt-th-roles">Roles</th>
+                    <th class="text-center user-mgmt-th-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td class="align-middle text-center user-mgmt-td-email">@user.Email</td>
+                        <td class="align-middle text-center">
+                            @foreach (var role in user.Roles)
+                            {
+                                <span class="badge user-mgmt-role-badge">@role</span>
+                            }
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center align-items-center gap-2 flex-wrap">
+                                @if (!user.Roles.Contains("Admin"))
+                                {
+                                    <select id="roleDropdown-@user.Id" class="form-select form-select-sm w-auto me-2 user-mgmt-role-dropdown">
+                                        @foreach (IdentityRole<Guid> role in roleManager.Roles.ToList())
+                                        {
+                                            <option value="@role.Name" selected="@(user.Roles.Contains(role.Name) ? "selected" : null)">@role.Name</option>
+                                        }
+                                    </select>
+
+                                    <form method="post" asp-action="AssignRole" asp-controller="UserManagement" asp-area="Admin" class="d-inline">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <input type="hidden" name="role" id="assignRoleInput-@user.Id" />
+                                        <button type="submit" class="btn btn-sm fw-bold user-mgmt-btn-assign"
+                                                onclick="setRoleValue('@user.Id', 'assignRoleInput')">
+                                            <i class="bi bi-person-plus-fill"></i> Assign
+                                        </button>
+                                    </form>
+
+                                    <form method="post" asp-action="RemoveRole" asp-controller="UserManagement" asp-area="Admin" class="d-inline">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <input type="hidden" name="role" id="removeRoleInput-@user.Id" />
+                                        <button type="submit" class="btn btn-sm fw-bold user-mgmt-btn-remove"
+                                                onclick="setRoleValue('@user.Id', 'removeRoleInput')">
+                                            <i class="bi bi-person-x-fill"></i> Remove
+                                        </button>
+                                    </form>
+
+                                    <form method="post" asp-action="DeleteUser" asp-controller="UserManagement" asp-area="Admin" class="d-inline">
+                                        <input type="hidden" name="userId" value="@user.Id" />
+                                        <button type="submit" class="btn btn-sm fw-bold user-mgmt-btn-delete">
+                                            <i class="bi bi-trash-fill"></i> Delete
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="user-mgmt-admin-text fw-bold">Cannot edit Admin</span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/admin-user-management.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script src="~/js/userManagement.js" asp-append-version="true"></script>

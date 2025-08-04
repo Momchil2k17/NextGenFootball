@@ -1,0 +1,122 @@
+﻿.user-mgmt-title {
+    color: #3458e7;
+}
+
+.user-mgmt-back-btn {
+    background: #ffc107;
+    color: #3458e7;
+    border: none;
+}
+
+    .user-mgmt-back-btn:hover {
+        background: #e0b200;
+        color: #3458e7;
+    }
+
+.user-mgmt-table-responsive {
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(52,88,231,0.15);
+    overflow-x: auto;
+}
+
+.user-mgmt-table {
+    width: 100%;
+    background: #3458e7;
+    border-radius: 1rem;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.user-mgmt-table-head {
+    background: #232a4d;
+    color: #fff;
+    font-weight: bold;
+}
+
+.user-mgmt-th-email {
+    color: #ffc107;
+}
+
+.user-mgmt-th-roles {
+    color: #198754;
+}
+
+.user-mgmt-th-actions {
+    color: #dc3545;
+}
+
+.user-mgmt-table td, .user-mgmt-table th {
+    padding: 1em 0.5em;
+    border-bottom: 1px solid #232a4d;
+    background: #3458e7;
+    color: #fff;
+    vertical-align: middle;
+}
+
+.user-mgmt-table tr:last-child td {
+    border-bottom: none;
+}
+
+.user-mgmt-table tr:hover td {
+    background: #2742b2;
+}
+
+.user-mgmt-td-email {
+    word-break: break-all;
+}
+
+.user-mgmt-role-badge {
+    background: #198754;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border-radius: 2em;
+    margin-right: 0.2em;
+}
+
+.user-mgmt-role-dropdown {
+    border-color: #3458e7;
+}
+
+.user-mgmt-btn-assign {
+    background: #198754;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.4em 1em;
+    border: none;
+}
+
+    .user-mgmt-btn-assign:hover {
+        background: #156c37;
+        color: #fff;
+    }
+
+.user-mgmt-btn-remove {
+    background: #ffc107;
+    color: #3458e7;
+    font-weight: bold;
+    padding: 0.4em 1em;
+    border: none;
+}
+
+    .user-mgmt-btn-remove:hover {
+        background: #e0b200;
+        color: #3458e7;
+    }
+
+.user-mgmt-btn-delete {
+    background: #dc3545;
+    color: #fff;
+    font-weight: bold;
+    padding: 0.4em 1em;
+    border: none;
+}
+
+    .user-mgmt-btn-delete:hover {
+        background: #b02a37;
+        color: #fff;
+    }
+
+.user-mgmt-admin-text {
+    color: #ffc107;
+}
