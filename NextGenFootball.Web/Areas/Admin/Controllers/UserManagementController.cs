@@ -25,5 +25,36 @@ namespace NextGenFootball.Web.Areas.Admin.Controllers
 
             return View(allUsers);
         }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(RoleSelectionInputModel inputModel)
+        {
+            try
+            {
+                await this.userService
+                    .AssignUserToRoleAsync(inputModel);
+
+                return this.RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return this.RedirectToAction(nameof(Index));
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveRole(RoleSelectionInputModel inputModel)
+        {
+            try
+            {
+                await this.userService
+                    .RemoveUserFromRoleAsync(inputModel);
+                return this.RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError(string.Empty, e.Message);
+                return this.RedirectToAction(nameof(Index));
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@
                                 @if (!user.Roles.Contains("Admin"))
                                 {
                                     <select id="roleDropdown-@user.Id" class="form-select form-select-sm w-auto me-2 user-mgmt-role-dropdown">
-                                        @foreach (IdentityRole<Guid> role in roleManager.Roles.ToList())
+                                        @foreach (IdentityRole<Guid> role in roleManager.Roles.OrderByDescending(r=>r.Name).ToList())
                                         {
                                             <option value="@role.Name" selected="@(user.Roles.Contains(role.Name) ? "selected" : null)">@role.Name</option>
                                         }
