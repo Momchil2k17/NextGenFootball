@@ -1,0 +1,108 @@
+﻿body {
+    background: linear-gradient(135deg, #f8f9fa 0%, #eaf0ff 100%);
+}
+
+.coach-dashboard-title {
+    color: #233e91;
+    font-size: 2.7rem;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 32px #3458e733;
+}
+
+.coach-section-card {
+    background: linear-gradient(120deg, #eaf0ff 60%, #f7f8fa 100%);
+    border-radius: 1.3rem;
+    transition: box-shadow .25s, transform .2s;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+    .coach-section-card:hover {
+        box-shadow: 0 0 45px rgba(52,88,231,0.16), 0 2px 8px #3458e741;
+        transform: translateY(-3px) scale(1.02);
+    }
+
+.coach-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    font-size: 2rem;
+    border-radius: 50%;
+    box-shadow: 0 2px 16px #3458e733;
+    background: #fff;
+}
+
+.coach-icon-choose {
+    color: #198754;
+    border: 2px solid #19875433;
+}
+
+.coach-icon-upcoming {
+    color: #ffc107;
+    border: 2px solid #ffc10733;
+}
+
+.card-title {
+    color: #233e91;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.card-text.text-muted {
+    font-size: 1.05rem;
+    color: #6c757d !important;
+}
+
+.coach-btn-choose11 {
+    background: linear-gradient(120deg, #198754 80%, #28a745 100%);
+    color: #fff;
+    font-size: 1.09rem;
+    border: none;
+    border-radius: 0.9rem;
+    transition: background .2s, box-shadow .2s;
+    box-shadow: 0 2px 10px #19875422;
+}
+
+    .coach-btn-choose11:hover {
+        background: linear-gradient(120deg, #156c37 80%, #198754 100%);
+        color: #fff;
+        box-shadow: 0 2px 18px #19875433;
+    }
+
+.coach-btn-upcoming {
+    background: linear-gradient(120deg, #ffc107 80%, #ffde59 100%);
+    color: #3458e7;
+    font-size: 1.09rem;
+    border: none;
+    border-radius: 0.9rem;
+    transition: background .2s, box-shadow .2s;
+    box-shadow: 0 2px 10px #ffc10722;
+}
+
+    .coach-btn-upcoming:hover {
+        background: linear-gradient(120deg, #e0b200 80%, #ffc107 100%);
+        color: #3458e7;
+        box-shadow: 0 2px 18px #ffc10733;
+    }
+
+@media (max-width: 991px) {
+    .col-md-5 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .coach-section-card {
+        min-height: 250px;
+    }
+
+    .coach-dashboard-title {
+        font-size: 2rem;
+    }
+}

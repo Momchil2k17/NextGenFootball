@@ -23,13 +23,15 @@ namespace NextGenFootball.Services.Core
         private readonly ITeamRepository teamRepository;
         private readonly ISeasonRepository seasonRepository;
         private readonly IApplicationUserRepository applicationUserRepository;
+        private readonly ICoachRepository coachRepository;
         public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository
-            , ISeasonRepository seasonRepository, IApplicationUserRepository applicationUserRepository)
+            , ISeasonRepository seasonRepository, IApplicationUserRepository applicationUserRepository, ICoachRepository coachRepository)
         {
             this.playerRepository = playerRepository;
             this.teamRepository = teamRepository;
             this.seasonRepository = seasonRepository;
             this.applicationUserRepository = applicationUserRepository;
+            this.coachRepository = coachRepository;
         }
 
         public async Task<bool> CreatePlayerAsync(PlayerCreateViewModel model)
