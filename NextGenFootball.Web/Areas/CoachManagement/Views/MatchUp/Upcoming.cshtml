@@ -1,0 +1,11 @@
+﻿@using NextGenFootball.Web.ViewModels.League
+@model LeagueUpcomingMatchesViewModel
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-primary mb-3">Upcoming Matches for Your Team</h2>
+    <p class="mb-4 text-muted">
+        Here you can see the schedule of all upcoming matches for your team in this league.
+    </p>
+
+    @await Html.PartialAsync("_UpcomingMatchesByRound", Model)
+</div>

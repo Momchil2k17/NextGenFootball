@@ -1,51 +1,97 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
+using NextGenFootball.Web.ViewModels.Player;
 
 namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
 {
     public class LineupController : BaseCoachController
     {
         private readonly ICoachService coachService;
-        public LineupController(ICoachService coachService)
+        private readonly IFormationService formationService;
+        public LineupController(ICoachService coachService, IFormationService formationService)
         {
             this.coachService = coachService;
+            this.formationService = formationService;
         }
         public IActionResult Index()
         {
             return View();
         }
+        [HttpGet]
         public async Task<IActionResult> Choose()
         {
-            Guid? userId = this.GetUserId();
-            if (userId == null)
-            {
+            Guid? applicationUserId = this.GetUserId();
+            if (applicationUserId == null)
                 return BadRequest("User ID is not available.");
-            }
-            try
+
+            var coach = await coachService.GetCoachByApplicationUserId(applicationUserId.Value);
+            if (coach == null)
+                return BadRequest("No coach found for this user.");
+
+            var players = await coachService.GetPlayersForCoach(applicationUserId);
+            var formations = formationService.GetFormationsForCoach();
+            var teamId = await coachService.GetCoachTeamId(applicationUserId.Value);
+
+            var model = new CoachLineupViewModel
             {
-                var players = await this.coachService.GetPlayersForCoach(userId.Value);
-                if (players == null || !players.Any())
-                {
-                    ModelState.AddModelError(string.Empty, "No players found for the coach.");
-                    return View();
-                }
-                var formations = this.coachService.GetFormationsForCoach();
+                Players = players,
+                Formations = formations,
+                SelectedFormationName = formations.FirstOrDefault()?.Name ?? "4-3-3",
+                TeamId = teamId,
+                CoachId = coach.Id
+            };
 
-                var model = new CoachLineupViewModel
-                {
-                    Players = players,
-                    Formations = formations,
-                    SelectedFormationName = formations.First().Name
-                };
+            return View(model);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Choose(CoachLineupViewModel model)
+        {
+            Guid? applicationUserId = this.GetUserId();
+            if (applicationUserId == null)
+                return BadRequest("User ID is not available.");
+
+            var coach = await coachService.GetCoachByApplicationUserId(applicationUserId.Value);
+            if (coach == null)
+                return BadRequest("No coach found for this user.");
+
+            // Defensive: Ensure TeamId and CoachId are set
+            model.CoachId = coach.Id;
+            model.TeamId = await coachService.GetCoachTeamId(applicationUserId.Value);
+
+            // Re-fetch formations and players for validation and re-rendering
+            var formations = formationService.GetFormationsForCoach();
+            var players = await coachService.GetPlayersForCoach(applicationUserId.Value);
+
+            // Validation: Ensure all positions are filled
+            var selectedFormation = formations.FirstOrDefault(f => f.Name == model.SelectedFormationName);
+            if (selectedFormation == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid formation selected.");
+                model.Formations = formations;
+                model.Players = players;
                 return View(model);
             }
-            catch (Exception e)
+
+            // Ensure SelectedPlayers and SelectedPositions are not null and match formation positions count
+            if (model.SelectedPlayers == null || model.SelectedPositions == null ||
+                model.SelectedPlayers.Count != selectedFormation.Positions.Count ||
+                model.SelectedPositions.Count != selectedFormation.Positions.Count ||
+                model.SelectedPlayers.Any(p => p == Guid.Empty) ||
+                model.SelectedPositions.Any(string.IsNullOrWhiteSpace))
             {
-                ModelState.AddModelError(string.Empty, e.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Please assign a player to every position in the selected formation.");
+                model.Formations = formations;
+                model.Players = players;
+                return View(model);
             }
+
+            // Save the lineup
+            await coachService.SaveStartingLineupFromViewModelAsync(model, coach.Id);
+
+            return RedirectToAction("Index","Home");
         }
+
     }
 }

@@ -52,7 +52,72 @@
     </div>
 </div>
 
-@if (Model.Events != null && Model.Events.Any())
+@if (!Model.IsPlayed)
+{
+    <div class="container mt-4">
+        <h4 class="text-center">Starting Lineups</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>
+                    @Model.HomeTeamName (
+                    @(Model.HomeTeamLineup != null && !string.IsNullOrWhiteSpace(Model.HomeTeamLineup.FormationName)
+                                    ? Model.HomeTeamLineup.FormationName
+                                    : "Formation not chosen")
+                )
+            </h5>
+                @if (Model.HomeTeamLineup != null && Model.HomeTeamLineup.Players.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var p in Model.HomeTeamLineup.Players)
+                        {
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="@p.ImageUrl" alt="@p.PlayerName" width="32" height="32" class="rounded me-2" />
+                                <span class="fw-semibold">@p.PlayerName</span>
+                                <span class="ms-auto text-muted">@p.PositionName</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-muted text-center py-4">
+                        <span>No starting lineup selected for @Model.HomeTeamName.</span>
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+            <h5>
+                @Model.AwayTeamName (
+                @(Model.AwayTeamLineup != null && !string.IsNullOrWhiteSpace(Model.AwayTeamLineup.FormationName)
+                                ? Model.AwayTeamLineup.FormationName
+                                : "Formation not chosen")
+                )
+            </h5>
+                @if (Model.AwayTeamLineup != null && Model.AwayTeamLineup.Players.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var p in Model.AwayTeamLineup.Players)
+                        {
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="@p.ImageUrl" alt="@p.PlayerName" width="32" height="32" class="rounded me-2" />
+                                <span class="fw-semibold">@p.PlayerName</span>
+                                <span class="ms-auto text-muted">@p.PositionName</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="text-muted text-center py-4">
+                        <span>No starting lineup selected for @Model.AwayTeamName.</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.IsPlayed && Model.Events != null && Model.Events.Any())
 {
     <div class="container mt-4">
         <h4 class="text-center">Match Events</h4>

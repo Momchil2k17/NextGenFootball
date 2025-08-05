@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
@@ -23,20 +24,24 @@ namespace NextGenFootball.Services.Core
         private readonly IApplicationUserRepository applicationUserRepository;
         private readonly IPlayerRepository playerRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ITeamStartingLineupPlayerRepository teamStartingLineupPlayerRepository;
+        private readonly ITeamStartingLineupRepository teamStartingLineupRepository;
         public CoachService(ICoachRepository coachRepository, ITeamRepository teamRepository, IApplicationUserRepository applicationUserRepository
-            ,IPlayerRepository playerRepository, UserManager<ApplicationUser> userManager)
+            , IPlayerRepository playerRepository, UserManager<ApplicationUser> userManager, ITeamStartingLineupPlayerRepository teamStartingLineupPlayerRepository, ITeamStartingLineupRepository teamStartingLineupRepository)
         {
             this.coachRepository = coachRepository;
             this.teamRepository = teamRepository;
             this.applicationUserRepository = applicationUserRepository;
             this.playerRepository = playerRepository;
             this.userManager = userManager;
+            this.teamStartingLineupPlayerRepository = teamStartingLineupPlayerRepository;
+            this.teamStartingLineupRepository = teamStartingLineupRepository;
         }
         public async Task<IEnumerable<CoachIndexViewModel>> GetAllCoachesAsync()
         {
-            IEnumerable<CoachIndexViewModel> coaches=await this.coachRepository
+            IEnumerable<CoachIndexViewModel> coaches = await this.coachRepository
                 .GetAllAttached()
-                .Include(c=>c.Team)
+                .Include(c => c.Team)
                 .AsNoTracking()
                 .Select(c => new CoachIndexViewModel
                 {
@@ -89,8 +94,8 @@ namespace NextGenFootball.Services.Core
         public async Task<bool> CreateCoachAsync(CoachCreateViewModel model)
         {
             bool res = false;
-            bool isValidRole = Enum.IsDefined(typeof(CoachRole), model.Role);  
-            Team? team=await this.teamRepository
+            bool isValidRole = Enum.IsDefined(typeof(CoachRole), model.Role);
+            Team? team = await this.teamRepository
                 .GetAllAttached()
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.Id == model.TeamId);
@@ -105,7 +110,7 @@ namespace NextGenFootball.Services.Core
                     Role = model.Role
                 };
                 await this.coachRepository.AddAsync(coach);
-                res=true;
+                res = true;
             }
             return res;
         }
@@ -221,7 +226,7 @@ namespace NextGenFootball.Services.Core
 
         public async Task<IEnumerable<PlayerForCoachSquad>?> GetPlayersForCoach(Guid? coachId)
         {
-            IEnumerable<PlayerForCoachSquad>? players = null;    
+            IEnumerable<PlayerForCoachSquad>? players = null;
             Coach? coach = await this.coachRepository
                 .GetAllAttached()
                 .Include(c => c.Team)
@@ -230,7 +235,7 @@ namespace NextGenFootball.Services.Core
                 .SingleOrDefaultAsync(c => c.ApplicationUserId == coachId);
             if (coach != null)
             {
-                players=this.playerRepository
+                players = this.playerRepository
                     .GetAllAttached()
                     .Where(p => p.TeamId == coach.TeamId)
                     .AsNoTracking()
@@ -248,49 +253,102 @@ namespace NextGenFootball.Services.Core
             }
             return players;
         }
-        public  List<FormationViewModel> GetFormationsForCoach()
+        public async Task SaveStartingLineupAsync(int teamId, Guid coachId, string formationName, List<LineupPlayerInputModel> players)
         {
-            return new List<FormationViewModel>
-        {
-            new FormationViewModel
+            var existingLineup = await this.teamStartingLineupRepository.FirstOrDefaultAsync(t=>t.TeamId==teamId);
+
+            if (existingLineup != null)
             {
-                Name = "4-3-3",
-                DisplayName = "4-3-3 (Classic)",
-                Positions = new List<FormationPosition>
+                var playersToRemove = await this.teamStartingLineupPlayerRepository
+                    .GetAllAttached()
+                    .Where(p => p.TeamStartingLineupId == existingLineup.Id)
+                    .ToListAsync();
+                foreach (var player in playersToRemove)
                 {
-                    new FormationPosition { PositionName = "GK", DisplayLabel = "Goalkeeper", X = 50, Y = 95 },
-                    new FormationPosition { PositionName = "LB", DisplayLabel = "Left Back", X = 15, Y = 80 },
-                    new FormationPosition { PositionName = "CB", DisplayLabel = "Center Back", X = 35, Y = 78 },
-                    new FormationPosition { PositionName = "CB", DisplayLabel = "Center Back", X = 65, Y = 78 },
-                    new FormationPosition { PositionName = "RB", DisplayLabel = "Right Back", X = 85, Y = 80 },
-                    new FormationPosition { PositionName = "CM", DisplayLabel = "Center Midfield", X = 30, Y = 60 },
-                    new FormationPosition { PositionName = "CM", DisplayLabel = "Center Midfield", X = 50, Y = 58 },
-                    new FormationPosition { PositionName = "CM", DisplayLabel = "Center Midfield", X = 70, Y = 60 },
-                    new FormationPosition { PositionName = "LW", DisplayLabel = "Left Wing", X = 20, Y = 35 },
-                    new FormationPosition { PositionName = "CF", DisplayLabel = "Center Forward", X = 50, Y = 20 },
-                    new FormationPosition { PositionName = "RW", DisplayLabel = "Right Wing", X = 80, Y = 35 },
+                    await this.teamStartingLineupPlayerRepository.HardDeleteAsync(player);
                 }
-            },
-            new FormationViewModel
-            {
-                Name = "4-2-3-1",
-                DisplayName = "4-2-3-1",
-                Positions = new List<FormationPosition>
-                {
-                    new FormationPosition { PositionName = "GK", DisplayLabel = "Goalkeeper", X = 50, Y = 95 },
-                    new FormationPosition { PositionName = "LB", DisplayLabel = "Left Back", X = 15, Y = 80 },
-                    new FormationPosition { PositionName = "CB", DisplayLabel = "Center Back", X = 35, Y = 78 },
-                    new FormationPosition { PositionName = "CB", DisplayLabel = "Center Back", X = 65, Y = 78 },
-                    new FormationPosition { PositionName = "RB", DisplayLabel = "Right Back", X = 85, Y = 80 },
-                    new FormationPosition { PositionName = "CDM", DisplayLabel = "Defensive Midfield", X = 38, Y = 63 },
-                    new FormationPosition { PositionName = "CDM", DisplayLabel = "Defensive Midfield", X = 62, Y = 63 },
-                    new FormationPosition { PositionName = "CAM", DisplayLabel = "Attacking Midfield", X = 50, Y = 47 },
-                    new FormationPosition { PositionName = "LW", DisplayLabel = "Left Wing", X = 20, Y = 35 },
-                    new FormationPosition { PositionName = "RW", DisplayLabel = "Right Wing", X = 80, Y = 35 },
-                    new FormationPosition { PositionName = "ST", DisplayLabel = "Striker", X = 50, Y = 20 },
-                }
+                await teamStartingLineupRepository.HardDeleteAsync(existingLineup);
             }
-        };
+
+            var lineup = new TeamStartingLineup
+            {
+                TeamId = teamId,
+                CoachId = coachId,
+                FormationName = formationName,
+                UpdatedOn = DateTime.UtcNow
+            };
+
+            await teamStartingLineupRepository.AddAsync(lineup);
+
+            var lineupPlayers = players.Select((p, idx) => new TeamStartingLineupPlayer
+            {
+                TeamStartingLineupId = lineup.Id,
+                PlayerId = p.PlayerId,
+                PositionName = p.PositionName,
+                PositionNumber = p.PositionNumber
+            }).ToList();
+
+            await teamStartingLineupPlayerRepository.AddRangeAsync(lineupPlayers);
+
+
+        }
+        public async Task SaveStartingLineupFromViewModelAsync(CoachLineupViewModel model, Guid userId)
+        {
+            if (model.SelectedPlayers == null || model.SelectedPositions == null ||
+                model.SelectedPlayers.Count != model.SelectedPositions.Count ||
+                string.IsNullOrEmpty(model.SelectedFormationName))
+            {
+                throw new ArgumentException("Invalid lineup data provided.");
+            }
+
+            var lineupPlayers = model.SelectedPlayers
+                .Select((playerId, i) => new LineupPlayerInputModel
+                {
+                    PlayerId = playerId,
+                    PositionName = model.SelectedPositions[i],
+                    PositionNumber = i + 1
+                }).ToList();
+
+            await SaveStartingLineupAsync(
+                model.TeamId,
+                userId,
+                model.SelectedFormationName,
+                lineupPlayers
+            );
+        }
+
+        public Task<int> GetCoachTeamId(Guid coachId)
+        {
+            
+            Coach? coach = this.coachRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .SingleOrDefault(c => c.ApplicationUserId == coachId);
+            if (coach != null)
+            {
+                return Task.FromResult(coach.TeamId);
+            }
+            return Task.FromResult(0); 
+        }
+        public async Task<Coach?> GetCoachByApplicationUserId(Guid appUserId)
+        {
+            return await this.coachRepository
+                .FirstOrDefaultAsync(c => c.ApplicationUserId == appUserId);
+        }
+
+        public async Task<League?> GetCoachLeague(Guid coachId)
+        {
+            Coach? coach=await this.coachRepository
+                .GetAllAttached()
+                .Include(c => c.Team)
+                .ThenInclude(t => t.League)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(c => c.ApplicationUserId == coachId);
+            if (coach != null && coach.Team != null)
+            {
+                return coach.Team.League;
+            }
+            return null;
         }
     }
 }

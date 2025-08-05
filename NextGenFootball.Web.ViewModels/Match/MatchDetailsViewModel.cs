@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NextGenFootball.Web.ViewModels.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,8 @@ namespace NextGenFootball.Web.ViewModels.Match
         public bool IsPlayed { get; set; }
         public string LeagueName { get; set; } = null!;
         public string? VideoUrl { get; set; }
+        public LineupViewModel? HomeTeamLineup { get; set; }
+        public LineupViewModel? AwayTeamLineup { get; set; }
         public List<MatchEventViewModel> Events { get; set; } = new List<MatchEventViewModel>();
     }
 }

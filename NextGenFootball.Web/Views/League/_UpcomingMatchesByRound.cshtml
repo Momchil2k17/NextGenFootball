@@ -37,14 +37,14 @@
                                 @foreach (var match in round.Matches)
                                 {
                                     <tr class="upcoming-match-row"
-                                        data-href="@Url.Action("Details", "Match", new { id = match.MatchId })"
+                                        data-href="@($"/Match/Details/{match.MatchId}")"
                                         style="cursor:pointer;">
                                         <td data-label="Date">@match.Date.ToString("dd MMM yyyy, HH:mm")</td>
                                         <td data-label="Home Team" class="upcoming-home-team-cell text-center">
                                             <div class="upcoming-team-cell">
                                                 <img src="@match.HomeTeamImageUrl"
                                                      alt="@match.HomeTeam" />
-                                                <a asp-controller="Team"
+                                                <a asp-area="" asp-controller="Team"
                                                    asp-action="Details"
                                                    asp-route-id="@match.HomeTeamId"
                                                    class="upcoming-team-name-link"
@@ -60,7 +60,7 @@
                                             <div class="upcoming-team-cell">
                                                 <img src="@match.AwayTeamImageUrl"
                                                      alt="@match.AwayTeam" />
-                                                <a asp-controller="Team"
+                                                <a asp-area="" asp-controller="Team"
                                                    asp-action="Details"
                                                    asp-route-id="@match.AwayTeamId"
                                                    class="upcoming-team-name-link"

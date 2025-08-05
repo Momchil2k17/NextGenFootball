@@ -25,6 +25,8 @@
 
     <form method="post" asp-area="CoachManagement" asp-controller="Lineup" asp-action="Choose">
         <input type="hidden" id="SelectedFormationName" name="SelectedFormationName" value="@selectedFormation.Name" />
+        <input type="hidden" id="TeamId" name="TeamId" value="@Model.TeamId" />
+        <input type="hidden" id="CoachId" name="CoachId" value="@Model.CoachId" />
 
         <div class="lineup-flex">
             <div class="pitch-container mb-4">
@@ -36,6 +38,7 @@
             </div>
         </div>
 
+        <!-- JS will populate this with hidden inputs for SelectedPlayers and SelectedPositions -->
         <div id="lineupInputs"></div>
 
         <div class="text-center mt-4">

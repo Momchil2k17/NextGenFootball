@@ -255,6 +255,47 @@ namespace NextGenFootball.Services.Core
                 Rounds = rounds
             });
         }
+        public async Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForTeamAsync(League leagueToFind, int teamId)
+        {
+            var league = await leagueRepository
+                .GetAllAttached()
+                .Include(l => l.Season)
+                .Include(l => l.Matches)
+                    .ThenInclude(m => m.HomeTeam)
+                .Include(l => l.Matches)
+                    .ThenInclude(m => m.AwayTeam)
+                .Include(l => l.Teams)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(l => l.Id == leagueToFind.Id);
+            var matches = league.Matches?
+                .Where(m => m.Date >= DateTime.Now && !m.IsDeleted &&
+                    (m.HomeTeamId == teamId || m.AwayTeamId == teamId))
+                .GroupBy(m => m.Round)
+                .Select(g => new RoundMatchesViewModel
+                {
+                    RoundNumber = g.Key,
+                    Matches = g.Select(m => new MatchSummaryViewModel
+                    {
+                        MatchId = m.Id,
+                        HomeTeamId = m.HomeTeamId,
+                        HomeTeam = m.HomeTeam.Name,
+                        HomeTeamImageUrl = m.HomeTeam.ImageUrl,
+                        AwayTeamId = m.AwayTeamId,
+                        AwayTeam = m.AwayTeam.Name,
+                        AwayTeamImageUrl = m.AwayTeam?.ImageUrl,
+                        Date = m.Date
+                    }).ToList()
+                })
+                .OrderBy(r => r.RoundNumber)
+                .ToList()
+                ?? new List<RoundMatchesViewModel>();
+
+            return (new LeagueUpcomingMatchesViewModel
+            {
+                LeagueId = league.Id,
+                Rounds = matches
+            });
+        }
         public Task<LeagueStandingsViewModel> GetLeagueStandingsAsync(League league)
         {
             // Calculate for each team

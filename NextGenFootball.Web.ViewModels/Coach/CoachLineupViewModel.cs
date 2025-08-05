@@ -12,6 +12,11 @@ namespace NextGenFootball.Web.ViewModels.Coach
         public IEnumerable<PlayerForCoachSquad> Players { get; set; } = new List<PlayerForCoachSquad>();
         public List<FormationViewModel> Formations { get; set; } = new();
         public string SelectedFormationName { get; set; } = "4-3-3";
+        public List<Guid> SelectedPlayers { get; set; } = new();
+        public List<string> SelectedPositions { get; set; } = new();
+
+        public int TeamId { get; set; }
+        public Guid CoachId { get; set; }
     }
     public class FormationViewModel
     {

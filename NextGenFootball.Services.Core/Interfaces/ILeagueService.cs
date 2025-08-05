@@ -1,4 +1,5 @@
-﻿using NextGenFootball.Web.ViewModels.League;
+﻿using NextGenFootball.Data.Models;
+using NextGenFootball.Web.ViewModels.League;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace NextGenFootball.Services.Core.Interfaces
         DateTime GetNearestQuarter(DateTime dateTime);
         public Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForHomeAsync();
         public Task<LeagueStandingsViewModel> GetCurrentStandingsAsync();
+        public Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForTeamAsync(League leagueToFind, int teamId);
     }
 }

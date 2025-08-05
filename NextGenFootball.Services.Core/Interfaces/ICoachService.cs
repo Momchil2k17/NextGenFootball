@@ -1,4 +1,5 @@
-﻿using NextGenFootball.Web.ViewModels.Coach;
+﻿using NextGenFootball.Data.Models;
+using NextGenFootball.Web.ViewModels.Coach;
 using NextGenFootball.Web.ViewModels.Player;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,11 @@ namespace NextGenFootball.Services.Core.Interfaces
         public Task<CoachDeleteViewModel?> GetCoachForDeleteAsync(Guid? id);
         public Task<bool> DeleteCoachAsync(CoachDeleteViewModel model);
         public Task<IEnumerable<PlayerForCoachSquad>?> GetPlayersForCoach(Guid? coachId);
-        public List<FormationViewModel> GetFormationsForCoach();
+        public Task SaveStartingLineupAsync(int teamId, Guid coachId, string formationName, List<LineupPlayerInputModel> players);
+        public Task SaveStartingLineupFromViewModelAsync(CoachLineupViewModel model, Guid userId);
+        public Task<int> GetCoachTeamId(Guid coachId);
+        public Task<Coach?> GetCoachByApplicationUserId(Guid appUserId);
+        public Task<League?> GetCoachLeague(Guid coachId);
 
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
+using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
+using NextGenFootball.Web.ViewModels.Player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +22,15 @@ namespace NextGenFootball.Services.Core
         private readonly ILeagueRepository leagueRepository;
         private readonly IStadiumRepository stadiumRepository;
         private readonly IPlayerRepository playerRepository;
-        public MatchService(IMatchRepository matchRepository, IPlayerRepository playerRepository, ITeamRepository teamRepository, ILeagueRepository leagueRepository, IStadiumRepository stadiumRepository)
+        private readonly ITeamStartingLineupRepository teamStartingLineupRepository;
+        public MatchService(IMatchRepository matchRepository, IPlayerRepository playerRepository, ITeamRepository teamRepository, ILeagueRepository leagueRepository, IStadiumRepository stadiumRepository, ITeamStartingLineupRepository teamStartingLineupRepository)
         {
             this.matchRepository = matchRepository;
             this.teamRepository = teamRepository;
             this.leagueRepository = leagueRepository;
             this.stadiumRepository = stadiumRepository;
             this.playerRepository = playerRepository;
+            this.teamStartingLineupRepository = teamStartingLineupRepository;
         }
 
         public async Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id)
@@ -95,50 +99,98 @@ namespace NextGenFootball.Services.Core
             MatchDetailsViewModel? match = null;
             if (id.HasValue)
             {
-                match = await this.matchRepository
-                    .GetAllAttached()
-                    .Include(m => m.HomeTeam)
-                    .Include(m => m.AwayTeam)
-                    .Include(m => m.League)
-                    .Include(m => m.Stadium)
-                    .Include(m=>m.Report)
-                    .ThenInclude(m=>m.Events)
-                    .AsNoTracking()
-                    .Where(m => m.Id == id.Value)
-                    .Select(m => new MatchDetailsViewModel
-                    {
-                        HomeTeamName = m.HomeTeam.Name,
-                        HomeTeamImageUrl = m.HomeTeam.ImageUrl,
-                        AwayTeamName = m.AwayTeam.Name,
-                        AwayTeamImageUrl = m.AwayTeam.ImageUrl,
-                        Date = m.Date,
-                        HomeScore = m.HomeScore,
-                        AwayScore = m.AwayScore,
-                        StadiumId = m.Stadium.Id,
-                        StadiumName = m.Stadium.Name,
-                        LeagueName = m.League.Name,
-                        IsPlayed= m.Status == MatchStatus.Played,
-                        Events= m.Report != null ? m.Report.Events.Select(e => new MatchEventViewModel
+                var matchEntity = await this.matchRepository
+            .GetAllAttached()
+            .Include(m => m.HomeTeam)
+            .Include(m => m.AwayTeam)
+            .Include(m => m.League)
+            .Include(m => m.Stadium)
+            .Include(m => m.Report)
+                .ThenInclude(r => r.Events)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.Id == id.Value);
+
+                if (matchEntity == null)
+                    return null;
+
+                // Map match details
+                match = new MatchDetailsViewModel
+                {
+                    HomeTeamName = matchEntity.HomeTeam.Name,
+                    HomeTeamImageUrl = matchEntity.HomeTeam.ImageUrl,
+                    AwayTeamName = matchEntity.AwayTeam.Name,
+                    AwayTeamImageUrl = matchEntity.AwayTeam.ImageUrl,
+                    Date = matchEntity.Date,
+                    HomeScore = matchEntity.HomeScore,
+                    AwayScore = matchEntity.AwayScore,
+                    StadiumId = matchEntity.Stadium.Id,
+                    StadiumName = matchEntity.Stadium.Name,
+                    LeagueName = matchEntity.League.Name,
+                    IsPlayed = matchEntity.Status == MatchStatus.Played,
+                    VideoUrl = matchEntity.VideoUrl,
+                    Events = matchEntity.Report != null
+                        ? matchEntity.Report.Events.Select(e => new MatchEventViewModel
                         {
-                            Minute= e.Minute,
+                            Minute = e.Minute,
                             PlayerId = e.PlayerId,
                             PlayerName = this.playerRepository.GetAllAttached()
                                 .Where(p => p.Id == e.PlayerId)
                                 .Select(p => $"{p.FirstName} {p.LastName}")
                                 .FirstOrDefault() ?? "Unknown",
                             StatType = e.StatType.ToString(),
-                            Team=e.Team,
-                            PlayerImageUrl= this.playerRepository.GetAllAttached()
+                            Team = e.Team,
+                            PlayerImageUrl = this.playerRepository.GetAllAttached()
                                 .Where(p => p.Id == e.PlayerId)
                                 .Select(p => p.ImageUrl)
-                                .FirstOrDefault()  ?? $"/images/{NoImagePeopleUrl}",
-                        }).ToList() : new List<MatchEventViewModel>(),
-                        VideoUrl = m.VideoUrl
+                                .FirstOrDefault() ?? $"/images/{NoImagePeopleUrl}",
+                        }).ToList()
+                        : new List<MatchEventViewModel>()
+                };
 
-                    })
-                    .FirstOrDefaultAsync();
+                match.HomeTeamLineup = await GetLineupAsync(matchEntity.HomeTeam.Id) ?? new LineupViewModel();
+                match.AwayTeamLineup = await GetLineupAsync(matchEntity.AwayTeam.Id) ?? new LineupViewModel();
             }
             return match;
         }
+        public async Task<LineupViewModel?> GetLineupAsync(int teamId)
+        {
+            var lineupEntity = await teamStartingLineupRepository
+                .GetAllAttached()
+                .Include(l => l.Players)
+                .FirstOrDefaultAsync(l => l.TeamId == teamId);
+
+            if (lineupEntity == null)
+                return null;
+
+            // Fetch all player IDs in this lineup
+            var playerIds = lineupEntity.Players.Select(lp => lp.PlayerId).ToList();
+
+            // Fetch player details in bulk
+            var players = await playerRepository
+                .GetAllAttached()
+                .Where(p => playerIds.Contains(p.Id))
+                .ToListAsync();
+
+            // Map each lineup player to the view model
+            var lineupPlayers = lineupEntity.Players
+                .Select(lp =>
+                {
+                    var player = players.FirstOrDefault(p => p.Id == lp.PlayerId);
+                    return new LineupPlayerViewModel
+                    {
+                        PlayerName = player != null ? $"{player.FirstName} {player.LastName}" : "Unknown",
+                        PositionName = lp.PositionName,
+                        ImageUrl = player?.ImageUrl ?? "/images/default-player.png"
+                    };
+                })
+                .ToList();
+
+            return new LineupViewModel
+            {
+                FormationName = lineupEntity.FormationName,
+                Players = lineupPlayers
+            };
+        }
+
     }
 }
