@@ -115,7 +115,11 @@ namespace NextGenFootball.Data.Repository
             await this.DbSet.AddRangeAsync(items);
             await this.DbContext.SaveChangesAsync();
         }
-
+        public void RemoveRange(IEnumerable<TEntity> items)
+        {
+            this.DbSet.RemoveRange(items);
+            this.DbContext.SaveChanges();
+        }
         public bool Delete(TEntity entity)
         {
             this.PerformSoftDeleteOfEntity(entity);

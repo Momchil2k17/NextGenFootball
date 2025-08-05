@@ -23,6 +23,7 @@ namespace NextGenFootball.Data.Repository.Interfaces
         void Add(TEntity item);
 
         void AddRange(IEnumerable<TEntity> items);
+        void RemoveRange(IEnumerable<TEntity> items);
 
         bool Delete(TEntity entity);
 
