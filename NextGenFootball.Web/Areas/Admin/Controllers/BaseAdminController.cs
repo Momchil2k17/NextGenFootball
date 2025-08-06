@@ -7,6 +7,7 @@ namespace NextGenFootball.Web.Areas.Admin.Controllers
 {
     [Area(AdminRoleName)]
     [Authorize(Roles = AdminRoleName)]
+    [AutoValidateAntiforgeryToken]
     public class BaseAdminController : Controller
     {
         private bool IsUserAuthenticated()

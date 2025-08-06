@@ -7,6 +7,7 @@ namespace NextGenFootball.Web.Areas.LeagueManager.Controllers
 {
     [Area(LeagueManagerAreaName)]
     [Authorize(Roles = LeagueManagerRoleName)]
+    [AutoValidateAntiforgeryToken]
     public class BaseLeagueManagerController : Controller
     {
         private bool IsUserAuthenticated()

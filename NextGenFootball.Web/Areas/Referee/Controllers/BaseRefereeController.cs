@@ -7,6 +7,7 @@ namespace NextGenFootball.Web.Areas.Referee.Controllers
 {
     [Area(RefereeAreaName)]
     [Authorize(Roles = RefereeRoleName)]
+    [AutoValidateAntiforgeryToken]
     public abstract class BaseRefereeController : Controller
     {
         private bool IsUserAuthenticated()

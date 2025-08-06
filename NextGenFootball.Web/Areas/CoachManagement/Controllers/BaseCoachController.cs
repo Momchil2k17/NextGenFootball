@@ -7,6 +7,8 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
 {
     [Area(CoachAreaName)]
     [Authorize(Roles = CoachRoleName)]
+    [AutoValidateAntiforgeryToken]
+
     public class BaseCoachController : Controller
     {
         private bool IsUserAuthenticated()
