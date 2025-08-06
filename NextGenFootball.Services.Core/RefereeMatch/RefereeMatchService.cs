@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
-using NextGenFootball.Services.Core.Referee.Interfaces;
+using NextGenFootball.Services.Core.RefereeMatch.Interfaces;
 using NextGenFootball.Web.ViewModels.Referee.RefereeMatches;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NextGenFootball.Services.Core.Referee
+namespace NextGenFootball.Services.Core.RefereeMatch
 {
     public class RefereeMatchService : IRefereeMatchService
     {

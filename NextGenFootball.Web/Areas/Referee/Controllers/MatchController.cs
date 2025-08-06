@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NextGenFootball.Services.Core.Referee.Interfaces;
+using NextGenFootball.Services.Core.RefereeMatch.Interfaces;
 using NextGenFootball.Web.ViewModels.Referee.RefereeMatches;
 
 namespace NextGenFootball.Web.Areas.Referee.Controllers

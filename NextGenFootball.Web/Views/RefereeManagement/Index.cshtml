@@ -1,0 +1,35 @@
+﻿@model IEnumerable<NextGenFootball.Web.ViewModels.RefereeManagement.RefereeIndexViewModel>
+
+@{
+    ViewData["Title"] = "Referees";
+}
+
+<h2>All Referees</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">Create Referee</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var referee in Model)
+        {
+            <tr>
+                <td>@referee.FirstName</td>
+                <td>@referee.LastName</td>
+                <td>@referee.PhoneNumber</td>
+                <td>@referee.Email</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@referee.Id" class="btn btn-sm btn-warning">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

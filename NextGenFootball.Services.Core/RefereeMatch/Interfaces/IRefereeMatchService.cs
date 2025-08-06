@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NextGenFootball.Services.Core.Referee.Interfaces
+namespace NextGenFootball.Services.Core.RefereeMatch.Interfaces
 {
     public interface IRefereeMatchService
     {
