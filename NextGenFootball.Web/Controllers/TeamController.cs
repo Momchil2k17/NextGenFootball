@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Team;
+using static NextGenFootball.GCommon.ApplicationConstants;
+
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles =AdminRoleName)]
     public class TeamController : BaseController
     {
         private readonly ITeamService teamService;

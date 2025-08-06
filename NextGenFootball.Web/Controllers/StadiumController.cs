@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
+using static NextGenFootball.GCommon.ApplicationConstants;
 using NextGenFootball.Web.ViewModels.Stadium;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AdminRoleName)]
+
     public class StadiumController : BaseController
     {
         private readonly IStadiumService stadiumService;
