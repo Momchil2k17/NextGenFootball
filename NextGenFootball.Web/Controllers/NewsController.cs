@@ -60,5 +60,34 @@ namespace NextGenFootball.Web.Controllers
 
             return Json(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var news = await newsService.GetNewsForEditAsync(id.Value);
+            if (news == null)
+            {
+                return NotFound();
+            }
+            return View(news);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(NewsEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isEdited = await this.newsService.EditNewsAsync(model);
+            if (!isEdited)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to edit news.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

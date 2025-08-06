@@ -9,7 +9,15 @@
 <link rel="stylesheet" href="~/css/match-events.css">
 
 <div class="container mt-4">
-    <div class="card shadow-sm">
+    <div class="card shadow-sm position-relative">
+        @if (User.IsInRole("LeagueManager"))
+        {
+            <a asp-area="" asp-controller="Match" asp-action="AddVideoToMatch" asp-route-id="@Model.Id"
+               class="btn btn-warning position-absolute end-0 mt-3 me-3"
+               style="z-index:2;">
+                <i class="bi bi-camera-video"></i> Add/Edit Match Video
+            </a>
+        }
         <div class="card-header text-center">
             <h3 class="d-flex align-items-center justify-content-center gap-2">
                 <img src="@Model.HomeTeamImageUrl" alt="@Model.HomeTeamName" width="40" height="40" class="rounded-circle" />

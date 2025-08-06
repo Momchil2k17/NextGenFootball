@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static NextGenFootball.GCommon.ApplicationConstants   ;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
 {
@@ -116,6 +116,7 @@ namespace NextGenFootball.Services.Core
                 // Map match details
                 match = new MatchDetailsViewModel
                 {
+                    Id= matchEntity.Id,
                     HomeTeamName = matchEntity.HomeTeam.Name,
                     HomeTeamImageUrl = matchEntity.HomeTeam.ImageUrl,
                     AwayTeamName = matchEntity.AwayTeam.Name,
@@ -192,5 +193,42 @@ namespace NextGenFootball.Services.Core
             };
         }
 
+        public async Task<AddVideoToMatchViewModel?> GetMatchForVideoAsync(long? id)
+        {
+            AddVideoToMatchViewModel? model = null; 
+            if (id.HasValue)
+            {
+                var match = await this.matchRepository
+                    .GetAllAttached()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.Id == id.Value);
+                if (match != null)
+                {
+                    model = new AddVideoToMatchViewModel
+                    {
+                        Id = match.Id,
+                        VideoUrl = match.VideoUrl ?? string.Empty 
+                    };
+                }
+            }
+            return model;
+        }
+
+        public async Task<bool> AddVideoToMatchAsync(AddVideoToMatchViewModel model)
+        {
+            bool res= false;
+            if (model.Id > 0 && !string.IsNullOrWhiteSpace(model.VideoUrl))
+            {
+                Match? match = await this.matchRepository.SingleOrDefaultAsync(m => m.Id == model.Id);
+                if (match != null)
+                {
+                    match.VideoUrl = model.VideoUrl;
+                    await this.matchRepository.SaveChangesAsync();
+                    res = true;
+                }
+            }
+            return res;
+
+        }
     }
 }

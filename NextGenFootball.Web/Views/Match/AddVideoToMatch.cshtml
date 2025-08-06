@@ -1,0 +1,37 @@
+﻿@model NextGenFootball.Web.ViewModels.Match.AddVideoToMatchViewModel
+
+@{
+    ViewData["Title"] = "Add/Edit Match Video";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h3>Add/Edit Match Video</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddVideoToMatch" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="VideoUrl" class="form-label">Video URL</label>
+                            <input asp-for="VideoUrl" class="form-control" placeholder="https://example.com/video.mp4" />
+                            <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" class="btn btn-outline-secondary ms-2" onclick="window.history.back();">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

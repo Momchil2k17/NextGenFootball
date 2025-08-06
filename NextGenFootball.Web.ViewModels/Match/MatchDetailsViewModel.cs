@@ -9,7 +9,7 @@ namespace NextGenFootball.Web.ViewModels.Match
 {
     public class MatchDetailsViewModel
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public DateTime Date { get; set; }
         public int StadiumId { get; set; }
         public string StadiumName { get; set; }= null!;

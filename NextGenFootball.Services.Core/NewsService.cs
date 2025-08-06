@@ -38,6 +38,24 @@ namespace NextGenFootball.Services.Core
             return res;
         }
 
+        public async Task<bool> EditNewsAsync(NewsEditViewModel model)
+        {
+            bool res = false;
+            News? news = this.newsRepository
+                .GetAllAttached()
+                .FirstOrDefault(n => n.Id == model.Id);
+            if (news != null)
+            {
+                news.Title = model.Title;
+                news.Content = model.Content;
+                news.Author = model.Author;
+                news.ImageUrl = model.ImageUrl;
+                await this.newsRepository.UpdateAsync(news);
+                res = true;
+            }
+            return res;
+        }
+
         public async Task<IEnumerable<NewsIndexViewModel>?> GetAllNewsAsync()
         {
             IEnumerable<NewsIndexViewModel>? news = null;
@@ -98,6 +116,29 @@ namespace NextGenFootball.Services.Core
             }
             return details;
         }
+
+        public async Task<NewsEditViewModel?> GetNewsForEditAsync(int? id)
+        {
+            NewsEditViewModel? news = null;
+            if (id.HasValue)
+            {
+                news = this.newsRepository
+                    .GetAllAttached()
+                    .Where(n => n.Id == id.Value)
+                    .Select(n => new NewsEditViewModel
+                    {
+                        Id = n.Id,
+                        Title = n.Title,
+                        Content = n.Content,
+                        Author = n.Author,
+                        ImageUrl = n.ImageUrl
+                    })
+                    .FirstOrDefault();
+            }
+            return news;
+        }
+
+
         public async Task<(IEnumerable<NewsIndexViewModel> News, int TotalItems)> SearchNewsAsync(string? searchTerm, int page, int pageSize)
         {
             var query = this.newsRepository.GetAllAttached();

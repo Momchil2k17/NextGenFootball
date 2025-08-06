@@ -54,8 +54,13 @@
                     </div>
 
                     <div class="mt-4">
-                        <a asp-action="Index" class="btn btn-outline-secondary me-2">Back to List</a>
+                        <button type="button" class="btn btn-outline-secondary me-2" onclick="window.history.back();">
+                            Back to Previous Page
+                        </button>
+                        @if(User.IsInRole("Admin"))
+                        {
                         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                        }
                     </div>
                 </div>
             </div>

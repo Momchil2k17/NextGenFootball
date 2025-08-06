@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = AdminRoleName)]
     public class CoachController : BaseController
     {
         private readonly ICoachService coachService;

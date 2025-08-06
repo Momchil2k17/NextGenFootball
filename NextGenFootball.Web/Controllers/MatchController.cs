@@ -29,6 +29,31 @@ namespace NextGenFootball.Web.Controllers
             }
             return View(match);
         }
+        [HttpGet]
+        public async Task<IActionResult> AddVideoToMatch(long? id)
+        {
+            AddVideoToMatchViewModel? model = await this.matchService.GetMatchForVideoAsync(id);
+            if (model == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddVideoToMatch(AddVideoToMatchViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            bool isAdded = await this.matchService.AddVideoToMatchAsync(model);
+            if (!isAdded)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to add video to match. Please try again.");
+                return View(model);
+            }
+            return RedirectToAction(nameof(Details), new { id = model.Id });
+        }
     }
     
 }

@@ -19,8 +19,18 @@
         <div class="news-details-content">@Model.Content</div>
     </div>
 </div>
-<button type="button"
-        class="btn btn-outline-primary news-details-back-btn"
-        onclick="window.history.back();">
-    <i class="bi bi-arrow-left"></i> Back
-</button>
+
+<div class="mt-3">
+    <button type="button"
+            class="btn btn-outline-primary news-details-back-btn"
+            onclick="window.history.back();">
+        <i class="bi bi-arrow-left"></i> Back
+    </button>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("LeagueManager"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning ms-2">
+            <i class="bi bi-pencil"></i> Edit
+        </a>
+    }
+</div>
