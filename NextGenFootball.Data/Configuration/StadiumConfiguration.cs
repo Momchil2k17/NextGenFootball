@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.StadiumValidationConstants;
 
 namespace NextGenFootball.Data.Configuration

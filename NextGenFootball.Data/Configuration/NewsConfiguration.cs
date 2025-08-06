@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NextGenFootball.Data.Models;
 using static NextGenFootball.Data.Common.EntityConstants.NewsValidationConstants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NextGenFootball.Data.Configuration
 {

@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.PlayerValidationConstants;
 
 namespace NextGenFootball.Data.Configuration
@@ -18,7 +13,6 @@ namespace NextGenFootball.Data.Configuration
             entity
                 .HasKey(p => p.Id);
 
-            //for better performance, we can add indexes on foreign keys
             entity.HasIndex(p => p.TeamId);
             entity.HasIndex(p => p.SeasonId);
             entity.HasIndex(p => p.ApplicationUserId);
@@ -27,7 +21,7 @@ namespace NextGenFootball.Data.Configuration
                 .HasOne(p => p.ApplicationUser)
                 .WithMany(u => u.Players)
                 .HasForeignKey(p => p.ApplicationUserId)
-                .IsRequired(false) // ApplicationUserId can be null if the player is not associated with a user
+                .IsRequired(false) 
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity

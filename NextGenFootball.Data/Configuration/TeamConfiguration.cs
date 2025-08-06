@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.Data.Common.EntityConstants.TeamValidationConstants;
 
 namespace NextGenFootball.Data.Configuration
@@ -58,7 +53,6 @@ namespace NextGenFootball.Data.Configuration
                 .HasForeignKey(t => t.LeagueId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //possibility to filter out soft-deleted stadiums and leagues
             entity
                 .HasQueryFilter(t => t.IsDeleted==false);
 
