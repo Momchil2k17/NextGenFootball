@@ -1,7 +1,7 @@
 # ⚽ NextGenFootball Bulgaria — Empowering Youth Football
 
 Welcome to **NextGenFootball**, the all-in-one platform designed to support the youth football ecosystem in Bulgaria.  
-Our web application covers every aspect needed for thriving youth leagues, from administration and match management to interactive news and player statistics.  
+This web application covers every aspect needed for thriving youth leagues, from administration and match management to interactive news and player statistics.  
 Let’s inspire the next generation! 🇧🇬👦👧
 
 ---
@@ -29,7 +29,7 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - ![Home_Page](Screenshots/home-page.png)
 - ![Guest News](Screenshots/guest-news.png)
 - ![Match Details](Screenshots/match-details.png)
-- ![Stadium_Location](Screenshots/match-details.png)
+- ![Stadium_Location](Screenshots/stadium-details.png)
 ---
 
 ### 🏆 League Manager
@@ -65,10 +65,9 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 🏷️ **Assign Roles:** Link application user accounts to coaches and referees.
 
 #### 📸 Screenshots:  
-*Highlight the admin panel and management tools in the `/Screenshots` folder!*
 
 - ![Admin Dashboard](Screenshots/admin-dashboard.png)
-- ![Manage Users](Screenshots/manage-users.png)
+- ![Manage Users](Screenshots/user-management.png)
 
 ---
 
@@ -79,10 +78,9 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 📆 **Upcoming Matches:** See all matches for your team at a glance.
 
 #### 📸 Screenshots:  
-*Show off the lineup builder and match schedule in the `/Screenshots` folder!*
 
 - ![Lineup Builder](Screenshots/lineup.png)
-- ![Coach Upcoming Matches](Screenshots/coach-upcoming-matches.png)
+- ![Coach Upcoming Matches](Screenshots/upcoming-matches.png)
 
 ---
 
