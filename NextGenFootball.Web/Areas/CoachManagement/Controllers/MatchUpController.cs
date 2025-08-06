@@ -17,21 +17,29 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
         public async Task<IActionResult> Upcoming()
         {
             Guid? applicationUserId = this.GetUserId();
+
             if (applicationUserId == null)
-                return BadRequest("User ID is not available.");
+            { 
+                return View("BadRequest", "No UserId provided"); 
+            }
+
             var coach = await coachService.GetCoachByApplicationUserId(applicationUserId.Value);
             if (coach == null)
-                return BadRequest("No coach found for this user.");
+            {
+                return View("BadRequest", "No coach found for this user.");
+            }
+
             var teamId = await coachService.GetCoachTeamId(applicationUserId.Value);
             var league= await coachService.GetCoachLeague(applicationUserId.Value);
+
             if (teamId == 0 || league == null)
             {
-                return BadRequest("Team or league information is not available.");
+                return View("BadRequest","Team or league information is not available.");
             }
             var matches = await leagueService.GetUpcomingMatchesForTeamAsync(league,teamId);
             if (matches == null)
             {
-                return NotFound("No upcoming matches found for this team.");
+                return NotFound();
             }
             return View(matches);
         }

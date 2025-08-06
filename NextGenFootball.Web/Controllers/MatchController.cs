@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = LeagueManagerRoleName+","+AdminRoleName)]
     public class MatchController : BaseController
     {
         private readonly IMatchService matchService;

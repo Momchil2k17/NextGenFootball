@@ -18,18 +18,5 @@ namespace NextGenFootball.Web.ViewModels.Coach
         public int TeamId { get; set; }
         public Guid CoachId { get; set; }
     }
-    public class FormationViewModel
-    {
-        public string Name { get; set; } = null!; // e.g. "4-3-3"
-        public string DisplayName { get; set; } = null!; // e.g. "4-3-3 (Classic)"
-        public List<FormationPosition> Positions { get; set; } = new();
-    }
-
-    public class FormationPosition
-    {
-        public string PositionName { get; set; } = null!; // e.g. "GK", "LB", "CB", etc.
-        public string DisplayLabel { get; set; } = null!;
-        public int X { get; set; } // grid/fraction for JS rendering
-        public int Y { get; set; }
-    }
+   
 }

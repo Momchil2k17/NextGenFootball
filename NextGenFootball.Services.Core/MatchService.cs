@@ -1,16 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Match;
 using NextGenFootball.Web.ViewModels.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
@@ -32,7 +26,7 @@ namespace NextGenFootball.Services.Core
             this.playerRepository = playerRepository;
             this.teamStartingLineupRepository = teamStartingLineupRepository;
         }
-
+        //CREATE
         public async Task<bool> CreateMatchAsync(MatchCreateViewModel model,int? id)
         {
             bool res = false;
@@ -61,7 +55,7 @@ namespace NextGenFootball.Services.Core
             return res;
 
         }
-
+        //READ
         public async Task<IEnumerable<MatchIndexViewModel>> GetAllMatchesAsync()
         {
             IEnumerable<MatchIndexViewModel> matches = await this.matchRepository
@@ -76,10 +70,10 @@ namespace NextGenFootball.Services.Core
                     Id = m.Id,
                     HomeTeamId = m.HomeTeamId,
                     HomeTeamName = m.HomeTeam.Name,
-                    HomeTeamImageUrl = m.HomeTeam.ImageUrl,
+                    HomeTeamImageUrl = m.HomeTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                     AwayTeamId = m.AwayTeamId,
                     AwayTeamName = m.AwayTeam.Name,
-                    AwayTeamImageUrl = m.AwayTeam.ImageUrl,
+                    AwayTeamImageUrl = m.AwayTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                     Date = m.Date,
                     HomeScore = m.HomeScore,
                     AwayScore = m.AwayScore,
@@ -93,7 +87,6 @@ namespace NextGenFootball.Services.Core
 
             return matches;
         }
-
         public async Task<MatchDetailsViewModel?> GetMatchDetailsAsync(long? id)
         {
             MatchDetailsViewModel? match = null;
@@ -106,21 +99,20 @@ namespace NextGenFootball.Services.Core
             .Include(m => m.League)
             .Include(m => m.Stadium)
             .Include(m => m.Report)
-                .ThenInclude(r => r.Events)
+                .ThenInclude(r => r!.Events)
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.Id == id.Value);
 
                 if (matchEntity == null)
                     return null;
 
-                // Map match details
                 match = new MatchDetailsViewModel
                 {
                     Id= matchEntity.Id,
                     HomeTeamName = matchEntity.HomeTeam.Name,
-                    HomeTeamImageUrl = matchEntity.HomeTeam.ImageUrl,
+                    HomeTeamImageUrl = matchEntity.HomeTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                     AwayTeamName = matchEntity.AwayTeam.Name,
-                    AwayTeamImageUrl = matchEntity.AwayTeam.ImageUrl,
+                    AwayTeamImageUrl = matchEntity.AwayTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                     Date = matchEntity.Date,
                     HomeScore = matchEntity.HomeScore,
                     AwayScore = matchEntity.AwayScore,
@@ -153,6 +145,8 @@ namespace NextGenFootball.Services.Core
             }
             return match;
         }
+
+        //HELPER METHODS
         public async Task<LineupViewModel?> GetLineupAsync(int teamId)
         {
             var lineupEntity = await teamStartingLineupRepository
@@ -163,16 +157,13 @@ namespace NextGenFootball.Services.Core
             if (lineupEntity == null)
                 return null;
 
-            // Fetch all player IDs in this lineup
             var playerIds = lineupEntity.Players.Select(lp => lp.PlayerId).ToList();
 
-            // Fetch player details in bulk
             var players = await playerRepository
                 .GetAllAttached()
                 .Where(p => playerIds.Contains(p.Id))
                 .ToListAsync();
 
-            // Map each lineup player to the view model
             var lineupPlayers = lineupEntity.Players
                 .Select(lp =>
                 {
@@ -181,7 +172,7 @@ namespace NextGenFootball.Services.Core
                     {
                         PlayerName = player != null ? $"{player.FirstName} {player.LastName}" : "Unknown",
                         PositionName = lp.PositionName,
-                        ImageUrl = player?.ImageUrl ?? "/images/default-player.png"
+                        ImageUrl = player?.ImageUrl ?? $"/images/{NoImagePeopleUrl}"
                     };
                 })
                 .ToList();
@@ -192,7 +183,6 @@ namespace NextGenFootball.Services.Core
                 Players = lineupPlayers
             };
         }
-
         public async Task<AddVideoToMatchViewModel?> GetMatchForVideoAsync(long? id)
         {
             AddVideoToMatchViewModel? model = null; 
@@ -213,7 +203,6 @@ namespace NextGenFootball.Services.Core
             }
             return model;
         }
-
         public async Task<bool> AddVideoToMatchAsync(AddVideoToMatchViewModel model)
         {
             bool res= false;

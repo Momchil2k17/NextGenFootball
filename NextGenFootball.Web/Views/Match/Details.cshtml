@@ -10,7 +10,7 @@
 
 <div class="container mt-4">
     <div class="card shadow-sm position-relative">
-        @if (User.IsInRole("LeagueManager"))
+        @if (User.IsInRole("LeagueManager") || User.IsInRole("Admin"))
         {
             <a asp-area="" asp-controller="Match" asp-action="AddVideoToMatch" asp-route-id="@Model.Id"
                class="btn btn-warning position-absolute end-0 mt-3 me-3"

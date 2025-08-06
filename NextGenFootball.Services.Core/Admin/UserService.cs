@@ -3,11 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Services.Core.Admin.Interfaces;
 using NextGenFootball.Web.ViewModels.Admin.UserManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NextGenFootball.Services.Core.Admin
 {
@@ -80,7 +75,6 @@ namespace NextGenFootball.Services.Core.Admin
                     innerException: e);
             }
         }
-
         public async Task<IEnumerable<UserManagementIndexViewModel>> GetUserManagementBoardDataAsync(Guid userId)
         {
             IEnumerable<UserManagementIndexViewModel> users = await this.userManager

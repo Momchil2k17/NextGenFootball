@@ -45,6 +45,8 @@ namespace NextGenFootball.Web.Controllers
         {
             switch (statusCode)
             {
+                case 400:
+                    return this.View("BadRequest");
                 case 401:
                     return this.View("Forbidden");
                 case 403:

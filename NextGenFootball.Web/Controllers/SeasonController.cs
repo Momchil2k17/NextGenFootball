@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Season;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles =AdminRoleName)]
     public class SeasonController : BaseController
     {
         private readonly ISeasonService seasonService;

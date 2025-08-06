@@ -39,15 +39,12 @@
         });
     });
 
-    // Keyboard navigation and blur
     $input.on('blur', function () {
         setTimeout(hideDropdown, 200);
     });
 
-    // Optional: handle clicking on a dropdown item to navigate
     $dropdown.on('mousedown', 'a', function (e) {
         window.location.href = $(this).attr('href');
     });
 
-    // Optional: position dropdown (already handled with position-absolute in layout)
 });

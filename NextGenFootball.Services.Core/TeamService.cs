@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using NextGenFootball.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
 using NextGenFootball.Web.ViewModels.Team;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
 {
@@ -68,12 +62,11 @@ namespace NextGenFootball.Services.Core
                     Region = GetDisplayName(t.Region),
                     Stadium = t.Stadium.Name,
                     League = t.League.Name,
-                    ImageUrl=t.ImageUrl
+                    ImageUrl=t.ImageUrl ?? $"images/{NoTeamImageUrl}",
                 })
                 .ToListAsync();
             return teams;
         }
-
         public async Task<TeamDetailsViewModel?> GetTeamDetailsAsync(int? id)
         {
             TeamDetailsViewModel? details= null;
@@ -93,7 +86,7 @@ namespace NextGenFootball.Services.Core
                         Region = GetDisplayName(team.Region),
                         Stadium = team.Stadium.Name,
                         League = team.League.Name,
-                        ImageUrl = team.ImageUrl,
+                        ImageUrl = team.ImageUrl ?? $"images/{NoTeamImageUrl}",
                         Description = team.Description,
                         Goalkeepers= await this.playerRepository
                             .GetAllAttached()
@@ -102,7 +95,7 @@ namespace NextGenFootball.Services.Core
                             {
                                 Name=p.FirstName+" "+p.LastName,
                                 Position = p.Position,
-                                ImageUrl = p.ImageUrl,
+                                ImageUrl = p.ImageUrl ?? $"images/{NoImagePeopleUrl}",
                             })
                             .ToListAsync(),
                         Defenders = await this.playerRepository
@@ -112,7 +105,7 @@ namespace NextGenFootball.Services.Core
                             {
                                 Name = p.FirstName + " " + p.LastName,
                                 Position = p.Position,
-                                ImageUrl = p.ImageUrl,
+                                ImageUrl = p.ImageUrl ?? $"images/{NoImagePeopleUrl}",
                             })
                             .ToListAsync(),
                         Midfielders = await this.playerRepository
@@ -122,7 +115,7 @@ namespace NextGenFootball.Services.Core
                             {
                                 Name = p.FirstName + " " + p.LastName,
                                 Position = p.Position,
-                                ImageUrl = p.ImageUrl,
+                                ImageUrl = p.ImageUrl ?? $"images/{NoImagePeopleUrl}",
                             })
                             .ToListAsync(),
                         Forwards = await this.playerRepository
@@ -132,7 +125,7 @@ namespace NextGenFootball.Services.Core
                             {
                                 Name = p.FirstName + " " + p.LastName,
                                 Position = p.Position,
-                                ImageUrl = p.ImageUrl,
+                                ImageUrl = p.ImageUrl ?? $"images/{NoImagePeopleUrl}",
                             })
                             .ToListAsync()
 
@@ -141,8 +134,6 @@ namespace NextGenFootball.Services.Core
             }
             return details;
         }
-
-
         public async Task<TeamEditViewModel?> GetTeamForEditAsync(int? id)
         {
             TeamEditViewModel? model = null;
@@ -170,7 +161,6 @@ namespace NextGenFootball.Services.Core
             }
             return model;
         }
-
         public async Task<bool> EditTeamAsync(TeamEditViewModel model)
         {
 
@@ -200,7 +190,6 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
-        
         public async Task<TeamDeleteViewModel?> GetTeamForDeleteAsync(int? id)
         {
             TeamDeleteViewModel? model = null;
@@ -223,7 +212,6 @@ namespace NextGenFootball.Services.Core
             }
             return model;
         }
-
         public async Task<bool> DeleteTeamAsync(TeamDeleteViewModel model)
         {
             Team? team = await this.teamRepository
@@ -235,7 +223,6 @@ namespace NextGenFootball.Services.Core
             await this.teamRepository.DeleteAsync(team);
             return true;
         }
-
         public async Task<IEnumerable<TeamDropdownViewModel>?> GetTeamDropdownViewModelsAsync()
         {
             IEnumerable<TeamDropdownViewModel>? teams = await this.teamRepository
@@ -255,7 +242,6 @@ namespace NextGenFootball.Services.Core
             var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
             return attribute?.Name ?? value.ToString();
         }
-
         public async Task<IEnumerable<TeamDropdownViewModel>?> GetTeamDropdownViewModelsByLeagueAsync(int? id)
         {
             IEnumerable<TeamDropdownViewModel>? teams = await this.teamRepository

@@ -2,11 +2,6 @@
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.RefereeManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NextGenFootball.Services.Core
 {
@@ -35,25 +30,6 @@ namespace NextGenFootball.Services.Core
             return res;
         }
 
-        public async Task<bool> EditRefereeAsync(RefereeEditViewModel model)
-        {
-            bool res= false;
-            Referee? referee = await this.refereeRepository
-                .FirstOrDefaultAsync(r => r.Id == model.Id);
-            if (referee != null)
-            {
-                referee.FirstName = model.FirstName;
-                referee.LastName = model.LastName;
-                referee.PhoneNumber = model.PhoneNumber;
-                referee.Email = model.Email;
-                referee.ImageUrl = model.ImageUrl;
-                referee.ApplicationUserId = model.ApplicationUserId;
-                await this.refereeRepository.UpdateAsync(referee);
-                res = true; 
-            }
-            return res;
-        }
-
         public async Task<IEnumerable<RefereeIndexViewModel>?> GetAllRefereesAsync()
         {
             IEnumerable<RefereeIndexViewModel>? result = null;
@@ -70,7 +46,6 @@ namespace NextGenFootball.Services.Core
             return result;
 
         }
-
         public async Task<RefereeEditViewModel?> GetRefereeByForEdit(Guid? id)
         {
             RefereeEditViewModel? referee = null;
@@ -94,6 +69,24 @@ namespace NextGenFootball.Services.Core
                 }
             }
             return referee;
+        }
+        public async Task<bool> EditRefereeAsync(RefereeEditViewModel model)
+        {
+            bool res= false;
+            Referee? referee = await this.refereeRepository
+                .FirstOrDefaultAsync(r => r.Id == model.Id);
+            if (referee != null)
+            {
+                referee.FirstName = model.FirstName;
+                referee.LastName = model.LastName;
+                referee.PhoneNumber = model.PhoneNumber;
+                referee.Email = model.Email;
+                referee.ImageUrl = model.ImageUrl;
+                referee.ApplicationUserId = model.ApplicationUserId;
+                await this.refereeRepository.UpdateAsync(referee);
+                res = true; 
+            }
+            return res;
         }
     }
 }

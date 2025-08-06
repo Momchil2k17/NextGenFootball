@@ -1,13 +1,8 @@
-﻿using NextGenFootball.Services.Core.Interfaces;
-using NextGenFootball.Web.ViewModels.News;
+﻿using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using NextGenFootball.Data.Models;
+using NextGenFootball.Services.Core.Interfaces;
+using NextGenFootball.Web.ViewModels.News;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
 {
@@ -18,7 +13,7 @@ namespace NextGenFootball.Services.Core
         {
             this.newsRepository = newsRepository;
         }
-
+        //CREATE
         public async Task<bool> CreateNewsAsync(NewsCreateViewModel model)
         {
             bool res = false;
@@ -37,25 +32,7 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
-
-        public async Task<bool> EditNewsAsync(NewsEditViewModel model)
-        {
-            bool res = false;
-            News? news = this.newsRepository
-                .GetAllAttached()
-                .FirstOrDefault(n => n.Id == model.Id);
-            if (news != null)
-            {
-                news.Title = model.Title;
-                news.Content = model.Content;
-                news.Author = model.Author;
-                news.ImageUrl = model.ImageUrl;
-                await this.newsRepository.UpdateAsync(news);
-                res = true;
-            }
-            return res;
-        }
-
+        //READ
         public async Task<IEnumerable<NewsIndexViewModel>?> GetAllNewsAsync()
         {
             IEnumerable<NewsIndexViewModel>? news = null;
@@ -68,12 +45,11 @@ namespace NextGenFootball.Services.Core
                     Content = n.Content,
                     Author = n.Author,
                     PublishedOn = n.PublishedOn,
-                    ImageUrl = n.ImageUrl
+                    ImageUrl = n.ImageUrl ?? $"images/{NoTeamImageUrl}"
                 })
                 .ToList();
             return news;
         }
-
         public async Task<IEnumerable<NewsIndexViewModel>?> GetLatestNewsAsync(int count)
         {
             IEnumerable<NewsIndexViewModel>? latestNews = null;
@@ -88,12 +64,11 @@ namespace NextGenFootball.Services.Core
                     Content = n.Content,
                     Author = n.Author,
                     PublishedOn = n.PublishedOn,
-                    ImageUrl = n.ImageUrl
+                    ImageUrl = n.ImageUrl ?? $"images/{NoTeamImageUrl}"
                 })
                 .ToList();
             return latestNews;
         }
-
         public async Task<NewsDetailsViewModel?> GetNewsDetailsAsync(int? id)
         {
             NewsDetailsViewModel? details = null;   
@@ -110,13 +85,13 @@ namespace NextGenFootball.Services.Core
                         Content = news.Content,
                         Author = news.Author,
                         PublishedOn = news.PublishedOn,
-                        ImageUrl = news.ImageUrl
+                        ImageUrl = news.ImageUrl ?? $"images/{NoTeamImageUrl}"
                     };
                 }
             }
             return details;
         }
-
+        //EDIT
         public async Task<NewsEditViewModel?> GetNewsForEditAsync(int? id)
         {
             NewsEditViewModel? news = null;
@@ -137,7 +112,23 @@ namespace NextGenFootball.Services.Core
             }
             return news;
         }
-
+        public async Task<bool> EditNewsAsync(NewsEditViewModel model)
+        {
+            bool res = false;
+            News? news = this.newsRepository
+                .GetAllAttached()
+                .FirstOrDefault(n => n.Id == model.Id);
+            if (news != null)
+            {
+                news.Title = model.Title;
+                news.Content = model.Content;
+                news.Author = model.Author;
+                news.ImageUrl = model.ImageUrl;
+                await this.newsRepository.UpdateAsync(news);
+                res = true;
+            }
+            return res;
+        }
 
         public async Task<(IEnumerable<NewsIndexViewModel> News, int TotalItems)> SearchNewsAsync(string? searchTerm, int page, int pageSize)
         {
@@ -163,7 +154,7 @@ namespace NextGenFootball.Services.Core
                     Content = n.Content,
                     Author = n.Author,
                     PublishedOn = n.PublishedOn,
-                    ImageUrl = n.ImageUrl
+                    ImageUrl = n.ImageUrl ?? $"images/{NoTeamImageUrl}"
                 })
                 .ToList();
 

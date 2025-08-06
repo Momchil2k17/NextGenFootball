@@ -1,14 +1,11 @@
-﻿@* Admin Dashboard: Each row has 3 cards, icons in each row are yellow, green, red. Uniform blue background, high-contrast text, icon color matches button color per row *@
-<div class="container py-5">
+﻿<div class="container py-5">
     <h2 class="fw-bold text-center mb-5" style="color: #3458e7;">Admin Dashboard</h2>
     <div class="row g-4 justify-content-center">
-        <!-- ROW 1: Yellow, Green, Red Icons -->
         <div class="col-md-4">
             <div class="card h-100 shadow interactive-card card-hover border-0" style="background: #3458e7;">
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Yellow -->
                             <i class="bi bi-people-fill" style="font-size: 3rem; color: #ffc107;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Users</h5>
@@ -25,7 +22,6 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Green -->
                             <i class="bi bi-shield-fill-check" style="font-size: 3rem; color: #198754;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Teams</h5>
@@ -42,7 +38,6 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Red -->
                             <i class="bi bi-person-badge-fill" style="font-size: 3rem; color: #dc3545;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Players</h5>
@@ -56,13 +51,11 @@
         </div>
     </div>
     <div class="row g-4 justify-content-center mt-1">
-        <!-- ROW 2: Yellow, Green, Red Icons -->
         <div class="col-md-4">
             <div class="card h-100 shadow interactive-card card-hover border-0" style="background: #3458e7;">
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Yellow -->
                             <i class="bi bi-building" style="font-size: 3rem; color: #ffc107;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Stadiums</h5>
@@ -79,7 +72,6 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Green -->
                             <i class="bi bi-person-video2" style="font-size: 3rem; color: #198754;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Coaches</h5>
@@ -96,7 +88,6 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Red -->
                             <i class="bi bi-person-video2" style="font-size: 3rem; color: #dc3545;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Referees</h5>
@@ -115,7 +106,22 @@
                 <div class="card-body d-flex flex-column align-items-center justify-content-between">
                     <div class="text-center w-100">
                         <div class="icon mb-4">
-                            <!-- Green -->
+                            <i class="bi bi-calendar-event" style="font-size: 3rem; color: #ffc107;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Matches</h5>
+                        <p class="card-text mb-4" style="color: #f8f9fa;">View all created matches</p>
+                    </div>
+                    <a asp-area="" asp-controller="Match" asp-action="Index" class="btn btn-warning btn-lg w-100 mt-auto fw-semibold">
+                        <i class="bi bi-calendar-plus"></i> Matches
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow interactive-card card-hover border-0" style="background: #3458e7;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                    <div class="text-center w-100">
+                        <div class="icon mb-4">
                             <i class="bi bi-calendar2-week-fill" style="font-size: 3rem; color: #198754;"></i>
                         </div>
                         <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Seasons</h5>
@@ -127,8 +133,23 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow interactive-card card-hover border-0" style="background: #3458e7;">
+                <div class="card-body d-flex flex-column align-items-center justify-content-between">
+                    <div class="text-center w-100">
+                        <div class="icon mb-4">
+                            <i class="bi bi-trophy" style="font-size: 3rem; color: #dc3545;"></i>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3" style="color: #fff;">Manage Leagues</h5>
+                        <p class="card-text mb-4" style="color: #f8f9fa;">Create and edit football leagues and competitions.</p>
+                    </div>
+                    <a asp-area="" asp-controller="League" asp-action="Index" class="btn btn-danger btn-lg w-100 mt-auto fw-semibold">
+                        <i class="bi bi-trophy-fill"></i> Leagues
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Bootstrap Icons CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">

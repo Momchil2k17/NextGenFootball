@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.News;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
+    [Authorize(Roles = LeagueManagerRoleName)]
     public class NewsController : BaseController
     {
         private readonly INewsService newsService;
@@ -12,12 +15,15 @@ namespace NextGenFootball.Web.Controllers
             this.newsService = newsService;
         }
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             IEnumerable<NewsIndexViewModel>? news = await this.newsService.GetAllNewsAsync();
             return View(news);
         }
         [HttpGet]
+        [AllowAnonymous]
+
         public async Task<IActionResult> Details(int? id)
         {
             NewsDetailsViewModel? details = await this.newsService.GetNewsDetailsAsync(id);
@@ -47,6 +53,7 @@ namespace NextGenFootball.Web.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Search(string searchTerm, int page = 1, int pageSize = 9)
         {
             var (news, totalItems) = await newsService.SearchNewsAsync(searchTerm, page, pageSize);

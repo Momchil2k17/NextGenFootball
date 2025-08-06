@@ -1,13 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NextGenFootball.Data.Common.Search;
+﻿using NextGenFootball.Data.Common.Search;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using static NextGenFootball.GCommon.ApplicationConstants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NextGenFootball.Services.Core
 {

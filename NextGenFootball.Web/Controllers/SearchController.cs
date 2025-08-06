@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NextGenFootball.Data.Repository.Interfaces;
-using NextGenFootball.Services.Core;
 using NextGenFootball.Services.Core.Interfaces;
 
 namespace NextGenFootball.Web.Controllers

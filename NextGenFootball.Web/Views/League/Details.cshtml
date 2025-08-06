@@ -17,22 +17,15 @@
 </h2>
 
 <div class="row league-details-main-row mb-4">
-    <!-- Standings on the left -->
     <div class="col-md-7 league-details-standings d-flex align-items-stretch order-1 order-md-1">
         <div class="standings-scale-down w-100">
             @await Html.PartialAsync("_LeagueStandings", Model.Standings)
         </div>
     </div>
-    <!-- Top Goalscorers on the right -->
     <div class="col-md-5 d-flex flex-column order-2 order-md-2">
         <div class="flex-grow-1 d-flex align-items-stretch">
             @await Html.PartialAsync("_TopGoalscorers", Model.TopGoalscorers)
         </div>
-        @{
-            /*
-            ...info card...
-            */
-        }
     </div>
 </div>
 <div class="row">

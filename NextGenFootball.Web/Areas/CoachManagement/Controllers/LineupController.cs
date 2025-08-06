@@ -23,11 +23,14 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
         {
             Guid? applicationUserId = this.GetUserId();
             if (applicationUserId == null)
-                return BadRequest("User ID is not available.");
-
+            {
+                return View("BadRequest", "User ID is not available.");
+            }
             var coach = await coachService.GetCoachByApplicationUserId(applicationUserId.Value);
             if (coach == null)
-                return BadRequest("No coach found for this user.");
+            {
+                return View("BadRequest", "No coach found for this user.");
+            }
 
             var players = await coachService.GetPlayersForCoach(applicationUserId);
             var formations = formationService.GetFormationsForCoach();
@@ -35,7 +38,7 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
 
             var model = new CoachLineupViewModel
             {
-                Players = players,
+                Players = players!,
                 Formations = formations,
                 SelectedFormationName = formations.FirstOrDefault()?.Name ?? "4-3-3",
                 TeamId = teamId,
@@ -50,21 +53,22 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
         {
             Guid? applicationUserId = this.GetUserId();
             if (applicationUserId == null)
-                return BadRequest("User ID is not available.");
+            {
+                return View("BadRequest", "User ID is not available.");
+            }
 
             var coach = await coachService.GetCoachByApplicationUserId(applicationUserId.Value);
             if (coach == null)
-                return BadRequest("No coach found for this user.");
+            {
+                return View("BadRequest", "No coach found for this user.");
+            }
 
-            // Defensive: Ensure TeamId and CoachId are set
             model.CoachId = coach.Id;
             model.TeamId = await coachService.GetCoachTeamId(applicationUserId.Value);
 
-            // Re-fetch formations and players for validation and re-rendering
             var formations = formationService.GetFormationsForCoach();
             var players = await coachService.GetPlayersForCoach(applicationUserId.Value);
 
-            // Validation: Ensure all positions are filled
             var selectedFormation = formations.FirstOrDefault(f => f.Name == model.SelectedFormationName);
             if (selectedFormation == null)
             {
@@ -74,20 +78,13 @@ namespace NextGenFootball.Web.Areas.CoachManagement.Controllers
                 return View(model);
             }
 
-            // Ensure SelectedPlayers and SelectedPositions are not null and match formation positions count
-            if (model.SelectedPlayers == null || model.SelectedPositions == null ||
-                model.SelectedPlayers.Count != selectedFormation.Positions.Count ||
-                model.SelectedPositions.Count != selectedFormation.Positions.Count ||
-                model.SelectedPlayers.Any(p => p == Guid.Empty) ||
-                model.SelectedPositions.Any(string.IsNullOrWhiteSpace))
+            if (model.SelectedPlayers.Count != selectedFormation.Positions.Count)
             {
                 ModelState.AddModelError(string.Empty, "Please assign a player to every position in the selected formation.");
                 model.Formations = formations;
-                model.Players = players;
+                model.Players = players!;
                 return View(model);
             }
-
-            // Save the lineup
             await coachService.SaveStartingLineupFromViewModelAsync(model, coach.Id);
 
             return RedirectToAction("Index","Home");

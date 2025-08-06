@@ -24,6 +24,6 @@ namespace NextGenFootball.Web.ViewModels.League
         public int GoalsConceded { get; set; }
         public int GoalDifference => GoalsScored - GoalsConceded;
         public int Points { get; set; }
-        public List<string>? FormLastFive { get; set; } // "W", "D", "L"
+        public List<string>? FormLastFive { get; set; }
     }
 }

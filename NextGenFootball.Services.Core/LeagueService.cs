@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using NextGenFootball.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.League;
 using NextGenFootball.Web.ViewModels.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
 {
@@ -27,7 +21,8 @@ namespace NextGenFootball.Services.Core
             this.seasonRepository = seasonRepository;
             this.playerRepository = playerRepository;
         }
-
+        //CRUD OPERATIONS FOR LEAGUES
+        //CREATE
         public async Task<bool> CreateLeagueAsync(LeagueCreateViewModel model)
         {
             bool res = false;
@@ -53,7 +48,7 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
-
+        //READ
         public async Task<IEnumerable<LeagueIndexViewModel>> GetAllLeaguesAsync()
         {
             IEnumerable<LeagueIndexViewModel> leagues = await this.leagueRepository
@@ -68,12 +63,11 @@ namespace NextGenFootball.Services.Core
                     Region = GetDisplayName(l.Region),
                     AgeGroup = l.AgeGroup,
                     SeasonName = l.Season.Name,
-                    ImageUrl = l.ImageUrl
+                    ImageUrl = l.ImageUrl ?? $"images/{NoTeamImageUrl}"
                 })
                 .ToListAsync();
             return leagues;
         }
-
         public async Task<LeagueDetailsViewModel?> GetLeagueDetailsAsync(int? id)
         {
             if (!id.HasValue)
@@ -100,7 +94,7 @@ namespace NextGenFootball.Services.Core
                 Region = GetDisplayName(league.Region),
                 AgeGroup = league.AgeGroup,
                 SeasonName = league.Season?.Name ?? "Unknown",
-                ImageUrl = league.ImageUrl,
+                ImageUrl = league.ImageUrl ?? $"images/{NoTeamImageUrl}",
                 Description = league.Description,
                 UpcomingMatches = await GetUpcomingMatchesAsync(league),
                 Standings = await GetLeagueStandingsAsync(league),
@@ -113,15 +107,29 @@ namespace NextGenFootball.Services.Core
                 {
                     Goals=p.Goals,
                     PlayerId=p.Id,
-                    PlayerImageUrl=p.ImageUrl,
+                    PlayerImageUrl=p.ImageUrl ?? $"images/{NoImagePeopleUrl}",
                     PlayerName=p.FirstName+" "+p.LastName,
-                    TeamImageUrl=p.Team.ImageUrl,
+                    TeamImageUrl=p.Team.ImageUrl ?? $"images/{NoTeamImageUrl}",
                     TeamName=p.Team.Name,
                 })
                 
             };
         }
-
+        public async Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync()
+        {
+            IEnumerable<LeagueDropdownViewModel>? leagues = null;
+            leagues = await this.leagueRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .Select(l => new LeagueDropdownViewModel
+                {
+                    Id = l.Id,
+                    Name = l.Name
+                })
+                .ToListAsync();
+            return leagues;
+        }
+        //EDIT
         public async Task<LeagueEditViewModel?> GetLeagueForEditAsync(int? id)
         {
             LeagueEditViewModel? league = null;
@@ -147,7 +155,6 @@ namespace NextGenFootball.Services.Core
             }
             return league;
         }
-
         public async Task<bool> EditLeagueAsync(LeagueEditViewModel model)
         {
             bool res = false;
@@ -175,7 +182,7 @@ namespace NextGenFootball.Services.Core
             }
             return res;
         }
-
+        //DELETE
         public async Task<LeagueDetailsViewModel?> GetLeagueForDeleteAsync(int? id)
         {
             LeagueDetailsViewModel? league = null;
@@ -200,7 +207,6 @@ namespace NextGenFootball.Services.Core
             }
             return league;
         }
-
         public async Task<bool> DeleteLeagueAsync(LeagueDetailsViewModel model)
         {
             League? league = await this.leagueRepository
@@ -212,21 +218,30 @@ namespace NextGenFootball.Services.Core
             await this.leagueRepository.DeleteAsync(league);
             return true;
         }
-
-        public async Task<IEnumerable<LeagueDropdownViewModel>?> GetLeaguesForDropdownAsync()
+        //HELPER METHODS
+        public static string GetDisplayName(Enum value)
         {
-            IEnumerable<LeagueDropdownViewModel>? leagues = null;
-            leagues = await this.leagueRepository
-                .GetAllAttached()
-                .AsNoTracking()
-                .Select(l => new LeagueDropdownViewModel
-                {
-                    Id = l.Id,
-                    Name = l.Name
-                })
-                .ToListAsync();
-            return leagues;
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
+            return attribute?.Name ?? value.ToString();
         }
+        public DateTime GetNearestQuarter(DateTime dateTime)
+        {
+            int minutes = dateTime.Minute;
+            int addMinutes = 15 - (minutes % 15);
+            if (addMinutes == 15) addMinutes = 0;
+            dateTime = new DateTime(
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                dateTime.Hour,
+                dateTime.Minute,
+                0,
+                dateTime.Kind
+            );
+            return dateTime.AddMinutes(addMinutes);
+        }
+        //UPCOMING MATHCES AND STANDINGS FOR LEAGUE
         public Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesAsync(League league)
         {
             var rounds = league.Matches?
@@ -267,7 +282,7 @@ namespace NextGenFootball.Services.Core
                 .Include(l => l.Teams)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(l => l.Id == leagueToFind.Id);
-            var matches = league.Matches?
+            var matches = league!.Matches?
                 .Where(m => m.Date >= DateTime.Now && !m.IsDeleted &&
                     (m.HomeTeamId == teamId || m.AwayTeamId == teamId))
                 .GroupBy(m => m.Round)
@@ -296,9 +311,23 @@ namespace NextGenFootball.Services.Core
                 Rounds = matches
             });
         }
+        public async Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForHomeAsync()
+        {
+            var mainLeague = await leagueRepository
+                .GetAllAttached()
+                .Include(l => l.Teams)
+                .Include(l => l.Matches)
+                .FirstOrDefaultAsync(l => l.Id == 1);
+            //the id is hard-coded to 1, which is the main league
+
+            if (mainLeague == null)
+                return new LeagueUpcomingMatchesViewModel { Rounds = new List<RoundMatchesViewModel>() };
+
+            return await GetUpcomingMatchesAsync(mainLeague);
+        }
+
         public Task<LeagueStandingsViewModel> GetLeagueStandingsAsync(League league)
         {
-            // Calculate for each team
             var standings = league.Teams?.Select(team =>
             {
                 var matches = league.Matches
@@ -322,7 +351,6 @@ namespace NextGenFootball.Services.Core
                 int goalDifference = goalsScored - goalsConceded;
                 int points = wins * 3 + draws;
 
-                // Form last five matches (W/D/L)
                 var lastFive = matches
                     .OrderByDescending(m => m.Date)
                     .Take(5)
@@ -368,47 +396,12 @@ namespace NextGenFootball.Services.Core
                 .Include(l => l.Teams)
                 .Include(l => l.Matches)
                 .FirstOrDefaultAsync(l=>l.Id==1);
+            //hard-coded to 1, which is the main league
 
             if (mainLeague == null)
                 return new LeagueStandingsViewModel { Standings = new List<TeamStandingViewModel>() };
 
             return await GetLeagueStandingsAsync(mainLeague);
-        }
-
-        public async Task<LeagueUpcomingMatchesViewModel> GetUpcomingMatchesForHomeAsync()
-        {
-            var mainLeague = await leagueRepository
-                .GetAllAttached()
-                .Include(l => l.Teams)
-                .Include(l => l.Matches)
-                .FirstOrDefaultAsync(l => l.Id == 1);
-
-            if (mainLeague == null)
-                return new LeagueUpcomingMatchesViewModel { Rounds = new List<RoundMatchesViewModel>() };
-
-            return await GetUpcomingMatchesAsync(mainLeague);
-        }
-        public static string GetDisplayName(Enum value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
-            return attribute?.Name ?? value.ToString();
-        }
-        public DateTime GetNearestQuarter(DateTime dateTime)
-        {
-            int minutes = dateTime.Minute;
-            int addMinutes = 15 - (minutes % 15);
-            if (addMinutes == 15) addMinutes = 0; // Already on a quarter
-            dateTime = new DateTime(
-                dateTime.Year,
-                dateTime.Month,
-                dateTime.Day,
-                dateTime.Hour,
-                dateTime.Minute,
-                0,
-                dateTime.Kind
-            );
-            return dateTime.AddMinutes(addMinutes);
         }
 
     }

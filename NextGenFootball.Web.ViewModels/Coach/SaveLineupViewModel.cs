@@ -14,10 +14,5 @@ namespace NextGenFootball.Web.ViewModels.Coach
         public List<LineupPlayerInputModel> Players { get; set; }= new List<LineupPlayerInputModel>();
     }
 
-    public class LineupPlayerInputModel
-    {
-        public Guid PlayerId { get; set; }
-        public string PositionName { get; set; } = null!;
-        public int PositionNumber { get; set; }
-    }
+   
 }

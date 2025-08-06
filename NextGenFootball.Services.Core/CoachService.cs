@@ -2,17 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Coach;
 using NextGenFootball.Web.ViewModels.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core
@@ -23,9 +16,10 @@ namespace NextGenFootball.Services.Core
         private readonly ITeamRepository teamRepository;
         private readonly IApplicationUserRepository applicationUserRepository;
         private readonly IPlayerRepository playerRepository;
-        private readonly UserManager<ApplicationUser> userManager;
         private readonly ITeamStartingLineupPlayerRepository teamStartingLineupPlayerRepository;
         private readonly ITeamStartingLineupRepository teamStartingLineupRepository;
+
+        private readonly UserManager<ApplicationUser> userManager;
         public CoachService(ICoachRepository coachRepository, ITeamRepository teamRepository, IApplicationUserRepository applicationUserRepository
             , IPlayerRepository playerRepository, UserManager<ApplicationUser> userManager, ITeamStartingLineupPlayerRepository teamStartingLineupPlayerRepository, ITeamStartingLineupRepository teamStartingLineupRepository)
         {
@@ -37,6 +31,33 @@ namespace NextGenFootball.Services.Core
             this.teamStartingLineupPlayerRepository = teamStartingLineupPlayerRepository;
             this.teamStartingLineupRepository = teamStartingLineupRepository;
         }
+
+        //CRUD OPERATIONS FOR COACHES
+        //CREATE
+        public async Task<bool> CreateCoachAsync(CoachCreateViewModel model)
+        {
+            bool res = false;
+            bool isValidRole = Enum.IsDefined(typeof(CoachRole), model.Role);
+            Team? team = await this.teamRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == model.TeamId);
+            if (team != null && isValidRole)
+            {
+                Coach coach = new Coach
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    ImageUrl = model.ImageUrl,
+                    TeamId = model.TeamId,
+                    Role = model.Role
+                };
+                await this.coachRepository.AddAsync(coach);
+                res = true;
+            }
+            return res;
+        }
+        //READ
         public async Task<IEnumerable<CoachIndexViewModel>> GetAllCoachesAsync()
         {
             IEnumerable<CoachIndexViewModel> coaches = await this.coachRepository
@@ -48,9 +69,9 @@ namespace NextGenFootball.Services.Core
                     Id = c.Id,
                     FirstName = c.FirstName,
                     LastName = c.LastName,
-                    ImageUrl = c.ImageUrl,
+                    ImageUrl = c.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
                     TeamName = c.Team.Name,
-                    TeamImageUrl = c.Team.ImageUrl,
+                    TeamImageUrl = c.Team.ImageUrl ?? $"/images/{NoTeamImageUrl}",
                     Role = GetDisplayName(c.Role)
 
                 })
@@ -75,46 +96,16 @@ namespace NextGenFootball.Services.Core
                         Id = coach.Id,
                         FirstName = coach.FirstName,
                         LastName = coach.LastName,
-                        ImageUrl = coach.ImageUrl,
+                        ImageUrl = coach.ImageUrl ?? $"/images/{NoImagePeopleUrl}",
                         TeamName = coach.Team.Name,
-                        TeamImageUrl = coach.Team.ImageUrl,
+                        TeamImageUrl = coach.Team.ImageUrl ?? $"/images/{NoTeamImageUrl}",
                         Role = GetDisplayName(coach.Role),
                     };
                 }
             }
             return details;
         }
-        public static string GetDisplayName(Enum value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
-            return attribute?.Name ?? value.ToString();
-        }
-
-        public async Task<bool> CreateCoachAsync(CoachCreateViewModel model)
-        {
-            bool res = false;
-            bool isValidRole = Enum.IsDefined(typeof(CoachRole), model.Role);
-            Team? team = await this.teamRepository
-                .GetAllAttached()
-                .AsNoTracking()
-                .SingleOrDefaultAsync(t => t.Id == model.TeamId);
-            if (team != null && isValidRole)
-            {
-                Coach coach = new Coach
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    ImageUrl = model.ImageUrl,
-                    TeamId = model.TeamId,
-                    Role = model.Role
-                };
-                await this.coachRepository.AddAsync(coach);
-                res = true;
-            }
-            return res;
-        }
-
+        //EDIT
         public async Task<CoachEditViewModel?> GetCoachEditViewModel(Guid? id)
         {
             CoachEditViewModel? coachEdit = null;
@@ -142,7 +133,6 @@ namespace NextGenFootball.Services.Core
             }
             return coachEdit;
         }
-
         public async Task<bool> EditCoachAsync(CoachEditViewModel model)
         {
             bool res = false;
@@ -183,7 +173,7 @@ namespace NextGenFootball.Services.Core
             return res;
 
         }
-
+        //DELETE
         public async Task<CoachDeleteViewModel?> GetCoachForDeleteAsync(Guid? id)
         {
             CoachDeleteViewModel? coachDelete = null;
@@ -211,7 +201,6 @@ namespace NextGenFootball.Services.Core
             }
             return coachDelete;
         }
-
         public async Task<bool> DeleteCoachAsync(CoachDeleteViewModel model)
         {
             Coach? coach = await this.coachRepository
@@ -223,7 +212,47 @@ namespace NextGenFootball.Services.Core
             await this.coachRepository.DeleteAsync(coach);
             return true;
         }
+        //HELPER METHODS
+        public static string GetDisplayName(Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = Attribute.GetCustomAttribute(field!, typeof(System.ComponentModel.DataAnnotations.DisplayAttribute)) as System.ComponentModel.DataAnnotations.DisplayAttribute;
+            return attribute?.Name ?? value.ToString();
+        }
+        public Task<int> GetCoachTeamId(Guid coachId)
+        {
+            
+            Coach? coach = this.coachRepository
+                .GetAllAttached()
+                .AsNoTracking()
+                .SingleOrDefault(c => c.ApplicationUserId == coachId);
+            if (coach != null)
+            {
+                return Task.FromResult(coach.TeamId);
+            }
+            return Task.FromResult(0); 
+        }
+        public async Task<Coach?> GetCoachByApplicationUserId(Guid appUserId)
+        {
+            return await this.coachRepository
+                .FirstOrDefaultAsync(c => c.ApplicationUserId == appUserId);
+        }
+        public async Task<League?> GetCoachLeague(Guid coachId)
+        {
+            Coach? coach=await this.coachRepository
+                .GetAllAttached()
+                .Include(c => c.Team)
+                .ThenInclude(t => t.League)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(c => c.ApplicationUserId == coachId);
+            if (coach != null && coach.Team != null)
+            {
+                return coach.Team.League;
+            }
+            return null;
+        }
 
+        //PLAYERS FOR COACH SQUAD
         public async Task<IEnumerable<PlayerForCoachSquad>?> GetPlayersForCoach(Guid? coachId)
         {
             IEnumerable<PlayerForCoachSquad>? players = null;
@@ -315,40 +344,6 @@ namespace NextGenFootball.Services.Core
                 model.SelectedFormationName,
                 lineupPlayers
             );
-        }
-
-        public Task<int> GetCoachTeamId(Guid coachId)
-        {
-            
-            Coach? coach = this.coachRepository
-                .GetAllAttached()
-                .AsNoTracking()
-                .SingleOrDefault(c => c.ApplicationUserId == coachId);
-            if (coach != null)
-            {
-                return Task.FromResult(coach.TeamId);
-            }
-            return Task.FromResult(0); 
-        }
-        public async Task<Coach?> GetCoachByApplicationUserId(Guid appUserId)
-        {
-            return await this.coachRepository
-                .FirstOrDefaultAsync(c => c.ApplicationUserId == appUserId);
-        }
-
-        public async Task<League?> GetCoachLeague(Guid coachId)
-        {
-            Coach? coach=await this.coachRepository
-                .GetAllAttached()
-                .Include(c => c.Team)
-                .ThenInclude(t => t.League)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(c => c.ApplicationUserId == coachId);
-            if (coach != null && coach.Team != null)
-            {
-                return coach.Team.League;
-            }
-            return null;
         }
     }
 }

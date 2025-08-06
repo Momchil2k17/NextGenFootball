@@ -2,9 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Seeding.Interfaces;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Data.Seeding

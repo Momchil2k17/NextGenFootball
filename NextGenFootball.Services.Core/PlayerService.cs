@@ -1,17 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using NextGenFootball.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Common.Enums;
 using NextGenFootball.Data.Models;
-using NextGenFootball.Data.Repository;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core

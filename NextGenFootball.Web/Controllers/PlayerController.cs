@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using NextGenFootball.Services.Core;
 using NextGenFootball.Services.Core.Interfaces;
 using NextGenFootball.Web.ViewModels.Player;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles=AdminRoleName)]
     public class PlayerController : BaseController
     {
         private readonly IPlayerService playerService;

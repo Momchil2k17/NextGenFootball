@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NextGenFootball.Data.Models;
 using NextGenFootball.Data.Repository.Interfaces;
 using NextGenFootball.Services.Core.LeagueManager.Interfaces;
 using NextGenFootball.Web.ViewModels.Referee.RefereeAssignments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Services.Core.LeagueManager
 {
@@ -75,9 +70,9 @@ namespace NextGenFootball.Services.Core.LeagueManager
                         LeagueId = league.Id,
                         MatchId = match.Id,
                         HomeTeam = match.HomeTeam.Name,
-                        HomeTeamImageUrl = match.HomeTeam.ImageUrl,
+                        HomeTeamImageUrl = match.HomeTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                         AwayTeam = match.AwayTeam.Name,
-                        AwayTeamImageUrl = match.AwayTeam.ImageUrl,
+                        AwayTeamImageUrl = match.AwayTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                         Date = match.Date,
                         AvailableReferees = availableReferees,
                         MainRefereeId = match.Referee?.Id,
@@ -110,9 +105,9 @@ namespace NextGenFootball.Services.Core.LeagueManager
                     {
                         MatchId = m.Id,
                         HomeTeam = m.HomeTeam.Name,
-                        HomeTeamImageUrl= m.HomeTeam.ImageUrl,
+                        HomeTeamImageUrl= m.HomeTeam.ImageUrl ??  $"images/{NoTeamImageUrl}",
                         AwayTeam = m.AwayTeam.Name,
-                        AwayTeamImageUrl = m.AwayTeam.ImageUrl,
+                        AwayTeamImageUrl = m.AwayTeam.ImageUrl ?? $"images/{NoTeamImageUrl}",
                         Date = m.Date,
                         MainReferee = m.Referee != null ? $"{m.Referee.FirstName} {m.Referee.LastName}" : "N/A",
                         Assistant1 = m.AssistantReferee1 != null ? $"{m.AssistantReferee1.FirstName} {m.AssistantReferee1.LastName}" : "N/A",

@@ -8,7 +8,7 @@ using static NextGenFootball.GCommon.ApplicationConstants;
 
 namespace NextGenFootball.Web.Controllers
 {
-    [Authorize(Roles = LeagueManagerRoleName)]
+    [Authorize(Roles = LeagueManagerRoleName+","+AdminRoleName)]
     public class LeagueController : BaseController
     {
         private readonly ILeagueService leagueService;
