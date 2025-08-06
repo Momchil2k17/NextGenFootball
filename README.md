@@ -29,6 +29,7 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - ![Home_Page](Screenshots/home-page.png)
 - ![Guest News](Screenshots/guest-news.png)
 - ![Match Details](Screenshots/match-details.png)
+- ![Player Details](Screenshots/player-details.png)
 - ![Stadium_Location](Screenshots/stadium-details.png)
 ---
 
@@ -114,13 +115,11 @@ Use these demo credentials to explore the different roles:
 > If you want to test the **Coach** or **Referee** features, make sure to assign your application user ID to a coach or referee in the Admin Panel. ⚠️
 
 ---
-
-## 🎨 Screenshots Folder
-
-All screenshots showcasing the app’s features should be added to the `/Screenshots` folder.  
-This helps users preview the UI and main functionalities for each role.  
-Feel free to add or update images as the app evolves!
-
+## 📝 Custom Error Pages
+- ![400](Screenshots/400.png)
+- ![403](Screenshots/403.png)
+- ![404](Screenshots/404.png)
+- ![405](Screenshots/500.png)
 ---
 
 ## 📢 Get Started
