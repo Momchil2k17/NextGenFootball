@@ -26,11 +26,16 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 📹 **Video** Videos with highlights or full matches provided.
 
 #### 📸 Screenshots:  
-- ![Home_Page](Screenshots/home-page.png)
-- ![Guest News](Screenshots/guest-news.png)
-- ![Match Details](Screenshots/match-details.png)
-- ![Player Details](Screenshots/player-details.png)
-- ![Stadium_Location](Screenshots/stadium-details.png)
+### 🔹 Home Page  
+ ![Home_Page](Screenshots/home-page.png)
+### 🔹 News  
+![Guest News](Screenshots/guest-news.png)
+### 🔹 Match Details  
+![Match Details](Screenshots/match-details.png)
+### 🔹 Player Details
+![Player Details](Screenshots/player-details.png)
+### 🔹 Stadium Details
+![Stadium_Location](Screenshots/stadium-details.png)
 ---
 
 ### 🏆 League Manager
@@ -41,10 +46,12 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 🗞️ **Publish News:** Create and manage league-specific news articles.
 
 #### 📸 Screenshots:  
-
-- ![League Dashboard](Screenshots/league-manager-dashboard.png)
-- ![Add Match](Screenshots/add-match.png)
-- ![Assign Referee](Screenshots/assign-referees.png)
+### 🔹 League Dashboard
+![League Dashboard](Screenshots/league-manager-dashboard.png)
+### 🔹 Add Match
+![Add Match](Screenshots/add-match.png)
+### 🔹 Assign Referees
+![Assign Referee](Screenshots/assign-referees.png)
 
 ---
 
@@ -54,8 +61,10 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 💾 **Event Persistence:** All events (goals, cards, etc.) are saved to the database for accurate records.
 
 #### 📸 Screenshots:  
-- ![Referee Report](Screenshots/referee-report.png)
-- ![Event Logging](Screenshots/event-logging.png)
+### 🔹 Referee Report
+![Referee Report](Screenshots/referee-report.png)
+### 🔹 Event Logging
+![Event Logging](Screenshots/event-logging.png)
 
 ---
 
@@ -66,9 +75,10 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 🏷️ **Assign Roles:** Link application user accounts to coaches and referees.
 
 #### 📸 Screenshots:  
-
-- ![Admin Dashboard](Screenshots/admin-dashboard.png)
-- ![Manage Users](Screenshots/user-management.png)
+### 🔹 Admin Dashboard
+![Admin Dashboard](Screenshots/admin-dashboard.png)
+### 🔹 User Management
+![Manage Users](Screenshots/user-management.png)
 
 ---
 
@@ -79,9 +89,10 @@ Whether you’re a guest, player, coach, referee, league manager, or administrat
 - 📆 **Upcoming Matches:** See all matches for your team at a glance.
 
 #### 📸 Screenshots:  
-
-- ![Lineup Builder](Screenshots/lineup.png)
-- ![Coach Upcoming Matches](Screenshots/upcoming-matches.png)
+### 🔹 Lineup
+![Lineup Builder](Screenshots/lineup.png)
+### 🔹 Upcoming Matches
+![Coach Upcoming Matches](Screenshots/upcoming-matches.png)
 
 ---
 
@@ -116,10 +127,14 @@ Use these demo credentials to explore the different roles:
 
 ---
 ## 📝 Custom Error Pages
-- ![400](Screenshots/400.png)
-- ![403](Screenshots/403.png)
-- ![404](Screenshots/404.png)
-- ![405](Screenshots/500.png)
+### 🔹 400
+![400](Screenshots/400.png)
+### 🔹 403
+![403](Screenshots/403.png)
+### 🔹 404
+![404](Screenshots/404.png)
+### 🔹 405
+![405](Screenshots/500.png)
 ---
 
 ## 📢 Get Started
